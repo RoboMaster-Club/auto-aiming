@@ -1,5 +1,4 @@
 #!/bin/bash
-
 LOG_FILE="command_output.log"
 
 # Function to print messages in green
