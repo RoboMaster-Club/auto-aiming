@@ -17,7 +17,7 @@ jobs:
 
       # Set up ROS2 Foxy
       - name: Setup ROS2 Foxy
-        uses: ros-tooling/setup-ros@v0.4.0
+        uses: ros-tooling/setup-ros@v0.7.9
         with:
           required-ros-distributions: "foxy"
 
