@@ -1,0 +1,47 @@
+name: Run Colcon Tests
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to the main branch
+  pull_request:  # Trigger on pull requests
+
+jobs:
+  colcon-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up ROS2 Foxy
+      - name: Setup ROS2 Foxy
+        uses: ros-tooling/setup-ros@v0.4.0
+        with:
+          required-ros-distributions: "foxy"
+
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          rosdep update
+          rosdep install --from-paths src --ignore-src -r -y
+
+      # Make the run script executable
+      - name: Make run script executable
+        run: chmod +x ./run
+
+      # Run build and tests using the run script
+      - name: Run build and tests
+        run: |
+          ./run build
+          ./run test
+
+      # Optional: Upload test results as artifacts
+      - name: Upload Test Results
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: log/latest_test  # Adjust the path to match your test results folder
