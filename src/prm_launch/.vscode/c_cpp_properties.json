@@ -1,0 +1,35 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/bp-desk/ros2-ws/install/vision_msgs/include/**",
+        "/home/bp-desk/ros2-ws/install/prm_pipeline/include/**",
+        "/home/bp-desk/ros2-ws/install/image_geometry/include/**",
+        "/home/bp-desk/ros2-ws/install/cv_bridge/include/**",
+        "/opt/ros/foxy/include/**",
+        "/home/bp-desk/ros2-ws/src/prm_camera/image_noise_adder/include/**",
+        "/home/bp-desk/ros2-ws/src/prm_camera/mv_publisher/include/**",
+        "/home/bp-desk/ros2-ws/src/prm_camera/webcam_publisher/include/**",
+        "/home/bp-desk/ros2-ws/src/prm_control/control_communicator/include/**",
+        "/home/bp-desk/ros2-ws/src/prm_vision/opencv_armor_detector/include/**",
+        "/home/bp-desk/ros2-ws/src/prm_vision/pnp_solver/include/**",
+        "/home/bp-desk/ros2-ws/src/prm_vision/prm_autoaim/include/**",
+        "/home/bp-desk/ros2-ws/src/prm_vision/prm_pipeline/include/**",
+        "/home/bp-desk/ros2-ws/src/standard_urdf/include/**",
+        "/home/bp-desk/ros2-ws/src/vision_opencv/cv_bridge/include/**",
+        "/home/bp-desk/ros2-ws/src/vision_opencv/image_geometry/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

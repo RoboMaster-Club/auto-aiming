@@ -1,0 +1,44 @@
+from launch import LaunchDescription
+from launch_ros.actions import Node
+
+import sys
+import os
+from datetime import datetime
+
+def get_fname():
+    now = datetime.now()
+    home = os.path.expanduser("~")
+
+    dt = now.strftime("%Y-%m-%d-%H:%M:%S_")
+    f_name = dt + "webcam.avi"
+
+    if not os.path.exists(home + "/recording"):
+        os.mkdir(home + "/recording")
+
+    return os.path.join(home + "/recording", f_name)
+
+def get_frame_count():
+    for arg in sys.argv:
+        if "frame_count:=" in arg:
+            return int(arg.split(":=")[1])
+    return 0
+
+def generate_launch_description():
+    
+    dst = get_fname()
+    frame_count = get_frame_count()
+
+    return LaunchDescription([
+        Node(
+            package="recorder",
+            executable="VideoRecorderNode",
+            parameters=[{
+                "topic": "/image_raw", 
+                "width": 1280, 
+                "height": 720, 
+                "fps": 30, 
+                "dst": dst,
+                "frame_count": frame_count
+                }],
+        )
+    ])

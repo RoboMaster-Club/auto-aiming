@@ -1,0 +1,16 @@
+/mv_camera:
+  ros__parameters:
+    analog_gain: 64
+    camera_info_url: package://mv_publisher/config/mv_133_4_info.yaml
+    camera_name: mv_camera
+    exposure_time: 3000
+    flip_image: false
+    fps: 160
+    gamma: 50
+    rgb_gain:
+      b: 100
+      g: 100
+      r: 100
+    saturation: 100
+    use_sensor_data_qos: false
+    use_sim_time: false

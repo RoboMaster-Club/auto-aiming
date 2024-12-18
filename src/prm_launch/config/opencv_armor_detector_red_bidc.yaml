@@ -1,0 +1,17 @@
+/opencv_armor_detector:
+  ros__parameters:
+    armor_angle_diff_limit: 10.0
+    armor_aspect_ratio_limit: 5.0
+    armor_height_ratio_limit: 1.5
+    armor_light_bar_aspect_ratio_ratio_limit: 5.0
+    armor_y_diff_limit: 1.5
+    hue_range_limit: 10.0
+    light_bar_angle_limit: 25.0
+    light_bar_aspect_ratio_limit: 1.0
+    light_bar_height_lower_limit: 5.0
+    light_bar_width_lower_limit: 2.0
+    saturation_lower_limit: 75.0
+    show_debug_img: true
+    target_red: true
+    use_sim_time: false
+    value_lower_limit: 130.0
