@@ -1,0 +1,131 @@
+#!/bin/bash
+
+LOG_FILE="command_output.log"
+
+# Function to print messages in green
+print_green() {
+    echo -e "\e[0m\e[32m$1\e[0m"
+}
+
+# Function to print messages in blue
+print_blue() {
+    echo -e "\e[34m$1\e[0m"
+}
+
+# Function to print messages in red
+print_red() {
+    echo -e "\e[0m\e[31m$1\e[0m"
+}
+
+# Print the blue welcome message
+print_blue "------------------------------------------"
+print_blue "Purdue RoboMaster Club: Auto Aiming Suite"
+print_blue "------------------------------------------"
+
+# Function to clean the workspace
+clean() {
+    print_green "Cleaning workspace..."
+    rm -rf build install log Testing $LOG_FILE
+    print_green "Clean complete."
+}
+
+# Function to build the project
+build() {
+    print_green "[*] Building project with Release configuration and optimization flags."
+    if [[ "$quiet" == "true" ]]; then
+        colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 --allow-overriding opencv_armor_detector >> "$LOG_FILE" 2>&1
+    else
+        colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 --allow-overriding opencv_armor_detector
+    fi
+    if [ $? -eq 0 ]; then
+        # print checkmark
+        print_green "[☺ ] Build successful."
+        source install/setup.sh
+    else
+        print_red "Build failed. See $LOG_FILE for more information."
+        exit 1
+    fi
+}
+
+# Function to run tests for each ROS module (non-recursively at first)
+test() {
+    print_green "Running tests for each ROS module..."
+
+    # Run build first
+    build
+
+    # Run tests quietly for both
+    print_green "[*] Running tests..."
+    if [[ "$quiet" == "true" ]]; then
+        colcon test >> "$LOG_FILE" 2>&1
+        colcon test-result --verbose >> "$LOG_FILE" 2>&1
+    else
+        colcon test > /dev/null 2>&1 
+        colcon test-result --verbose
+    fi
+
+    # Check if tests passed
+    if [ $? -ne 0 ]; then
+        print_red "Tests failed. See $LOG_FILE for more information."
+        exit 1
+    fi
+
+    print_green "Test execution complete."
+}
+
+# Function to run a ROS2 launch command
+run() {
+    if [[ -z "$1" ]]; then
+        print_red "Error: No launch argument provided."
+        echo "Usage: $0 run <launch_file>"
+        exit 1
+    fi
+
+    launch_file="$1"
+    
+    # Run build first
+    build
+
+    print_green "[*] Running ROS2 launch: prm_launch $launch_file"
+    ros2 launch prm_launch "$launch_file"
+    if [ $? -ne 0 ]; then
+        print_red "Launch failed."
+        exit 1
+    fi
+}
+
+# Parse script options
+while getopts ":q" opt; do
+    case $opt in
+        q)
+            quiet=true
+            ;;
+        \?)
+            echo "Usage: $0 [-q] {build|clean|test|run <launch_file>}"
+            exit 1
+            ;;
+    esac
+done
+
+# Remove the quiet flag from the argument list
+shift $((OPTIND - 1))
+
+case $1 in
+    build)
+        build
+        ;;
+    clean)
+        clean
+        ;;
+    test)
+        test
+        ;;
+    run)
+        shift
+        run "$@"
+        ;;
+    *)
+        echo "Usage: $0 [-q] {build|clean|test|run <launch_file>}"
+        exit 1
+        ;;
+esac
