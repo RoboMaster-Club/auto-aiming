@@ -12,13 +12,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Use the Docker image as the environment
-      - name: Run Docker Container
+      # Use the Docker image (without GPU)
+      - name: Run Docker Container (No GPU)
         uses: addnab/docker-run-action@v3
         with:
-          image: federicolanzani/opencv-cuda  # Use the CUDA-enabled OpenCV image
-          options: --gpus all  # Enable GPU support
+          image: federicolanzani/opencv-cuda  # CUDA-enabled OpenCV image
+          options: ""  # No GPU support
           run: |
+            # Verify CUDA tools (e.g., nvcc)
+            nvcc --version  # Check if nvcc is available
+            
             # Install ROS2 Foxy
             sudo apt update
             sudo apt install -y curl gnupg2 lsb-release
