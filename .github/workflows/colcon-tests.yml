@@ -15,6 +15,10 @@ jobs:
       # Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
+      
+      - name: Set CUDA Path
+        run: echo "/usr/local/cuda/bin" >> $GITHUB_PATH
+
 
       # Run build and tests using the run script
       - name: Run build and tests
