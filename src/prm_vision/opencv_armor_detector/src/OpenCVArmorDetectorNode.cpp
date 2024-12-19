@@ -22,7 +22,7 @@ OpenCVArmorDetectorNode::OpenCVArmorDetectorNode(
   detector = new OpenCVArmorDetector(config);
 }
 
-OpenCVArmorDetectorNode::~OpenCVArmorDetectorNode() {}
+OpenCVArmorDetectorNode::~OpenCVArmorDetectorNode() { delete detector; }
 
 void OpenCVArmorDetectorNode::imageTransportInitilization()
 {

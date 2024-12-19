@@ -17,4 +17,4 @@ To use the run script, execute the following commands in your terminal. The scri
   - `--debug`: Builds with debug flags enabled.
 
 ### Example:
-`./run --debug --quiet run video2detector.py`
+`./auto-aiming/run --debug --quiet run video2detector.py`

@@ -29,6 +29,15 @@ enum TargetColor
   RED
 };
 
+/**
+ * @brief Configuration struct for the OpenCVArmorDetector class.
+ *
+ * @param _target_color The target color to detect (BLUE or RED).
+ * @param _hue_range_limit The hue range limit for the target color.
+ * @param _saturation_lower_limit The lower saturation limit for the target color.
+ * @param _value_lower_limit The lower value limit for the target color.
+ * @param _max_missed_frames The maximum number of frames to miss before resetting the search area.
+ */
 struct DetectorConfig
 {
   TargetColor _target_color;
@@ -53,6 +62,9 @@ public:
 
   // Setters
   void setConfig(DetectorConfig config);
+
+  // Getters
+  DetectorConfig getConfig() { return _config; }
 
 private:
   // Class methods

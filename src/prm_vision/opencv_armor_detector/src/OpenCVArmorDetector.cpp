@@ -6,6 +6,8 @@
 
 void OpenCVArmorDetector::setConfig(DetectorConfig config)
 {
+    _config = config;
+
     // Set the color limits based on config
     _blue_lower_limit = cv::Scalar(105 - _config._hue_range_limit, _config._saturation_lower_limit, _config._value_lower_limit);
     _blue_upper_limit = cv::Scalar(105 + _config._hue_range_limit, 255, 255);
@@ -88,10 +90,6 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
         _search_area[2] = std::min(x_max + 50, WIDTH);
         _search_area[3] = std::min(y_max + 50, HEIGHT);
         _detected_frame++;
-
-        // Draw the bounding box based on points
-        cv::RotatedRect left_rect = cv::minAreaRect(image_points);
-        drawRotatedRect(frame, left_rect);
     }
     return keypoints_msg;
 }
