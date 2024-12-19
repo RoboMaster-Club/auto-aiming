@@ -49,6 +49,7 @@ public:
 
   // Other class variables
   int _detected_frame = 0;
+  int _frame_count = 0;
 
   // Setters
   void setConfig(DetectorConfig config);

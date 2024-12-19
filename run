@@ -31,11 +31,20 @@ clean() {
 # Function to build the project
 build() {
     print_green "[*] Building project with Release configuration and optimization flags."
-    if [[ "$quiet" == "true" ]]; then
-        colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 --allow-overriding opencv_armor_detector >> "$LOG_FILE" 2>&1
-    else
-        colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 --allow-overriding opencv_armor_detector
+
+    build_args="-DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3"
+
+    # Add the DEBUG flag if '--debug' or '-d' was provided
+    if [[ "$debug" == "true" ]]; then
+        build_args="-DCMAKE_CXX_FLAGS=-DDEBUG $build_args"
     fi
+
+    if [[ "$quiet" == "true" ]]; then
+        colcon build --cmake-args $build_args --allow-overriding opencv_armor_detector >> "$LOG_FILE" 2>&1
+    else
+        colcon build --cmake-args $build_args --allow-overriding opencv_armor_detector
+    fi
+
     if [ $? -eq 0 ]; then
         # print checkmark
         print_green "[☺ ] Build successful."
@@ -94,37 +103,36 @@ run() {
 }
 
 # Parse script options
-while getopts ":q" opt; do
-    case $opt in
-        q)
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -q|--quiet)
             quiet=true
+            shift
             ;;
-        \?)
-            echo "Usage: $0 [-q] {build|clean|test|run <launch_file>}"
+        -d|--debug)
+            debug=true
+            shift
+            ;;
+        build)
+            build
+            shift
+            ;;
+        clean)
+            clean
+            shift
+            ;;
+        test)
+            test
+            shift
+            ;;
+        run)
+            shift
+            run "$@"
+            shift $#
+            ;;
+        *)
+            echo "Usage: $0 [--quiet] [--debug] {build|clean|test|run <launch_file>}"
             exit 1
             ;;
     esac
 done
-
-# Remove the quiet flag from the argument list
-shift $((OPTIND - 1))
-
-case $1 in
-    build)
-        build
-        ;;
-    clean)
-        clean
-        ;;
-    test)
-        test
-        ;;
-    run)
-        shift
-        run "$@"
-        ;;
-    *)
-        echo "Usage: $0 [-q] {build|clean|test|run <launch_file>}"
-        exit 1
-        ;;
-esac

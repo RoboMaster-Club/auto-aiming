@@ -36,18 +36,21 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
     // Detect the armor in the cropped frame
     std::vector<cv::Point2f> points = detectArmorsInFrame(croppedFrame);
 
-    if (_detected_frame % 100 == 0 && _detected_frame != 0)
+    if (_frame_count % 500 == 0 && _frame_count != 0)
     {
         // Calculate and print FPS
         auto current_time = std::chrono::steady_clock::now();
         double elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(current_time - last_time).count();
         last_time = current_time;
-        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), " [*] Detecting Armor (%d) FPS: %.2f", _detected_frame, 100.0 / (elapsed_time / 1000.0));
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), " [*] Detecting Armor (%d) FPS: %.2f", _frame_count, 500.0 / (elapsed_time / 1000.0));
     }
+    _frame_count++;
 
-    // Display the cropped frame
+// Display the cropped frame
+#ifdef DEBUG
     cv::imshow("detect", croppedFrame);
     cv::waitKey(1);
+#endif
 
     // If we didn't find an armor for 3 frames, reset the search area (this is configurable)
     if (points.size() == 0)
