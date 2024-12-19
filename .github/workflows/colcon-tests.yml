@@ -3,44 +3,27 @@ name: Run Colcon Tests
 on:
   push:
     branches:
-      - main  # Trigger on push to the main branch
-  pull_request:  # Trigger on pull requests
+      - main
+      - ci
+  pull_request:
 
 jobs:
   colcon-test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted  # Use your self-hosted runner
 
     steps:
       # Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
+      
+      - name: Set CUDA Path
+        run: echo "/usr/local/cuda/bin" >> $GITHUB_PATH
 
-      # Set up ROS2 Foxy
-      - name: Setup ROS2 Foxy
-        uses: ros-tooling/setup-ros@0.7.9
-        with:
-          required-ros-distributions: "foxy"
-
-      # Install dependencies
-      - name: Install dependencies
-        run: |
-          sudo apt update
-          rosdep update
-          rosdep install --from-paths src --ignore-src -r -y
-
-      # Make the run script executable
-      - name: Make run script executable
-        run: chmod +x ./run
 
       # Run build and tests using the run script
       - name: Run build and tests
         run: |
-          ./run test
-
-      # Optional: Upload test results as artifacts
-      - name: Upload Test Results
-        if: failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results
-          path: log/latest_test  # Adjust the path to match your test results folder
+          source /opt/ros/foxy/setup.sh  # Source ROS 2 Foxy
+          chmod +x ./run  # Ensure the run script is executable
+          nvcc -V  # Check the CUDA version
+          ./run test  # Run your test script
