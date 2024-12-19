@@ -17,7 +17,7 @@ jobs:
 
       # Set up ROS2 Foxy
       - name: Setup ROS2 Foxy
-        uses: ros-tooling/setup-ros@v0.7.9
+        uses: ros-tooling/setup-ros@0.7.9
         with:
           required-ros-distributions: "foxy"
 
@@ -35,7 +35,6 @@ jobs:
       # Run build and tests using the run script
       - name: Run build and tests
         run: |
-          ./run build
           ./run test
 
       # Optional: Upload test results as artifacts
