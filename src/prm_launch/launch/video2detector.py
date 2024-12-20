@@ -7,8 +7,8 @@ import os
 
 def generate_launch_description():
     webcam_publisher = get_package_share_path('webcam_publisher')
-    video_path = "/home/tom/Videos/far_back_spin_and_move.avi" # example, can change to your liking
-
+    # video_path = "/home/tom/Videos/far_back_spin_and_move.avi" # example, can change to your liking
+    video_path = "/home/user-accounts/lee4649/auto-aiming/videos/spinning_in_place.avi"
     return LaunchDescription([
         Node(
             package='webcam_publisher',

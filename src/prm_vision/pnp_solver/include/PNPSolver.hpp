@@ -34,9 +34,6 @@
 #define SMALL_ARMOR_HALF_WIDTH 134.f / 2.f
 #define LARGE_ARMOR_HALF_WIDTH 225.f / 2.f
 
-// #define float CAMERA_MATRIX[3][3] = {{971.537, 0, 1280.f / 2},
-//                                     {0, 1034.343, 1024.f / 2},
-//                                     {0, 0, 1}};
 
 using namespace std::chrono_literals;
 
@@ -49,9 +46,9 @@ public:
 private:
     std::vector<cv::Point3f> small_armor_object_points;
     std::vector<cv::Point3f> large_armor_object_points;
+    cv::Mat distortion_coefficient;
     cv::Mat camera_matrix;
     float camera_matrix_[3][3];
-    cv::Mat distortion_coefficient;
 
     cv::Mat rvec;
     cv::Mat tvec;
@@ -65,7 +62,6 @@ private:
     uint32_t seq_;
 
     KalmanFilter kalman_filter_;
-
     ValidityFilter validity_filter_;
 
     rclcpp::Time prev_time_;

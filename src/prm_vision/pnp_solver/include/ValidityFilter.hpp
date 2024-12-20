@@ -18,13 +18,10 @@ class ValidityFilter
 {
 public:
     ValidityFilter(int lock_in_after, float max_distance, float min_distance, float max_shift_distance, float prev_len);
-
     ValidityFilter();
-
     ~ValidityFilter();
 
-    bool validation(float,  float, float, double); // x, y, z, dt, return if to reset kalman filter
-    
+    bool validation(float,  float, float, double);
     int get_lock_in_counter();
 
     ValidityFilterState state = STOPPING;

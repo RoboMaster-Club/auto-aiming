@@ -14,8 +14,8 @@ PNPSolver::PNPSolver(const rclcpp::NodeOptions &options) : Node("pnp_solver", op
     small_armor_object_points.emplace_back(cv::Point3f(0, SMALL_ARMOR_HALF_WIDTH, -LIGHTBAR_HALF_HEIGHT));  // Bot Right
 
     large_armor_object_points.emplace_back(cv::Point3f(0, -LARGE_ARMOR_HALF_WIDTH, LIGHTBAR_HALF_HEIGHT));  // Top Left
-    large_armor_object_points.emplace_back(cv::Point3f(0, -LARGE_ARMOR_HALF_WIDTH, -LIGHTBAR_HALF_HEIGHT));  // Bot Left
-    large_armor_object_points.emplace_back(cv::Point3f(0, LARGE_ARMOR_HALF_WIDTH, LIGHTBAR_HALF_HEIGHT));  // Top Righy
+    large_armor_object_points.emplace_back(cv::Point3f(0, -LARGE_ARMOR_HALF_WIDTH, -LIGHTBAR_HALF_HEIGHT)); // Bot Left
+    large_armor_object_points.emplace_back(cv::Point3f(0, LARGE_ARMOR_HALF_WIDTH, LIGHTBAR_HALF_HEIGHT));   // Top Righy
     large_armor_object_points.emplace_back(cv::Point3f(0, LARGE_ARMOR_HALF_WIDTH, -LIGHTBAR_HALF_HEIGHT));  // Bot Right
 
     camera_matrix_[0][0] = 1019.108731;
@@ -27,7 +27,6 @@ PNPSolver::PNPSolver(const rclcpp::NodeOptions &options) : Node("pnp_solver", op
     camera_matrix_[2][0] = 0;
     camera_matrix_[2][1] = 0;
     camera_matrix_[2][2] = 1;
-
 
     kalman_filter_ = KalmanFilter();
     validity_filter_ = ValidityFilter();
@@ -72,9 +71,9 @@ PNPSolver::~PNPSolver()
 
 /**
  * @brief Callback function when receiving armor key points from armor detector node
- * 
+ *
  * The callback performs PNP solving, kalman filtering, and determine when to fire.
- * 
+ *
  * @param key_points_msg key point messagge
  */
 void PNPSolver::keyPointsCallback(const vision_msgs::msg::KeyPoints::SharedPtr key_points_msg)
@@ -92,7 +91,7 @@ void PNPSolver::keyPointsCallback(const vision_msgs::msg::KeyPoints::SharedPtr k
     image_points.push_back(cv::Point2f(key_points_msg->points[4], key_points_msg->points[5]));
     image_points.push_back(cv::Point2f(key_points_msg->points[6], key_points_msg->points[7]));
 
-    bool result = cv::solvePnP(small_armor_object_points, image_points, camera_matrix, distortion_coefficient, rvec, tvec, false, cv::SOLVEPNP_IPPE); 
+    bool result = cv::solvePnP(small_armor_object_points, image_points, camera_matrix, distortion_coefficient, rvec, tvec, false, cv::SOLVEPNP_IPPE);
 
     if (!result)
     {
@@ -113,6 +112,7 @@ void PNPSolver::keyPointsCallback(const vision_msgs::msg::KeyPoints::SharedPtr k
     tvec.at<float>(2, 0) = Z;
 
     std_msgs::msg::String auto_aim_tracking_status_msg;
+    vision_msgs::msg::PredictedArmor predicted_armor_msg;
 
     bool reset_kalman = validity_filter_.validation(X, Y, Z, dt);
     if (reset_kalman)
@@ -122,6 +122,16 @@ void PNPSolver::keyPointsCallback(const vision_msgs::msg::KeyPoints::SharedPtr k
         kalman_filter_.reset();
         RCLCPP_INFO(this->get_logger(), "Validity Filter Reset Kalman Filter");
         prev_time_ = curr_time_;
+
+        predicted_armor_msg.x_vel = 0;
+        predicted_armor_msg.y_vel = 0;
+        predicted_armor_msg.z_vel = 0;
+    }
+    else
+    {
+        predicted_armor_msg.x_vel = dst_[0];
+        predicted_armor_msg.y_vel = dst_[1];
+        predicted_armor_msg.z_vel = dst_[2];
     }
 
     // Stopping motor
@@ -164,21 +174,17 @@ void PNPSolver::keyPointsCallback(const vision_msgs::msg::KeyPoints::SharedPtr k
         locked_in_frames++;
     }
 
-
-    // Publish Predicted Armor if valid and publish
-    vision_msgs::msg::PredictedArmor predicted_armor_msg;
     predicted_armor_msg.header = key_points_msg->header;
-
-    // Translation XYZ
-    // disable kalman for now
-    double distance = sqrt(X*X + Y*Y + Z*Z);
+    double distance = sqrt(X * X + Y * Y + Z * Z);
     predicted_armor_msg.x = X;
     predicted_armor_msg.y = Y + 50;
     predicted_armor_msg.z = Z - 60; // 50mm coordinate transform in Z     // + (0.1*distance + -127.75);
 
-    vec3 P(X/1000, Y/1000, Z/1000), V(0,0, 0), grav(0, 0, 9.81);
-    double p = 0, y = 0; bool im = 0;
-    pitch_yaw_gravity_model_movingtarget_const_v(P, V, grav, 0, &p, &y, &im); y = y * (Y > 0 ? -1 : 1);  //currently a bug where yaw is never negative, so we just multiply by the sign of "y" of the target
+    vec3 P(X / 1000, Y / 1000, Z / 1000), V(0, 0, 0), grav(0, 0, 9.81);
+    double p = 0, y = 0;
+    bool im = 0;
+    pitch_yaw_gravity_model_movingtarget_const_v(P, V, grav, 0, &p, &y, &im);
+    y = y * (Y > 0 ? -1 : 1); // currently a bug where yaw is never negative, so we just multiply by the sign of "y" of the target
 
     double yaw = -atan(Y / X) * 180 / PI;
     double pitch = atan(Z / X) * 180 / PI;
@@ -191,78 +197,50 @@ void PNPSolver::keyPointsCallback(const vision_msgs::msg::KeyPoints::SharedPtr k
     predicted_armor_msg.rvec_x = rvec.at<float>(0, 0);
     predicted_armor_msg.rvec_y = rvec.at<float>(1, 0);
     predicted_armor_msg.rvec_z = rvec.at<float>(2, 0);
-
-    if (reset_kalman)
-    {
-        predicted_armor_msg.x_vel = 0;
-        predicted_armor_msg.y_vel = 0;
-        predicted_armor_msg.z_vel = 0;
-    }
-    else
-    {
-        predicted_armor_msg.x_vel = dst_[0];
-        predicted_armor_msg.y_vel = dst_[1];
-        predicted_armor_msg.z_vel = dst_[2];
-    }
     predicted_armor_publisher->publish(predicted_armor_msg);
 
-    // Publish TF raw results
     if (publish_tf_)
     {
+        // Publish TF raw results
         geometry_msgs::msg::TransformStamped detected_armor_tf;
-
         detected_armor_tf.header.stamp = key_points_msg->header.stamp;
         detected_armor_tf.header.frame_id = "camera_link";
         detected_armor_tf.child_frame_id = "detected_armor";
         detected_armor_tf.transform.translation.x = X / 1000;
         detected_armor_tf.transform.translation.y = Y / 1000;
         detected_armor_tf.transform.translation.z = Z / 1000;
-
         detected_armor_tf.transform.rotation.x = 1;
         detected_armor_tf.transform.rotation.y = 0;
         detected_armor_tf.transform.rotation.z = 0;
         detected_armor_tf.transform.rotation.w = 0;
-
         tf_broadcaster->sendTransform(detected_armor_tf);
-    }
 
-    // Publish TF filtered results
-    if (publish_tf_)
-    {
+        // Publish TF filtered results
         geometry_msgs::msg::TransformStamped filtered_armor_tf;
-
         filtered_armor_tf.header.stamp = key_points_msg->header.stamp;
         filtered_armor_tf.header.frame_id = "camera_link";
         filtered_armor_tf.child_frame_id = "filtered_armor";
         filtered_armor_tf.transform.translation.x = dst_[0] / 1000;
         filtered_armor_tf.transform.translation.y = dst_[1] / 1000;
         filtered_armor_tf.transform.translation.z = dst_[2] / 1000;
-
         filtered_armor_tf.transform.rotation.x = 1;
         filtered_armor_tf.transform.rotation.y = 0;
         filtered_armor_tf.transform.rotation.z = 0;
         filtered_armor_tf.transform.rotation.w = 0;
-
         tf_broadcaster->sendTransform(filtered_armor_tf);
-    }
 
-    // Publish TF predictedion after 0.3s
-    if (publish_tf_)
-    {
+        // Publish TF predictedion after 0.3s
         geometry_msgs::msg::TransformStamped predicted_armor_tf;
-
         predicted_armor_tf.header.stamp = key_points_msg->header.stamp;
         predicted_armor_tf.header.frame_id = "camera_link";
         predicted_armor_tf.child_frame_id = "predicted_armor";
         predicted_armor_tf.transform.translation.x = (dst_[0] + dst_[3] * 0.5) / 1000;
         predicted_armor_tf.transform.translation.y = (dst_[1] + dst_[4] * 0.5) / 1000;
         predicted_armor_tf.transform.translation.z = (dst_[2] + dst_[5] * 0.5) / 1000;
-
         predicted_armor_tf.transform.rotation.x = 1;
         predicted_armor_tf.transform.rotation.y = 0;
         predicted_armor_tf.transform.rotation.z = 0;
         predicted_armor_tf.transform.rotation.w = 0;
-
         tf_broadcaster->sendTransform(predicted_armor_tf);
     }
 
@@ -286,7 +264,6 @@ void PNPSolver::check_last_firing_time()
         locked_in_frames = 0;
         publishZeroPredictedArmor(std_msgs::msg::Header());
     }
-    
 }
 
 void PNPSolver::publishZeroPredictedArmor(std_msgs::msg::Header header)
