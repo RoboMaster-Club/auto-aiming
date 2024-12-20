@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(opencv_armor_detector CXX CUDA)
+project(opencv_armor_detector)
 
 # Dependencies
 find_package(ament_cmake REQUIRED)
