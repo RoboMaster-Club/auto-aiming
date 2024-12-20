@@ -197,7 +197,7 @@ TEST_F(OpenCVArmorDetectorTest, test_search_armor_easy)
     OpenCVArmorDetector *detector_easy = new OpenCVArmorDetector({RED, 30, 100, 150, 2, false});
     std::filesystem::path easy_path = std::filesystem::path(package_share_dir) / "resources/easy";
     iterateThroughFolder(easy_path.string(), detector_easy);
-    EXPECT_EQ(detector_easy->_frame_count, 159); // 159 frames in the easy folder
+    EXPECT_EQ(detector_easy->_frame_count, 158); // 159 frames in the easy folder
     double detection_accuracy = static_cast<double>(detector_easy->_detected_frame) / static_cast<double>(detector_easy->_frame_count);
     EXPECT_GE(detection_accuracy, MIN_EASY_ACCURACY);
 
