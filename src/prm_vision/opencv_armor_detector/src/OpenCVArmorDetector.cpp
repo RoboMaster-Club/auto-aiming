@@ -16,9 +16,10 @@ void OpenCVArmorDetector::setConfig(DetectorConfig config)
     _red_lower_limit_2 = cv::Scalar(179 - _config._hue_range_limit, _config._saturation_lower_limit, _config._value_lower_limit);
     _red_upper_limit_2 = cv::Scalar(179, 255, 255);
 
-    // Set the target color
+    // Set the other config variables
     _targetColor = config._target_color;
     _max_missed_frames = config._max_missed_frames;
+    _reduce_search_area = config._reduce_search_area;
 }
 
 std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
@@ -79,18 +80,26 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
             image_points.emplace_back(cv::Point2f(points.at(i).x + _search_area[0], points.at(i).y + _search_area[1]));
         }
 
-        // Change the search area to the bounding box of the armor with a 50 pixel buffer
-        _reset_search_area = false;
-        int x_min = (int)std::min(keypoints_msg[0], keypoints_msg[2]);
-        int x_max = (int)std::max(keypoints_msg[4], keypoints_msg[6]);
-        int y_min = (int)std::min(keypoints_msg[1], keypoints_msg[5]);
-        int y_max = (int)std::max(keypoints_msg[3], keypoints_msg[7]);
-        _search_area[0] = std::max(x_min - 50, 0);
-        _search_area[1] = std::max(y_min - 50, 0);
-        _search_area[2] = std::min(x_max + 50, WIDTH);
-        _search_area[3] = std::min(y_max + 50, HEIGHT);
+        if (_reduce_search_area)
+        {
+            // Change the search area to the bounding box of the armor with a 50 pixel buffer
+            _reset_search_area = false;
+            int x_min = (int)std::min(keypoints_msg[0], keypoints_msg[2]);
+            int x_max = (int)std::max(keypoints_msg[4], keypoints_msg[6]);
+            int y_min = (int)std::min(keypoints_msg[1], keypoints_msg[5]);
+            int y_max = (int)std::max(keypoints_msg[3], keypoints_msg[7]);
+            _search_area[0] = std::max(x_min - 50, 0);
+            _search_area[1] = std::max(y_min - 50, 0);
+            _search_area[2] = std::min(x_max + 50, WIDTH);
+            _search_area[3] = std::min(y_max + 50, HEIGHT);
+        }
         _detected_frame++;
     }
+
+    // cv::resize(croppedFrame, croppedFrame, cv::Size(WIDTH, HEIGHT));
+    // cv::imshow("detect", croppedFrame);
+    // cv::waitKey(300);
+
     return keypoints_msg;
 }
 
@@ -170,8 +179,8 @@ std::vector<cv::Point2f> OpenCVArmorDetector::detectArmorsInFrame(cv::Mat &frame
                     auto &second = (rect1.center.x < rect2.center.x) ? rect2 : rect1;
 
                     // Draw the ellipses on the frame
-                    cv::ellipse(frame, rect1, cv::Scalar(255, 0, 0), 2); // Blue ellipse for rect1
-                    cv::ellipse(frame, rect2, cv::Scalar(0, 255, 0), 2); // Green ellipse for rect2
+                    cv::ellipse(frame, rect1, cv::Scalar(255, 0, 0), 1); // Blue ellipse for rect1 with 1px thickness
+                    cv::ellipse(frame, rect2, cv::Scalar(0, 255, 0), 1); // Green ellipse for rect2 with 1px thickness
 
                     return {rectToPoint(first)[0], rectToPoint(first)[1], rectToPoint(second)[0], rectToPoint(second)[1]};
                 }
@@ -216,6 +225,7 @@ bool OpenCVArmorDetector::isLightBar(cv::RotatedRect &rect)
         return false;
     }
 
+    // Note we check height/width not width/height (standard aspect ratio is width/height)
     if (rect.size.height / rect.size.width < LIGHT_BAR_ASPECT_RATIO_LOWER_LIMIT)
     {
         return false;

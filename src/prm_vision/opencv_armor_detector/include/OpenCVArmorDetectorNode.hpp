@@ -34,6 +34,7 @@ private:
     int _value_lower_limit;
     TargetColor _target_color;
     int _max_missed_frames;
+    bool _reduce_search_area;
 
     // Callbacks and publishers/subscribers
     void imageCallback(const sensor_msgs::msg::Image::ConstSharedPtr &image_msg);

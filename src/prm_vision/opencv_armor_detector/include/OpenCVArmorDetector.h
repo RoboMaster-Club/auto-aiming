@@ -37,6 +37,7 @@ enum TargetColor
  * @param _saturation_lower_limit The lower saturation limit for the target color.
  * @param _value_lower_limit The lower value limit for the target color.
  * @param _max_missed_frames The maximum number of frames to miss before resetting the search area.
+ * @param _reduce_search_area Whether to reduce the search area to the bounding box of the detected armor.
  */
 struct DetectorConfig
 {
@@ -45,6 +46,7 @@ struct DetectorConfig
   int _saturation_lower_limit;
   int _value_lower_limit;
   int _max_missed_frames;
+  bool _reduce_search_area = true;
 };
 
 class OpenCVArmorDetector
@@ -60,11 +62,18 @@ public:
   int _detected_frame = 0;
   int _frame_count = 0;
 
+  // Helper methods
+  bool isLightBar(cv::RotatedRect &rect);
+  bool isArmor(cv::RotatedRect &left_rect, cv::RotatedRect &right_rect);
+  void drawRotatedRect(cv::Mat &frame, cv::RotatedRect &rect);
+
   // Setters
   void setConfig(DetectorConfig config);
 
   // Getters
   DetectorConfig getConfig() { return _config; }
+  bool getResetSearchArea() { return _reset_search_area; }
+  bool getMissedFrames() { return _missed_frames; }
 
 private:
   // Class methods
@@ -79,12 +88,10 @@ private:
   // Dynamic parameters
   TargetColor _targetColor;
   int _max_missed_frames;
+  bool _reduce_search_area;
 
   // Helpers
-  bool isLightBar(cv::RotatedRect &rect);
-  bool isArmor(cv::RotatedRect &left_rect, cv::RotatedRect &right_rect);
   std::vector<cv::Point2f> rectToPoint(cv::RotatedRect &rect);
-  void drawRotatedRect(cv::Mat &frame, cv::RotatedRect &rect);
 
   // Color limits
   cv::Scalar _blue_lower_limit;

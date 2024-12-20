@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.8)
 project(opencv_armor_detector CXX CUDA)
+set(CMAKE_CXX_STANDARD 17) # for filesystem support
 
 # Dependencies
 find_package(ament_cmake REQUIRED)
@@ -9,6 +10,7 @@ find_package(rclcpp REQUIRED)
 find_package(OpenCV 4.6.0 REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(vision_msgs REQUIRED)
+find_package(ament_index_cpp REQUIRED) # Filesystem search in tests
 find_package(ament_cmake_gtest REQUIRED)  # GTest
 
 # Include directories
@@ -28,20 +30,26 @@ ament_target_dependencies(OpenCVArmorDetectorNode
   image_transport
   cv_bridge
   vision_msgs
+  ament_index_cpp
 )
 
 ament_target_dependencies(OpenCVArmorDetector
   rclcpp
+  ament_index_cpp
 )
 
 # GTest setup
-ament_add_gtest(test_${PROJECT_NAME} test/test_${PROJECT_NAME}.cpp)
-target_include_directories(test_${PROJECT_NAME} PRIVATE include)
-target_link_libraries(test_${PROJECT_NAME} OpenCVArmorDetector)
+ament_add_gtest(test_OpenCVArmorDetector test/test_OpenCVArmorDetector.cpp)
+target_include_directories(test_OpenCVArmorDetector PRIVATE include)
+target_link_libraries(test_OpenCVArmorDetector OpenCVArmorDetector)
 
 # Install the node
 install(TARGETS OpenCVArmorDetectorNode
   DESTINATION lib/${PROJECT_NAME})
+
+# Install resources directory
+install(DIRECTORY test/resources/
+        DESTINATION share/${PROJECT_NAME}/resources)
 
 ament_export_include_directories(include)
 ament_export_dependencies(cv_bridge image_transport rclcpp sensor_msgs)

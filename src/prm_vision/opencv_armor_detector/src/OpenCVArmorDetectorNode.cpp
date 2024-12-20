@@ -12,13 +12,14 @@ OpenCVArmorDetectorNode::OpenCVArmorDetectorNode(
   _value_lower_limit = this->declare_parameter("_value_lower_limit", 150);
   _target_color = this->declare_parameter("_target_red", true) ? RED : BLUE;
   _max_missed_frames = this->declare_parameter("_max_missed_frames", 2);
+  _reduce_search_area = this->declare_parameter("_reduce_search_area", true);
 
   // Callbacks and pub/sub
   params_callback_handle_ = this->add_on_set_parameters_callback(std::bind(&OpenCVArmorDetectorNode::parameters_callback, this, std::placeholders::_1));
   keypoints_publisher = this->create_publisher<vision_msgs::msg::KeyPoints>("key_points", 10);
 
   // Initialize the detector
-  DetectorConfig config = {_target_color, _hue_range_limit, _saturation_lower_limit, _value_lower_limit, _max_missed_frames};
+  DetectorConfig config = {_target_color, _hue_range_limit, _saturation_lower_limit, _value_lower_limit, _max_missed_frames, _reduce_search_area};
   detector = new OpenCVArmorDetector(config);
 }
 
@@ -103,7 +104,7 @@ void OpenCVArmorDetectorNode::imageCallback(
 
   keypoints_msg.header = image_msg->header;
   keypoints_msg.points = points_array;
-  keypoints_msg.large_armor = (w / h) > 3; // 3 is the aspect ratio threshold
+  keypoints_msg.large_armor = (w / h) > 3; // 3 is the width ratio threshold before it is considered a large armor
 
   // Publish the message
   keypoints_publisher->publish(keypoints_msg);
