@@ -239,9 +239,9 @@ TEST_F(OpenCVArmorDetectorTest, test_search_armor_far_back_spin_and_move_video)
     // We install the test resources to the package share directory (done in the CMakeLists.txt)
     std::string package_share_dir = ament_index_cpp::get_package_share_directory("opencv_armor_detector");
     OpenCVArmorDetector *detector_far_back_spin_and_move = new OpenCVArmorDetector({RED, 30, 100, 150, 1, true});
-
-    // Should be no missed frames or detected frames at the start
-    EXPECT_EQ(detector_far_back_spin_and_move->getMissedFrames(), 0);
+    f
+        // Should be no missed frames or detected frames at the start
+        EXPECT_EQ(detector_far_back_spin_and_move->getMissedFrames(), 0);
     EXPECT_EQ(detector_far_back_spin_and_move->_detected_frame, 0);
     EXPECT_EQ(detector_far_back_spin_and_move->_frame_count, 0);
 
