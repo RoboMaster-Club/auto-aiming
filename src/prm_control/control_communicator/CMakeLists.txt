@@ -31,26 +31,27 @@ include_directories(/usr/include)
 include_directories(include)
 
 add_executable(ControlCommunicatorNode 
-	src/ControlCommunicatorNode.cpp
-    src/utils.cpp
+  src/ControlCommunicatorNode.cpp
+  src/projectile_angle_convel.cpp
+  src/utils.cpp
 )
 
 
 ament_target_dependencies(ControlCommunicatorNode 
-    rclcpp
-    std_msgs
-    geometry_msgs
-    vision_msgs
-    tf2_ros
-    tf2
-    nav_msgs
+  rclcpp
+  std_msgs
+  geometry_msgs
+  vision_msgs
+  tf2_ros
+  tf2
+  nav_msgs
 )
 
 target_link_libraries(ControlCommunicatorNode Eigen3::Eigen)
 
 install(TARGETS
-    ControlCommunicatorNode
-    DESTINATION lib/${PROJECT_NAME}
+  ControlCommunicatorNode
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 

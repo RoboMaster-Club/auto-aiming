@@ -19,7 +19,10 @@ target_link_libraries(KalmanFilter Eigen3::Eigen)
 
 add_library(ValidityFilter STATIC src/ValidityFilter.cpp)
 
-add_executable(PNPSolverNode src/PNPSolver.cpp)
+add_executable(PNPSolverNode
+  src/PNPSolver.cpp
+  src/projectile_angle_convel.cpp
+)
 target_link_libraries(PNPSolverNode KalmanFilter ValidityFilter)
 ament_target_dependencies(PNPSolverNode 
   rclcpp
