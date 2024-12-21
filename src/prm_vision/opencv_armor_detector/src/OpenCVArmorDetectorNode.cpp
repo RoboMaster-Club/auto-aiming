@@ -11,7 +11,7 @@ OpenCVArmorDetectorNode::OpenCVArmorDetectorNode(
   _saturation_lower_limit = this->declare_parameter("_saturation_lower_limit", 100);
   _value_lower_limit = this->declare_parameter("_value_lower_limit", 150);
   _target_color = this->declare_parameter("_target_red", true) ? RED : BLUE;
-  _max_missed_frames = this->declare_parameter("_max_missed_frames", 2);
+  _max_missed_frames = this->declare_parameter("_max_missed_frames", 1);
   _reduce_search_area = this->declare_parameter("_reduce_search_area", true);
 
   // Callbacks and pub/sub

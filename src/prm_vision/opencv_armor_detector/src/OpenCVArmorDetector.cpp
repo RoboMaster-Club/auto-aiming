@@ -24,7 +24,7 @@ void OpenCVArmorDetector::setConfig(DetectorConfig config)
 
 std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
 {
-    std::vector<_Float32> keypoints_msg(8, 0);
+    std::vector<_Float32> detected_keypoints(8, 0);
     static auto last_time = std::chrono::steady_clock::now(); // Static to persist across calls
 
     if (_reset_search_area)
@@ -39,6 +39,7 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
     // Detect the armor in the cropped frame
     std::vector<cv::Point2f> points = detectArmorsInFrame(croppedFrame);
 
+    // Print FPS every 500 frames
     if (_frame_count % 500 == 0 && _frame_count != 0)
     {
         // Calculate and print FPS
@@ -49,17 +50,28 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
     }
     _frame_count++;
 
-// Display the cropped frame
+// Display the cropped frame for debugging
 #ifdef DEBUG
-    cv::imshow("detect", croppedFrame);
-    cv::waitKey(1);
+    cv::resize(croppedFrame, croppedFrame, cv::Size(WIDTH / 2, HEIGHT / 2));
+
+    // Create a static window name
+    const std::string window_name = "Detection Results";
+    cv::imshow(window_name, croppedFrame);
+
+    // Update the window title (OpenCV >= 4.5)
+    cv::setWindowTitle(window_name,
+                       "detected: " + std::to_string(_detected_frame) + " / " +
+                           std::to_string(_frame_count) + " (" +
+                           std::to_string(_detected_frame * 100 / _frame_count) + "%)");
+
+    cv::waitKey(10);
 #endif
 
-    // If we didn't find an armor for 3 frames, reset the search area (this is configurable)
+    // If we didn't find an armor for a few frames (ROS2 param), reset the search area
     if (points.size() == 0)
     {
         _missed_frames++;
-        if (_missed_frames >= _max_missed_frames)
+        if (_missed_frames > _max_missed_frames)
         {
             _reset_search_area = true;
             _missed_frames = 0;
@@ -67,27 +79,22 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
     }
     else
     {
+        // We found an armor, so reset the missed frames and return the keypoints
         _missed_frames = 0;
-        // TODO: Perform armor classification here
-
-        // Convert the points to the message format
-        std::vector<cv::Point2f> image_points;
         for (int i = 0; i < 4; i++)
         {
-            keypoints_msg[i * 2] = points.at(i).x + _search_area[0];
-            keypoints_msg[i * 2 + 1] = points.at(i).y + _search_area[1];
-
-            image_points.emplace_back(cv::Point2f(points.at(i).x + _search_area[0], points.at(i).y + _search_area[1]));
+            detected_keypoints[i * 2] = points.at(i).x + _search_area[0];
+            detected_keypoints[i * 2 + 1] = points.at(i).y + _search_area[1];
         }
 
         if (_reduce_search_area)
         {
             // Change the search area to the bounding box of the armor with a 50 pixel buffer
-            _reset_search_area = false;
-            int x_min = (int)std::min(keypoints_msg[0], keypoints_msg[2]);
-            int x_max = (int)std::max(keypoints_msg[4], keypoints_msg[6]);
-            int y_min = (int)std::min(keypoints_msg[1], keypoints_msg[5]);
-            int y_max = (int)std::max(keypoints_msg[3], keypoints_msg[7]);
+            _reset_search_area = false; // We got a detection, so don't reset the search area next frame
+            int x_min = (int)std::min(detected_keypoints[0], detected_keypoints[2]);
+            int x_max = (int)std::max(detected_keypoints[4], detected_keypoints[6]);
+            int y_min = (int)std::min(detected_keypoints[1], detected_keypoints[5]);
+            int y_max = (int)std::max(detected_keypoints[3], detected_keypoints[7]);
             _search_area[0] = std::max(x_min - 50, 0);
             _search_area[1] = std::max(y_min - 50, 0);
             _search_area[2] = std::min(x_max + 50, WIDTH);
@@ -96,11 +103,7 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
         _detected_frame++;
     }
 
-    // cv::resize(croppedFrame, croppedFrame, cv::Size(WIDTH, HEIGHT));
-    // cv::imshow("detect", croppedFrame);
-    // cv::waitKey(300);
-
-    return keypoints_msg;
+    return detected_keypoints;
 }
 
 /**
@@ -136,9 +139,8 @@ std::vector<cv::Point2f> OpenCVArmorDetector::detectArmorsInFrame(cv::Mat &frame
     }
 
     // Find contours in the masked image
-    cv::Canny(result, result, 30.0, 90.0, 3, false);
-
     std::vector<std::vector<cv::Point>> contours;
+    cv::Canny(result, result, 30.0, 90.0, 3, false);
     cv::findContours(result, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_NONE);
 
     // We find the light bar candidates among the contours
@@ -147,18 +149,17 @@ std::vector<cv::Point2f> OpenCVArmorDetector::detectArmorsInFrame(cv::Mat &frame
     {
         if (contour.size() > 20)
         {
+            // Fit an ellipse to the contour, and check if it's likely a light bar
             cv::RotatedRect rect = cv::fitEllipseDirect(contour);
-            if (!isLightBar(rect))
+            if (isLightBar(rect))
             {
-                continue;
+                light_bar_candidates.push_back(rect);
             }
-
-            // Add each candidate to a vector
-            light_bar_candidates.push_back(rect);
         }
     }
 
     // Give priority to the light bar with the leftmost center
+    // TODO: Have a better metric such as distance from last detected armor
     std::sort(light_bar_candidates.begin(), light_bar_candidates.end(), [](cv::RotatedRect &a, cv::RotatedRect &b)
               { return a.center.x < b.center.x; });
 
@@ -172,15 +173,21 @@ std::vector<cv::Point2f> OpenCVArmorDetector::detectArmorsInFrame(cv::Mat &frame
                 cv::RotatedRect rect1 = light_bar_candidates[i];
                 cv::RotatedRect rect2 = light_bar_candidates[j];
 
+                // Check if the pair of light bars likely form an armor plate
                 if (isArmor(rect1, rect2))
                 {
                     // We have found a match, return the pair (sorted left, right)
                     auto &first = (rect1.center.x < rect2.center.x) ? rect1 : rect2;
                     auto &second = (rect1.center.x < rect2.center.x) ? rect2 : rect1;
 
-                    // Draw the ellipses on the frame
-                    cv::ellipse(frame, rect1, cv::Scalar(255, 0, 0), 1); // Blue ellipse for rect1 with 1px thickness
-                    cv::ellipse(frame, rect2, cv::Scalar(0, 255, 0), 1); // Green ellipse for rect2 with 1px thickness
+                    std::vector<cv::Point2f> armor_points_1 = rectToPoint(first);
+                    std::vector<cv::Point2f> armor_points_2 = rectToPoint(second);
+
+                    // Draw a dot on the top and bottom of each light bar using rectToPoint
+                    cv::circle(frame, armor_points_1[0], 0, cv::Scalar(0, 255, 0), -1);
+                    cv::circle(frame, armor_points_1[1], 0, cv::Scalar(0, 255, 0), -1);
+                    cv::circle(frame, armor_points_2[0], 0, cv::Scalar(0, 255, 0), -1);
+                    cv::circle(frame, armor_points_2[1], 0, cv::Scalar(0, 255, 0), -1);
 
                     return {rectToPoint(first)[0], rectToPoint(first)[1], rectToPoint(second)[0], rectToPoint(second)[1]};
                 }
