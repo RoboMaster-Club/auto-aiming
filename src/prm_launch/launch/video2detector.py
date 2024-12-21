@@ -27,5 +27,9 @@ def generate_launch_description():
         Node(
             package='pnp_solver',
             executable='PNPSolverNode',  
+        ),
+        Node(
+            package='control_communicator',
+            executable='ControlCommunicatorNode',  
         )
     ])
