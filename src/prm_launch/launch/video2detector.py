@@ -7,8 +7,8 @@ import os
 
 def generate_launch_description():
     webcam_publisher = get_package_share_path('webcam_publisher')
-    # video_path = "/home/tom/Videos/far_back_spin_and_move.avi" # example, can change to your liking
-    video_path = "/home/user-accounts/lee4649/auto-aiming/videos/spinning_in_place.avi"
+    video_path = "/home/tom/Videos/far_back_spin_and_move.avi" # example, can change to your liking
+    video_path = "/home/user-accounts/lee4649/auto-aiming/src/prm_vision/pnp_solver/test/spinning_in_place/spinning_in_place.avi"
     return LaunchDescription([
         Node(
             package='webcam_publisher',
@@ -16,7 +16,7 @@ def generate_launch_description():
             emulate_tty=True,
             executable='VideoCaptureNode',
             parameters=[{'source': str(video_path),
-                         'fps': 24,
+                         'fps': 20,
                          'frame_id': 'video',
                          }]    
         ), 
