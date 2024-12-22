@@ -270,6 +270,24 @@ TEST_F(OpenCVArmorDetectorTest, test_search_armor_far_back_spin_and_move_video)
     testVideo(videoPath, gtPath, detector_far_back_spin_and_move, MIN_DETECTION_RATE_FAR_BACK_SPIN_AND_MOVE, MAX_LOSS_FAR_BACK_SPIN_AND_MOVE);
 }
 
+TEST_F(OpenCVArmorDetectorTest, test_search_armor_blue)
+{
+    // We install the test resources to the package share directory (done in the CMakeLists.txt)
+    std::string package_share_dir = ament_index_cpp::get_package_share_directory("opencv_armor_detector");
+    OpenCVArmorDetector *detector_blue = new OpenCVArmorDetector({BLUE, 30, 100, 150, 1, false});
+
+    // Should be no missed frames or detected frames at the start
+    EXPECT_EQ(detector_blue->getMissedFrames(), 0);
+    EXPECT_EQ(detector_blue->_detected_frame, 0);
+    EXPECT_EQ(detector_blue->_frame_count, 0);
+
+    // TODO: The ground truth for this is a placeholder. We are just testing the detection rate
+    // The assumption I make here is that if the detection of blue contours is working, the rest of the detector will work as it does for red
+    std::string easy_path = (std::filesystem::path(package_share_dir) / "resources/blue").string();
+    std::string gtPath = (std::filesystem::path(package_share_dir) / "resources/blue/ground_truth.csv").string();
+    testImgs(easy_path, gtPath, detector_blue, MIN_DETECTION_RATE_EASY, MAX_LOSS_EASY);
+}
+
 //////////////////////
 // HELPER FUNCTIONS //
 //////////////////////
