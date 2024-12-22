@@ -165,6 +165,7 @@ std::vector<cv::Point2f> OpenCVArmorDetector::detectArmorsInFrame(cv::Mat &frame
                 cv::line(result, vertices[i], vertices[(i + 1) % 4], cv::Scalar(0, 0, 255), 4, cv::LINE_AA);
             }
 
+            // Rect rotates, so we need to ensure height is always the longer side
             if (rect.angle > 45)
             {
                 std::swap(rect.size.width, rect.size.height);

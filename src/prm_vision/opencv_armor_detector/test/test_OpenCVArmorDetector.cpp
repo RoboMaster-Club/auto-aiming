@@ -14,6 +14,9 @@ void testVideo(std::string video_path, std::string gt_path, OpenCVArmorDetector 
 void testImgs(std::string folder_path, std::string gt_path, OpenCVArmorDetector *detector, float min_detection_rate, float max_loss_pix);
 
 /* DETECTOR REQUIREMENTS */
+// Performance requirements
+#define MIN_FPS 144 // Minimum FPS required
+
 // Pre-selected images (tighter requirements since we know an armor is present)
 #define MIN_DETECTION_RATE_EASY 0.95     // 95% detection rate required
 #define MIN_DETECTION_RATE_FAR_BACK 0.90 // 90% detection rate required
@@ -346,6 +349,9 @@ void testImgs(std::string folder_path, std::string gt_path, OpenCVArmorDetector 
 
 void testVideo(std::string video_path, std::string gt_path, OpenCVArmorDetector *detector, float min_detection_rate, float max_loss_pix)
 {
+    // Start a stopwatch for performance testing
+    auto start = std::chrono::high_resolution_clock::now();
+
     // Read ground truths
     std::vector<std::vector<cv::Point2f>> gt;
     readGT(gt_path, gt);
@@ -391,6 +397,9 @@ void testVideo(std::string video_path, std::string gt_path, OpenCVArmorDetector 
         frame_idx++;
     }
 
+    // Stop the stopwatch
+    auto stop = std::chrono::high_resolution_clock::now();
+
     // Calculate the average loss across all frames
     double loss = total_loss / detector->_frame_count;
 
@@ -398,6 +407,11 @@ void testVideo(std::string video_path, std::string gt_path, OpenCVArmorDetector 
     double detection_rate = static_cast<double>(detector->_detected_frame) / static_cast<double>(detector->_frame_count);
     EXPECT_GE(detection_rate, min_detection_rate);
     EXPECT_LT(loss / detector->_frame_count, max_loss_pix);
+
+    // Check the FPS
+    double elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count();
+    double fps = static_cast<double>(detector->_frame_count) / (elapsed_time / 1000.0);
+    EXPECT_GE(fps, MIN_FPS);
 }
 
 void readGT(std::string file_path, std::vector<std::vector<cv::Point2f>> &gt)
