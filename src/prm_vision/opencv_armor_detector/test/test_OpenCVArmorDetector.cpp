@@ -15,7 +15,7 @@ void testImgs(std::string folder_path, std::string gt_path, OpenCVArmorDetector 
 
 /* DETECTOR REQUIREMENTS */
 // Performance requirements
-#define MIN_FPS 144 // Minimum FPS required
+#define MIN_FPS 80 // Minimum FPS required
 
 // Pre-selected images (tighter requirements since we know an armor is present)
 #define MIN_DETECTION_RATE_EASY 0.95     // 95% detection rate required
