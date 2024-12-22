@@ -13,15 +13,20 @@ void readGT(std::string file_path, std::vector<std::vector<cv::Point2f>> &gt);
 void testVideo(std::string video_path, std::string gt_path, OpenCVArmorDetector *detector, float min_detection_rate, float max_loss_pix);
 void testImgs(std::string folder_path, std::string gt_path, OpenCVArmorDetector *detector, float min_detection_rate, float max_loss_pix);
 
-// DETECTOR REQUIREMENTS
-#define MIN_DETECTION_RATE_EASY 0.95                   // 95% detection rate required
+/* DETECTOR REQUIREMENTS */
+// Pre-selected images (tighter requirements since we know an armor is present)
+#define MIN_DETECTION_RATE_EASY 0.95     // 95% detection rate required
+#define MIN_DETECTION_RATE_FAR_BACK 0.90 // 90% detection rate required
+#define MAX_LOSS_EASY 2                  // 2 pixels loss allowed
+#define MAX_LOSS_FAR_BACK 3              // 3 pixels loss allowed
+
+// Realistic videos (looser requirements due to spintop and obstruction)
 #define MIN_DETECTION_RATE_FAR_BACK_SPIN_AND_MOVE 0.70 // 70% detection rate required
 #define MIN_DETECTION_RATE_CLOSE_VIDEO 0.65            // 65% detection rate required
-#define MAX_LOSS_EASY 5                                // 5 pixels loss allowed
-#define MAX_LOSS_FAR_BACK_SPIN_AND_MOVE 5              // 5 pixels loss allowed
-#define MAX_LOSS_CLOSE_VIDEO 5                         // 5 pixels loss allowed
+#define MAX_LOSS_FAR_BACK_SPIN_AND_MOVE 3              // 3 pixels loss allowed
+#define MAX_LOSS_CLOSE_VIDEO 3                         // 3 pixels loss allowed
+/* END DETECTOR REQUIREMENTS */
 
-// Set up the test fixture
 class OpenCVArmorDetectorTest : public ::testing::Test
 {
 protected:
@@ -214,6 +219,24 @@ TEST_F(OpenCVArmorDetectorTest, test_search_armor_easy)
     delete detector_easy;
 }
 
+TEST_F(OpenCVArmorDetectorTest, test_search_armor_far_back)
+{
+    // We install the test resources to the package share directory (done in the CMakeLists.txt)
+    std::string package_share_dir = ament_index_cpp::get_package_share_directory("opencv_armor_detector");
+    OpenCVArmorDetector *detector_far_back = new OpenCVArmorDetector({RED, 30, 100, 150, 1, false});
+
+    // Should be no missed frames or detected frames at the start
+    EXPECT_EQ(detector_far_back->getMissedFrames(), 0);
+    EXPECT_EQ(detector_far_back->_detected_frame, 0);
+    EXPECT_EQ(detector_far_back->_frame_count, 0);
+
+    std::string far_back_path = (std::filesystem::path(package_share_dir) / "resources/far_back").string();
+    std::string gtPath = (std::filesystem::path(package_share_dir) / "resources/far_back/ground_truth.csv").string();
+    testImgs(far_back_path, gtPath, detector_far_back, MIN_DETECTION_RATE_FAR_BACK, MAX_LOSS_FAR_BACK);
+
+    delete detector_far_back;
+}
+
 TEST_F(OpenCVArmorDetectorTest, test_search_armor_close_video)
 {
     // We install the test resources to the package share directory (done in the CMakeLists.txt)
@@ -276,6 +299,13 @@ void testImgs(std::string folder_path, std::string gt_path, OpenCVArmorDetector 
         std::vector<_Float32> points = detector->search(frame);
 
         // Loss between the detected points and the ground truth
+        // Skip if no armor detected in gt or in the frame (all zeros) since we want to check loss given a detection. Detection rate is accounted for separately
+        if ((gt.at(frame_idx).at(0) == cv::Point2f(0, 0) && gt.at(frame_idx).at(1) == cv::Point2f(0, 0) && gt.at(frame_idx).at(2) == cv::Point2f(0, 0) && gt.at(frame_idx).at(3) == cv::Point2f(0, 0)) || (points.at(0) == 0 && points.at(1) == 0 && points.at(2) == 0 && points.at(3) == 0 && points.at(4) == 0 && points.at(5) == 0 && points.at(6) == 0 && points.at(7) == 0))
+        {
+            frame_idx++;
+            continue;
+        }
+
         for (int i = 0; i < 4; i++)
         {
             cv::Point2f detected_point(points.at(i * 2), points.at(i * 2 + 1));

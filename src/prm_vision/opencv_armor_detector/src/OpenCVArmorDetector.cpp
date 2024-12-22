@@ -33,6 +33,8 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
         _search_area[1] = 0;
         _search_area[2] = WIDTH;
         _search_area[3] = HEIGHT;
+        _reset_search_area = false;
+        _missed_frames = 0;
     }
     cv::Mat croppedFrame = frame(cv::Range(_search_area[1], _search_area[3]), cv::Range(_search_area[0], _search_area[2])).clone();
 
@@ -62,19 +64,18 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
     cv::setWindowTitle(window_name,
                        "detected: " + std::to_string(_detected_frame) + " / " +
                            std::to_string(_frame_count) + " (" +
-                           std::to_string(_detected_frame * 100 / _frame_count) + "%)");
+                           std::to_string(_detected_frame * 100 / _frame_count) + "%) and missed: " + std::to_string(_missed_frames) + std::string(" frames"));
 
-    cv::waitKey(200);
+    cv::waitKey(1000);
 #endif
 
     // If we didn't find an armor for a few frames (ROS2 param), reset the search area
     if (points.size() == 0)
     {
         _missed_frames++;
-        if (_missed_frames > _max_missed_frames)
+        if (_missed_frames >= _max_missed_frames)
         {
             _reset_search_area = true;
-            _missed_frames = 0;
         }
     }
     else
@@ -149,8 +150,27 @@ std::vector<cv::Point2f> OpenCVArmorDetector::detectArmorsInFrame(cv::Mat &frame
     {
         if (contour.size() > 20)
         {
-            // Fit an ellipse to the contour, and check if it's likely a light bar
-            cv::RotatedRect rect = cv::fitEllipseDirect(contour);
+            // Use convex hull to get a convex contour
+            std::vector<cv::Point> hull;
+            cv::convexHull(contour, hull);
+
+            auto rect_bounding = cv::boundingRect(hull);
+            cv::RotatedRect rect = cv::RotatedRect(cv::Point2f(rect_bounding.x + rect_bounding.width / 2, rect_bounding.y + rect_bounding.height / 2), cv::Size2f(rect_bounding.width, rect_bounding.height), 0);
+
+            // draw rotated rectangle
+            cv::Point2f vertices[4];
+            rect.points(vertices);
+            for (int i = 0; i < 4; i++)
+            {
+                cv::line(result, vertices[i], vertices[(i + 1) % 4], cv::Scalar(0, 0, 255), 4, cv::LINE_AA);
+            }
+
+            if (rect.angle > 45)
+            {
+                std::swap(rect.size.width, rect.size.height);
+                rect.angle -= 90;
+            }
+
             if (isLightBar(rect))
             {
                 light_bar_candidates.push_back(rect);

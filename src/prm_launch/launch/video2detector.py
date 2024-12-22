@@ -15,7 +15,7 @@ def generate_launch_description():
             emulate_tty=True,
             executable='VideoCaptureNode',
             parameters=[{'source': str(video_path),
-                         'fps': 10,
+                         'fps': 1,
                          'frame_id': 'video',
                          }]    
         ), 
