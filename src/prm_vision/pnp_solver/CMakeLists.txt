@@ -19,11 +19,17 @@ target_link_libraries(KalmanFilter Eigen3::Eigen)
 
 add_library(ValidityFilter STATIC src/ValidityFilter.cpp)
 
-add_executable(PNPSolverNode
-  src/PNPSolver.cpp
-  src/projectile_angle_convel.cpp
+add_library(projectile_angle_convel STATIC src/projectile_angle_convel.cpp)
+
+add_library(PNPSolver STATIC src/PNPSolver.cpp)
+ament_target_dependencies(PNPSolver 
+  OpenCV
 )
-target_link_libraries(PNPSolverNode KalmanFilter ValidityFilter)
+
+add_executable(PNPSolverNode
+  src/PNPSolverNode.cpp
+)
+target_link_libraries(PNPSolverNode PNPSolver KalmanFilter ValidityFilter projectile_angle_convel)
 ament_target_dependencies(PNPSolverNode 
   rclcpp
   vision_msgs
@@ -42,4 +48,3 @@ ament_export_include_directories(include)
 ament_export_dependencies(rclcpp rclcpp vision_msgs geometry_msgs tf2)
 
 ament_package()
-
