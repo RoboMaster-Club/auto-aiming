@@ -4,9 +4,6 @@
 #include <vector>
 
 #include "rclcpp/rclcpp.hpp"
-#include <opencv2/cudaarithm.hpp>
-#include <opencv2/cudafilters.hpp>
-#include <opencv2/cudaimgproc.hpp>
 #include <opencv2/opencv.hpp>
 
 // Detector Constants

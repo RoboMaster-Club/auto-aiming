@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(opencv_armor_detector CXX CUDA)
+project(opencv_armor_detector CXX)
 set(CMAKE_CXX_STANDARD 17) # for filesystem support
 
 # Dependencies
