@@ -32,8 +32,6 @@ private:
 
     cv::Mat rvec;
     cv::Mat tvec;
-
-    FILE* fp;
 };
 
 #endif // _PNP_SOLVER_HPP
