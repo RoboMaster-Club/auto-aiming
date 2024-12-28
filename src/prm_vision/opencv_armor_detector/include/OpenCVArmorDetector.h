@@ -4,7 +4,9 @@
 #include <vector>
 
 #include "rclcpp/rclcpp.hpp"
+#include "LBFGSB.h"
 #include <opencv2/opencv.hpp>
+#include <Eigen/Core>
 
 // Detector Constants
 #define LIGHT_BAR_ANGLE_LIMIT 10.0
