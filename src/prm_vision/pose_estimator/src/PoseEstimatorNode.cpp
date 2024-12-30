@@ -23,38 +23,59 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
         return;
     }
 
-    // Convert the message to a vector of cv::Point2f
+    cv::Mat tvec, rvec;
+    std::string new_auto_aim_status;
     std::vector<cv::Point2f> image_points;
+
+    // Convert the message to a vector of cv::Point2f
     image_points.push_back(cv::Point2f(key_points_msg->points[0], key_points_msg->points[1]));
     image_points.push_back(cv::Point2f(key_points_msg->points[2], key_points_msg->points[3]));
     image_points.push_back(cv::Point2f(key_points_msg->points[4], key_points_msg->points[5]));
     image_points.push_back(cv::Point2f(key_points_msg->points[6], key_points_msg->points[7]));
 
-    // Compute armor's pose and validate it
-    cv::Mat tvec, rvec;
+    // Compute armor's pose and validate it. Compute new yaw estimate based on the last yaw estimate.
     pose_estimator->estimateTranslation(image_points, key_points_msg->is_large_armor, tvec, rvec);
-    std::string auto_aim_status;
-    bool valid = pose_estimator->isValid(tvec.at<float>(0), tvec.at<float>(1), tvec.at<float>(2), auto_aim_status);
+    last_yaw_estimate = pose_estimator->estimateYaw(last_yaw_estimate, image_points, tvec);
+    bool valid_pose_estimate = pose_estimator->isValid(tvec.at<float>(0), tvec.at<float>(1), tvec.at<float>(2), new_auto_aim_status);
 
-    // Publish the predicted armor if it is valid
+    // Publish the predicted armor
+    if (valid_pose_estimate)
+    {
+        vision_msgs::msg::PredictedArmor predicted_armor_msg;
+        predicted_armor_msg.header = key_points_msg->header;
+        predicted_armor_msg.x = tvec.at<float>(0);
+        predicted_armor_msg.y = tvec.at<float>(1);
+        predicted_armor_msg.z = tvec.at<float>(2);
+        predicted_armor_msg.pitch = 15 * CV_PI / 180; // 15 degrees in radians
+        predicted_armor_msg.yaw = last_yaw_estimate;  // Use the latest yaw estimate
+        predicted_armor_msg.roll = 0;                 // Roll is always 0
+        predicted_armor_msg.x_vel = 0;
+        predicted_armor_msg.y_vel = 0; // TODO: compute yaw rate
+        predicted_armor_msg.z_vel = 0;
+        predicted_armor_msg.fire = new_auto_aim_status == "FIRE";
+        predicted_armor_publisher->publish(predicted_armor_msg);
+    }
+    else
+    {
+        publishZeroPredictedArmor(key_points_msg->header);
+    }
 }
 
 void PoseEstimatorNode::publishZeroPredictedArmor(std_msgs::msg::Header header)
 {
     vision_msgs::msg::PredictedArmor predicted_armor_msg;
     predicted_armor_msg.header = header;
-    predicted_armor_msg.x = 0.0;
-    predicted_armor_msg.y = 0.0;
-    predicted_armor_msg.z = 0.0;
-    predicted_armor_msg.rvec_x = 0;
-    predicted_armor_msg.rvec_y = 0;
-    predicted_armor_msg.rvec_z = 0;
+    predicted_armor_msg.x = 0;
+    predicted_armor_msg.y = 0;
+    predicted_armor_msg.z = 0;
+    predicted_armor_msg.pitch = 0;
+    predicted_armor_msg.yaw = 0;
+    predicted_armor_msg.roll = 0;
     predicted_armor_msg.x_vel = 0;
     predicted_armor_msg.y_vel = 0;
     predicted_armor_msg.z_vel = 0;
+    predicted_armor_msg.fire = false; // TODO: Still fire after a few frames
 
-    // We may still fire for a short time after losing the target
-    predicted_armor_msg.fire = false;
     predicted_armor_publisher->publish(predicted_armor_msg);
 }
 

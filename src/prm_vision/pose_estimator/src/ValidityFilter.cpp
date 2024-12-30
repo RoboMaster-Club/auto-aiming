@@ -1,6 +1,4 @@
 #include "ValidityFilter.hpp"
-#include <cmath>
-#include <algorithm>
 
 ValidityFilter::ValidityFilter(int lock_in_after, float max_distance, float min_distance, float max_shift_distance, float prev_len)
 {
@@ -10,12 +8,12 @@ ValidityFilter::ValidityFilter(int lock_in_after, float max_distance, float min_
     this->max_shift_distance = max_shift_distance;
     this->prev_len = std::min(prev_len, 20.0f);
 
-    last_valid_time = 0;
+    // Initial state of the filter
     lock_in_counter = 0;
     prev_idx = 0;
     state = STOPPING;
 
-    // Initialize prev arrays
+    // Initialize arrays to track previous predictions
     for (int i = 0; i < this->prev_len; i++)
     {
         prev_x[i] = 0;
@@ -27,13 +25,28 @@ ValidityFilter::ValidityFilter(int lock_in_after, float max_distance, float min_
 ValidityFilter::ValidityFilter() {}
 ValidityFilter::~ValidityFilter() {}
 
-bool ValidityFilter::isValid(float x, float y, float z, double dt)
+/**
+ * @brief Check if the estimated pose is valid based on a validity filter.
+ *
+ * @param x The x-coordinate of the detected armor.
+ * @param y The y-coordinate of the detected armor.
+ * @param z The z-coordinate of the detected armor.
+ * @return true If the pose is valid based on the validity filter and current aiming state.
+ *
+ * The return value is ONLY used to determine if we should reset the Kalman filter inside PoseEstimator.
+ * We primarily use the state variable to determine the action to take (idle, track, stop).
+ */
+bool ValidityFilter::isValid(float x, float y, float z)
 {
+    // Calculate time difference since last valid detection
+    auto now = std::chrono::steady_clock::now();
+    double dt = std::chrono::duration<double>(now - last_valid_time).count();
+
     // Check distance validity
     if (!distance_validity(x, y, z))
     {
         decrement_lock_in_counter();
-        return state == STOPPING;
+        return state != STOPPING;
     }
 
     // Check time since last valid detection
@@ -45,17 +58,17 @@ bool ValidityFilter::isValid(float x, float y, float z, double dt)
     }
 
     // Check position validity
-    int num_valid = position_validity(x, y, z);
-    if (num_valid == 0)
+    if (!position_validity(x, y, z))
     {
         decrement_lock_in_counter();
         update_prev(x, y, z);
         return state == STOPPING;
     }
 
-    // Update state based on detection confidence
+    // Valid detection
     increment_lock_in_counter();
     update_prev(x, y, z);
+    last_valid_time = now; // Update the last valid time
 
     return state == TRACKING;
 }

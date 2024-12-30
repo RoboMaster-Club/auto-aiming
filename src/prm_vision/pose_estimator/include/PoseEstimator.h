@@ -2,7 +2,8 @@
 #define POSE_ESTIMATOR_HPP
 
 #include <vector>
-#include <chrono>
+#include <cmath>
+#include <algorithm>
 #include <opencv2/opencv.hpp>
 #include <Eigen/Core>
 #include "LBFGSB.h" // L-BFGS-B optimization library for yaw estimation
@@ -36,8 +37,7 @@ private:
     double gradientWrtYawFinitediff(double yaw, std::vector<cv::Point2f> image_points, cv::Mat tvec);
 
     // Class variables
-    double prev_valid_detection_time_ = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-    int locked_in_frames = 0;
+    int consecutive_tracking_frames_ctr = 0;
     int num_frames_to_fire_after = 3;
     std::chrono::time_point<std::chrono::system_clock> last_fire_time;
 

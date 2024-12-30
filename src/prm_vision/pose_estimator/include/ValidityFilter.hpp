@@ -2,6 +2,7 @@
 #define _RESULT_FILTER_HPP_
 
 #include <algorithm>
+#include <chrono>
 #include <limits>
 #include <cmath>
 #include <stdio.h>
@@ -21,7 +22,7 @@ public:
     ValidityFilter();
     ~ValidityFilter();
 
-    bool isValid(float x, float y, float z, double dt);
+    bool isValid(float x, float y, float z);
     int get_lock_in_counter();
 
     ValidityFilterState state;
@@ -30,7 +31,7 @@ private:
     int lock_in_after = 3; // lock in after n frames
     int lock_in_counter = 0;
 
-    int last_valid_time = 0; // sec
+    std::chrono::steady_clock::time_point last_valid_time = std::chrono::steady_clock::now();
 
     float max_distance = 10000.f; // mm
     float min_distance = 10.f;    // mm

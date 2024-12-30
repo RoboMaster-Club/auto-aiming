@@ -8,6 +8,8 @@ find_package(rclcpp REQUIRED)
 find_package(vision_msgs REQUIRED)
 find_package(OpenCV 4.6.0 REQUIRED)
 find_package(cv_bridge REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(tf2_ros REQUIRED)
 find_package(ament_cmake_gtest REQUIRED)  # GTest
 find_package(Eigen3 REQUIRED) # Eigen3
 
@@ -28,6 +30,8 @@ ament_target_dependencies(PoseEstimatorNode
   rclcpp
   sensor_msgs
   cv_bridge
+  tf2
+  tf2_ros
   vision_msgs
   Eigen3
 )
@@ -46,5 +50,5 @@ install(TARGETS PoseEstimatorNode
   DESTINATION lib/${PROJECT_NAME})
 
 ament_export_include_directories(include)
-ament_export_dependencies(rclcpp sensor_msgs cv_bridge vision_msgs Eigen3)
+ament_export_dependencies(rclcpp sensor_msgs cv_bridge vision_msgs Eigen3 tf2)
 ament_package()

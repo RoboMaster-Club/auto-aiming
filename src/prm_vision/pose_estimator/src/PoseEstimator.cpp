@@ -13,70 +13,8 @@ void PoseEstimator::estimateTranslation(const std::vector<cv::Point2f> &image_po
         object_points = SMALL_ARMOR_OBJECT_POINTS;
     }
 
+    std::string auto_aim_status;
     cv::solvePnP(object_points, image_points, CAMERA_MATRIX, DISTORTION_COEFFS, rvec, tvec, false, cv::SOLVEPNP_IPPE);
-}
-
-/**
- * @brief Check if the estimated pose is valid based on the validity filter.
- *
- * @param x The x-coordinate of the detected armor.
- * @param y The y-coordinate of the detected armor.
- * @param z The z-coordinate of the detected armor.
- * @param auto_aim_status Reference to the status of the auto-aiming system. Set by this function.
- * @return true If the pose is valid based on the validity filter.
- */
-bool PoseEstimator::isValid(float x, float y, float z, std::string &auto_aim_status)
-{
-    // dt = current time - previous valid detection time
-    double curr_time_ = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-    double dt = curr_time_ - prev_valid_detection_time_;
-    bool invalid = validity_filter_.validation(x, y, z, dt);
-
-    // Stopping motor, we publish 0s for predicted armor
-    if (validity_filter_.state == STOPPING)
-    {
-        auto_aim_status = "STOPPING";
-        locked_in_frames = 0;
-        return false;
-    }
-
-    // Idling, dont send anything
-    else if (validity_filter_.state == IDLING)
-    {
-        auto_aim_status = "IDLING";
-        locked_in_frames = 0;
-        return false;
-    }
-
-    // Tracking, update kalman filter
-    else if (validity_filter_.state == TRACKING)
-    {
-        // if tracking and we have locked in for enough frames, fire at the target
-        if (locked_in_frames > num_frames_to_fire_after)
-        {
-            auto_aim_status = "FIRE";
-            last_fire_time = std::chrono::system_clock::now();
-        }
-        else
-        {
-            auto_aim_status = "TRACKING";
-        }
-
-        prev_valid_detection_time_ = curr_time_;
-
-        // if validity filter valid for last 3 frames, increment locked_in_frames
-        if (validity_filter_.get_lock_in_counter() == 3)
-        {
-            locked_in_frames++;
-        }
-        else
-        {
-            // We are not locked in, reset locked_in_frames
-            locked_in_frames = 0;
-        }
-    }
-
-    return !invalid;
 }
 
 /**
@@ -114,6 +52,66 @@ double PoseEstimator::estimateYaw(const double yaw_guess, const std::vector<cv::
 
     solver.minimize(loss, x, fx, lb, ub);
     return x(0);
+}
+
+/**
+ * @brief Check if the estimated pose is valid based on the validity filter.
+ *
+ * @param x The x-coordinate of the detected armor.
+ * @param y The y-coordinate of the detected armor.
+ * @param z The z-coordinate of the detected armor.
+ * @param auto_aim_status Reference to the status of the auto-aiming system. Set by this function.
+ * @return true If the pose is valid based on the validity filter.
+ */
+bool PoseEstimator::isValid(float x, float y, float z, std::string &auto_aim_status)
+{
+    // Check if the pose is valid based on the validity filter
+    // NOTE: The return value is ONLY used to determine if we should reset the Kalman filter.
+    // We primarily use the state variable to determine the action to take (idle, track, stop).
+    bool isValid = validity_filter_.isValid(x, y, z);
+
+    // Stopping motor, we want to publish 0s for predicted armor (no auto aiming)
+    if (validity_filter_.state == STOPPING)
+    {
+        auto_aim_status = "STOPPING";
+        consecutive_tracking_frames_ctr = 0;
+        return false;
+    }
+
+    // We have a detection but not yet tracking
+    else if (validity_filter_.state == IDLING)
+    {
+        auto_aim_status = "IDLING";
+        consecutive_tracking_frames_ctr = 0;
+        return false;
+    }
+
+    // We have enough valid detections to track the target
+    else if (validity_filter_.state == TRACKING)
+    {
+        // if validity filter valid for last 3 frames, increment locked_in_frames
+        if (validity_filter_.get_lock_in_counter() == 3)
+        {
+            consecutive_tracking_frames_ctr++;
+        }
+        else
+        {
+            // We are not locked in, reset locked_in_frames
+            consecutive_tracking_frames_ctr = 0;
+        }
+
+        // if tracking and we have locked in for enough frames, fire at the target
+        if (consecutive_tracking_frames_ctr > num_frames_to_fire_after)
+        {
+            auto_aim_status = "FIRE";
+        }
+        else
+        {
+            auto_aim_status = "TRACKING";
+        }
+    }
+
+    return true;
 }
 
 /**

@@ -27,6 +27,7 @@ public:
 
 private:
     PoseEstimator *pose_estimator;
+    double last_yaw_estimate = 0.0;
 
     // Class methods
     void publishZeroPredictedArmor(std_msgs::msg::Header header);
