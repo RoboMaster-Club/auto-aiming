@@ -2,11 +2,9 @@
 #define _OPENCVARMORDETECTOR_HPP
 
 #include <vector>
-
-#include "rclcpp/rclcpp.hpp"
-#include "LBFGSB.h"
 #include <opencv2/opencv.hpp>
-#include <Eigen/Core>
+#include <stdio.h>
+#include <math.h>
 
 // Detector Constants
 #define LIGHT_BAR_ANGLE_LIMIT 10.0
