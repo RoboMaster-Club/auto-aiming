@@ -28,7 +28,7 @@ public:
     // Class methods
     double estimateYaw(const double yaw_guess, const std::vector<cv::Point2f> &image_points, const cv::Mat &tvec);
     void estimateTranslation(const std::vector<cv::Point2f> &image_points, bool largeArmor, cv::Mat &tvec, cv::Mat &rvec);
-    bool isValid(float x, float y, float z, std::string &auto_aim_status);
+    bool isValid(float x, float y, float z, std::string &auto_aim_status, bool &reset_kalman);
 
 private:
     // Class methods
@@ -37,9 +37,9 @@ private:
     double gradientWrtYawFinitediff(double yaw, std::vector<cv::Point2f> image_points, cv::Mat tvec);
 
     // Class variables
-    int consecutive_tracking_frames_ctr = 0;
-    int num_frames_to_fire_after = 3;
-    std::chrono::time_point<std::chrono::system_clock> last_fire_time;
+    int _consecutive_tracking_frames_ctr = 0;
+    int _num_frames_to_fire_after = 3;
+    std::chrono::time_point<std::chrono::system_clock> _last_fire_time;
 
     /**
      * @brief Functor for the loss function and gradient computation.

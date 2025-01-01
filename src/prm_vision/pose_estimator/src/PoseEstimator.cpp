@@ -55,26 +55,30 @@ double PoseEstimator::estimateYaw(const double yaw_guess, const std::vector<cv::
 }
 
 /**
- * @brief Check if the estimated pose is valid based on the validity filter.
+ * @brief Check if the estimated pose is valid based on the validity filter. Also set the auto-aim status.
+ *
+ * Rough overview of the auto-aiming system:
+ * 1. IDLING: No valid detections, waiting for a valid detection.
+ * 2. TRACKING: Enough valid detections to track the target.
+ * 3. STOPPING: Too many invalid detections, stop tracking the target.
+ * 4. FIRE: We have been tracking the target for enough frames, fire at the target.
  *
  * @param x The x-coordinate of the detected armor.
  * @param y The y-coordinate of the detected armor.
  * @param z The z-coordinate of the detected armor.
- * @param auto_aim_status Reference to the status of the auto-aiming system. Set by this function.
- * @return true If the pose is valid based on the validity filter.
+ * @param auto_aim_status Reference to the status of the auto-aiming system. Overwritten by this function.
+ * @return true If the pose is valid for auto-aiming based on the validity filter.
  */
-bool PoseEstimator::isValid(float x, float y, float z, std::string &auto_aim_status)
+bool PoseEstimator::isValid(float x, float y, float z, std::string &auto_aim_status, bool &reset_kalman)
 {
-    // Check if the pose is valid based on the validity filter
-    // NOTE: The return value is ONLY used to determine if we should reset the Kalman filter.
-    // We primarily use the state variable to determine the action to take (idle, track, stop).
-    bool isValid = validity_filter_.isValid(x, y, z);
+    // Validates the pose estimate and sets the auto-aim status. Also check if we should reset the Kalman filter.
+    reset_kalman = validity_filter_.resetKalman(x, y, z);
 
     // Stopping motor, we want to publish 0s for predicted armor (no auto aiming)
     if (validity_filter_.state == STOPPING)
     {
         auto_aim_status = "STOPPING";
-        consecutive_tracking_frames_ctr = 0;
+        _consecutive_tracking_frames_ctr = 0;
         return false;
     }
 
@@ -82,7 +86,7 @@ bool PoseEstimator::isValid(float x, float y, float z, std::string &auto_aim_sta
     else if (validity_filter_.state == IDLING)
     {
         auto_aim_status = "IDLING";
-        consecutive_tracking_frames_ctr = 0;
+        _consecutive_tracking_frames_ctr = 0;
         return false;
     }
 
@@ -90,18 +94,18 @@ bool PoseEstimator::isValid(float x, float y, float z, std::string &auto_aim_sta
     else if (validity_filter_.state == TRACKING)
     {
         // if validity filter valid for last 3 frames, increment locked_in_frames
-        if (validity_filter_.get_lock_in_counter() == 3)
+        if (validity_filter_.getLockInCounter() == 3)
         {
-            consecutive_tracking_frames_ctr++;
+            _consecutive_tracking_frames_ctr++;
         }
         else
         {
             // We are not locked in, reset locked_in_frames
-            consecutive_tracking_frames_ctr = 0;
+            _consecutive_tracking_frames_ctr = 0;
         }
 
         // if tracking and we have locked in for enough frames, fire at the target
-        if (consecutive_tracking_frames_ctr > num_frames_to_fire_after)
+        if (_consecutive_tracking_frames_ctr > _num_frames_to_fire_after)
         {
             auto_aim_status = "FIRE";
         }

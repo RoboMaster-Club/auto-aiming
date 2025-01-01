@@ -2,23 +2,18 @@
 
 ValidityFilter::ValidityFilter(int lock_in_after, float max_distance, float min_distance, float max_shift_distance, float prev_len)
 {
-    this->lock_in_after = lock_in_after;
-    this->max_distance = max_distance;
-    this->min_distance = min_distance;
-    this->max_shift_distance = max_shift_distance;
-    this->prev_len = std::min(prev_len, 20.0f);
-
-    // Initial state of the filter
-    lock_in_counter = 0;
-    prev_idx = 0;
-    state = STOPPING;
+    this->_lock_in_after = lock_in_after;
+    this->_max_distance = max_distance;
+    this->_min_distance = min_distance;
+    this->_max_shift_distance = max_shift_distance;
+    this->_prev_len = std::min(prev_len, 20.0f);
 
     // Initialize arrays to track previous predictions
-    for (int i = 0; i < this->prev_len; i++)
+    for (int i = 0; i < this->_prev_len; i++)
     {
-        prev_x[i] = 0;
-        prev_y[i] = 0;
-        prev_z[i] = 0;
+        _prev_x[i] = 0;
+        _prev_y[i] = 0;
+        _prev_z[i] = 0;
     }
 }
 
@@ -26,75 +21,76 @@ ValidityFilter::ValidityFilter() {}
 ValidityFilter::~ValidityFilter() {}
 
 /**
- * @brief Check if the estimated pose is valid based on a validity filter.
+ * @brief Check if we should reset kalman filter based on a validity filter.
  *
  * @param x The x-coordinate of the detected armor.
  * @param y The y-coordinate of the detected armor.
  * @param z The z-coordinate of the detected armor.
  * @return true If the pose is valid based on the validity filter and current aiming state.
  *
- * The return value is ONLY used to determine if we should reset the Kalman filter inside PoseEstimator.
+ * NOTE: The return value is ONLY used to determine if we should reset the Kalman filter inside PoseEstimator.
  * We primarily use the state variable to determine the action to take (idle, track, stop).
  */
-bool ValidityFilter::isValid(float x, float y, float z)
+bool ValidityFilter::resetKalman(float x, float y, float z)
 {
     // Calculate time difference since last valid detection
     auto now = std::chrono::steady_clock::now();
-    double dt = std::chrono::duration<double>(now - last_valid_time).count();
+    double dt = std::chrono::duration<double>(now - _last_valid_time).count();
 
     // Check distance validity
-    if (!distance_validity(x, y, z))
+    if (!distanceValidity(x, y, z))
     {
-        decrement_lock_in_counter();
-        return state != STOPPING;
+        decrementLockInCounter();
+        updatePrev(x, y, z);      // We still add to prior detections, this is a design choice
+        return state != STOPPING; // not in range, so invalid if we aren't stopping
     }
 
     // Check time since last valid detection
-    if (dt > max_dt)
+    if (dt > _max_dt)
     {
-        reset_lock_in_counter();
-        update_prev(x, y, z);
-        return false; // Invalid because of time lapse
+        resetLockInCounter();
+        updatePrev(x, y, z);
+        return state == STOPPING; // too much time has passed, so invalid if we are stopping
     }
 
     // Check position validity
-    if (!position_validity(x, y, z))
+    if (!positionValidity(x, y, z))
     {
-        decrement_lock_in_counter();
-        update_prev(x, y, z);
-        return state == STOPPING;
+        decrementLockInCounter();
+        updatePrev(x, y, z);
+        return state == STOPPING; // too much shift, so invalid if we are stopping
     }
 
     // Valid detection
-    increment_lock_in_counter();
-    update_prev(x, y, z);
-    last_valid_time = now; // Update the last valid time
+    incrementLockInCounter();
+    updatePrev(x, y, z);
+    _last_valid_time = now; // Update the last valid time
 
-    return state == TRACKING;
+    return true;
 }
 
-void ValidityFilter::update_prev(float x, float y, float z)
+void ValidityFilter::updatePrev(float x, float y, float z)
 {
-    prev_x[prev_idx] = x;
-    prev_y[prev_idx] = y;
-    prev_z[prev_idx] = z;
-    prev_idx = (prev_idx + 1) % prev_len;
+    _prev_x[_prev_idx] = x;
+    _prev_y[_prev_idx] = y;
+    _prev_z[_prev_idx] = z;
+    _prev_idx = (_prev_idx + 1) % _prev_len;
 }
 
-bool ValidityFilter::distance_validity(float x, float y, float z)
+bool ValidityFilter::distanceValidity(float x, float y, float z)
 {
     float dst = std::sqrt(x * x + y * y + z * z);
-    return (dst <= max_distance && dst >= min_distance);
+    return (dst <= _max_distance && dst >= _min_distance);
 }
 
-bool ValidityFilter::position_validity(float x, float y, float z)
+bool ValidityFilter::positionValidity(float x, float y, float z)
 {
-    for (int i = 0; i < prev_len; i++)
+    for (int i = 0; i < _prev_len; i++)
     {
-        float dx = x - prev_x[i];
-        float dy = y - prev_y[i];
-        float dz = z - prev_z[i];
-        if (std::sqrt(dx * dx + dy * dy + dz * dz) < max_shift_distance)
+        float dx = x - _prev_x[i];
+        float dy = y - _prev_y[i];
+        float dz = z - _prev_z[i];
+        if (std::sqrt(dx * dx + dy * dy + dz * dz) < _max_shift_distance)
         {
             return true; // Valid as soon as one match is found
         }
@@ -102,12 +98,12 @@ bool ValidityFilter::position_validity(float x, float y, float z)
     return false; // No valid matches found
 }
 
-void ValidityFilter::increment_lock_in_counter()
+void ValidityFilter::incrementLockInCounter()
 {
-    if (++lock_in_counter >= lock_in_after)
+    if (++_lock_in_counter >= _lock_in_after)
     {
         state = TRACKING;
-        lock_in_counter = lock_in_after; // Cap at max
+        _lock_in_counter = _lock_in_after; // Cap at max
     }
     else
     {
@@ -115,12 +111,12 @@ void ValidityFilter::increment_lock_in_counter()
     }
 }
 
-void ValidityFilter::decrement_lock_in_counter()
+void ValidityFilter::decrementLockInCounter()
 {
-    if (--lock_in_counter <= 0)
+    if (--_lock_in_counter <= 0)
     {
         state = STOPPING;
-        lock_in_counter = 0; // Ensure no negative values
+        _lock_in_counter = 0; // Ensure no negative values
     }
     else
     {
@@ -128,13 +124,13 @@ void ValidityFilter::decrement_lock_in_counter()
     }
 }
 
-void ValidityFilter::reset_lock_in_counter()
+void ValidityFilter::resetLockInCounter()
 {
-    lock_in_counter = 0;
+    _lock_in_counter = 0;
     state = STOPPING;
 }
 
-int ValidityFilter::get_lock_in_counter()
+int ValidityFilter::getLockInCounter()
 {
-    return lock_in_counter;
+    return _lock_in_counter;
 }

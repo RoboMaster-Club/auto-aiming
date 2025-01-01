@@ -42,8 +42,11 @@ ament_target_dependencies(PoseEstimator
 
 # GTest setup
 ament_add_gtest(test_PoseEstimator test/test_PoseEstimator.cpp)
+ament_add_gtest(test_ValidityFilter test/test_ValidityFilter.cpp)
 target_include_directories(test_PoseEstimator PRIVATE include)
+target_include_directories(test_ValidityFilter PRIVATE include)
 target_link_libraries(test_PoseEstimator PoseEstimator)
+target_link_libraries(test_ValidityFilter ValidityFilter)
 
 # Install the node
 install(TARGETS PoseEstimatorNode

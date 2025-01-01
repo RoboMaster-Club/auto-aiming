@@ -36,6 +36,7 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
 
     // Detect the armor in the cropped frame
     std::vector<cv::Point2f> points = detectArmorsInFrame(croppedFrame);
+    _frame_count++;
 
 // Display the cropped frame for debugging
 #ifdef DEBUG
