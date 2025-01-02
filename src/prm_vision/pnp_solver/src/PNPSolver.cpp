@@ -34,6 +34,14 @@ PNPSolver::~PNPSolver()
 {
 }
 
+/**
+ * @brief Perform PNP solving with image points
+ * 
+ * @param points image points
+ * @param points_size number of items in the image points vector
+ * @param large_armor whether the armor is a large armor
+ * @return tvec and rvec of the pnp solution 
+ */
 Coordinates PNPSolver::getArmorCoordinates(std::vector<float> points, int points_size, bool large_armor)
 {
     if (points_size < 8 || points[0] == 0)

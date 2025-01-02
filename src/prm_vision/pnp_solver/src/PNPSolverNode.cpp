@@ -37,6 +37,14 @@ PNPSolverNode::~PNPSolverNode()
     return;
 }
 
+/**
+ * @brief Validates the translational coordinates, determines the status of auto aiming, and resets the
+ * Kalman filter accordingly
+ * 
+ * @param predicted_armor_msg The reference of the predicted armor message object
+ * @param header The header to be published
+ * @param tvec The translatoinal coordinates
+ */
 void PNPSolverNode::validateCoordinates(vision_msgs::msg::PredictedArmor *predicted_armor_msg, std_msgs::msg::Header header, std::vector<float> tvec)
 {
     std_msgs::msg::String auto_aim_tracking_status_msg;
@@ -104,6 +112,14 @@ void PNPSolverNode::validateCoordinates(vision_msgs::msg::PredictedArmor *predic
     }
 }
 
+/**
+ * @brief Publishes the predicted armor as a ROS message
+ * 
+ * @param predicted_armor_msg The reference of the predicted armor message object
+ * @param header The header to be published
+ * @param tvec The translational coordinates
+ * @param rvec The rotational coordinates
+ */
 void PNPSolverNode::publishPredictedArmor(vision_msgs::msg::PredictedArmor *predicted_armor_msg, std_msgs::msg::Header header, std::vector<float> tvec, std::vector<float> rvec)
 {
     predicted_armor_msg->header = header;
@@ -132,6 +148,12 @@ void PNPSolverNode::publishPredictedArmor(vision_msgs::msg::PredictedArmor *pred
     predicted_armor_publisher->publish(*predicted_armor_msg);
 }
 
+/**
+ * @brief Publishes the transformation of detected, filtered, and predicted armor, as a ROS message
+ * 
+ * @param header The header to be published
+ * @param tvec The translational coordinates
+ */
 void PNPSolverNode::publishTF(std_msgs::msg::Header header, std::vector<float> tvec)
 {
     // Publish TF raw results
@@ -182,7 +204,7 @@ void PNPSolverNode::publishTF(std_msgs::msg::Header header, std::vector<float> t
  *
  * The callback performs PNP solving, kalman filtering, and determine when to fire.
  *
- * @param key_points_msg key point messagge
+ * @param key_points_msg Key point messagge
  */
 void PNPSolverNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::SharedPtr key_points_msg)
 {
@@ -221,6 +243,10 @@ void PNPSolverNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::SharedP
     seq_++;
 }
 
+/**
+ * @brief Publishes a message to stop firing if one second have passed the last fire time
+ * 
+ */
 void PNPSolverNode::check_last_firing_time()
 {
     if (this->now().seconds() - last_fire_time > 1 && locked_in_frames > num_frames_to_fire_after)
@@ -234,6 +260,11 @@ void PNPSolverNode::check_last_firing_time()
     }
 }
 
+/**
+ * @brief Publishes a predicted armor message with all transformation initialized to 0
+ * 
+ * @param header The header to be published
+ */
 void PNPSolverNode::publishZeroPredictedArmor(std_msgs::msg::Header header)
 {
     vision_msgs::msg::PredictedArmor predicted_armor_msg;
