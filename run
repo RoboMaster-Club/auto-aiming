@@ -57,18 +57,33 @@ build() {
 
 # Function to run tests for each ROS module (non-recursively at first)
 test() {
-    print_green "Running tests for each ROS module..."
+    print_green "Running tests for ROS modules..."
 
     # Run build first
     build
 
-    # Run tests quietly for both
-    print_green "[*] Running tests..."
+    # Check if a package name is provided
+    local package_name=$1
+
+    # Run tests
+    if [[ -z "$package_name" ]]; then
+        print_green "Running all tests..."
+    else
+        print_green "Running tests for package: $package_name"
+    fi
     if [[ "$quiet" == "true" ]]; then
-        colcon test >> "$LOG_FILE" 2>&1
+        if [[ -n "$package_name" ]]; then
+            colcon test --packages-select "$package_name" >> "$LOG_FILE" 2>&1
+        else
+            colcon test >> "$LOG_FILE" 2>&1
+        fi
         colcon test-result --verbose >> "$LOG_FILE" 2>&1
     else
-        colcon test
+        if [[ -n "$package_name" ]]; then
+            colcon test --packages-select "$package_name"
+        else
+            colcon test
+        fi
         colcon test-result --verbose
     fi
 
@@ -122,7 +137,8 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         test)
-            test
+            shift
+            test "$1" # Pass the next argument (package name) to the test function
             shift
             ;;
         run)
@@ -131,7 +147,7 @@ while [[ $# -gt 0 ]]; do
             shift $#
             ;;
         *)
-            echo "Usage: $0 [--quiet] [--debug] {build|clean|test|run <launch_file>}"
+            echo "Usage: $0 [--quiet] [--debug] {build|clean|test [package_name]|run <launch_file>}"
             exit 1
             ;;
     esac

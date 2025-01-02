@@ -15,12 +15,16 @@ def generate_launch_description():
             emulate_tty=True,
             executable='VideoCaptureNode',
             parameters=[{'source': str(video_path),
-                         'fps': 200,
+                         'fps': 1,
                          'frame_id': 'video',
                          }]    
         ), 
         Node(
             package='opencv_armor_detector',
             executable='OpenCVArmorDetectorNode',  
-        )
+        ),
+        Node(
+            package='pose_estimator',
+            executable='PoseEstimatorNode',
+        ),
     ])

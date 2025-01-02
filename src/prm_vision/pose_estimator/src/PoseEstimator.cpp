@@ -72,7 +72,7 @@ double PoseEstimator::estimateYaw(const double yaw_guess, const std::vector<cv::
 bool PoseEstimator::isValid(float x, float y, float z, std::string &auto_aim_status, bool &reset_kalman)
 {
     // Validates the pose estimate and sets the auto-aim status. Also check if we should reset the Kalman filter.
-    reset_kalman = validity_filter_.resetKalman(x, y, z);
+    reset_kalman = validity_filter_.shouldResetKalman(x, y, z);
 
     // Stopping motor, we want to publish 0s for predicted armor (no auto aiming)
     if (validity_filter_.state == STOPPING)
@@ -105,7 +105,7 @@ bool PoseEstimator::isValid(float x, float y, float z, std::string &auto_aim_sta
         }
 
         // if tracking and we have locked in for enough frames, fire at the target
-        if (_consecutive_tracking_frames_ctr > _num_frames_to_fire_after)
+        if (_consecutive_tracking_frames_ctr >= _num_frames_to_fire_after)
         {
             auto_aim_status = "FIRE";
         }

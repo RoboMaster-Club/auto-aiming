@@ -22,22 +22,31 @@ public:
     ValidityFilter();
     ~ValidityFilter();
 
-    bool resetKalman(float x, float y, float z);
+    bool shouldResetKalman(float x, float y, float z);
+    bool positionValidity(float, float, float);
+    bool distanceValidity(float, float, float);
+    void updatePrev(float, float, float);
     int getLockInCounter();
 
     ValidityFilterState state = STOPPING;
+    double _max_dt = 2000; // ms
 
-private:
+    // Getters
+    float *getPrevX() { return _prev_x; }
+    float *getPrevY() { return _prev_y; }
+    float *getPrevZ() { return _prev_z; }
+
+protected:
     int _lock_in_after = 3; // lock in after n frames
     int _lock_in_counter = 0;
 
-    std::chrono::steady_clock::time_point _last_valid_time = std::chrono::steady_clock::now();
+    // zero time point
+    std::chrono::steady_clock::time_point _last_valid_time = std::chrono::steady_clock::time_point::min();
 
     float _max_distance = 10000.f; // mm
     float _min_distance = 10.f;    // mm
 
-    double _max_dt = 2000; // ms
-    int _prev_len = 5;     // check the back n frames for max shift distance vilolation
+    int _prev_len = 5; // check the back n frames for max shift distance vilolation
 
     float _prev_x[20];
     float _prev_y[20];
@@ -46,9 +55,6 @@ private:
 
     float _max_shift_distance = 150.f; // mm
 
-    void updatePrev(float, float, float);
-    bool positionValidity(float, float, float);
-    bool distanceValidity(float, float, float);
     void incrementLockInCounter();
     void decrementLockInCounter();
     void resetLockInCounter();

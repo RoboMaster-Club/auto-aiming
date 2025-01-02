@@ -31,11 +31,11 @@ ValidityFilter::~ValidityFilter() {}
  * NOTE: The return value is ONLY used to determine if we should reset the Kalman filter inside PoseEstimator.
  * We primarily use the state variable to determine the action to take (idle, track, stop).
  */
-bool ValidityFilter::resetKalman(float x, float y, float z)
+bool ValidityFilter::shouldResetKalman(float x, float y, float z)
 {
     // Calculate time difference since last valid detection
     auto now = std::chrono::steady_clock::now();
-    double dt = std::chrono::duration<double>(now - _last_valid_time).count();
+    double dt = std::chrono::duration<double, std::milli>(now - _last_valid_time).count();
 
     // Check distance validity
     if (!distanceValidity(x, y, z))
@@ -49,8 +49,9 @@ bool ValidityFilter::resetKalman(float x, float y, float z)
     if (dt > _max_dt)
     {
         resetLockInCounter();
+        _last_valid_time = now; // Reset the timer even after a timeout, prevents this check from always failing if we fail after succeeding for _max_dt
         updatePrev(x, y, z);
-        return state == STOPPING; // too much time has passed, so invalid if we are stopping
+        return state != STOPPING; // too much time has passed, so invalid if we aren't stopping
     }
 
     // Check position validity
@@ -58,7 +59,7 @@ bool ValidityFilter::resetKalman(float x, float y, float z)
     {
         decrementLockInCounter();
         updatePrev(x, y, z);
-        return state == STOPPING; // too much shift, so invalid if we are stopping
+        return state != STOPPING; // too much shift, so invalid if we aren't stopping
     }
 
     // Valid detection
@@ -66,7 +67,7 @@ bool ValidityFilter::resetKalman(float x, float y, float z)
     updatePrev(x, y, z);
     _last_valid_time = now; // Update the last valid time
 
-    return true;
+    return false;
 }
 
 void ValidityFilter::updatePrev(float x, float y, float z)
