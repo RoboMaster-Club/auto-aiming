@@ -8,6 +8,7 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <tuple>
 #include <Eigen/Dense>
 #include <fcntl.h>
 #include <termios.h>
@@ -42,6 +43,7 @@
 
 #include "utils.hpp"
 #include "time_debug.hpp"
+#include "ControlCommunicator.hpp"
 
 class ControlCommunicatorNode : public rclcpp::Node
 {
@@ -55,16 +57,11 @@ private:
     float pitch = 0;     // rad (+up, -down)?
     bool is_red = 0;
     bool is_match_running = 0;
-    bool valid_read = false;
 
     uint32_t recive_frame_id = 0;
     uint32_t auto_aim_frame_id = 0;
     uint32_t nav_frame_id = 0;
     uint32_t heart_beat_frame_id = 0;
-
-    const char *port;
-    int port_fd = -1;
-    bool is_connected = false;
 
     int aim_stop_null_frame_count;
     int aim_null_frame_count = 0;
@@ -73,6 +70,8 @@ private:
 
     int8_t curr_pois = 0;
     bool right = true;
+
+    ControlCommunicator control_communicator;
 
     std::unique_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster;
     std::shared_ptr<tf2_ros::StaticTransformBroadcaster> tf_static_broadcaster;
@@ -89,12 +88,10 @@ private:
     rclcpp::TimerBase::SharedPtr uart_read_timer;
     rclcpp::TimerBase::SharedPtr heart_beat_timer;
 
-    void start_uart(const char *port);
     void publish_static_tf(float, float, float, float, float, float, const char *, const char *);
     void auto_aim_handler(const std::shared_ptr<vision_msgs::msg::PredictedArmor> msg);
     void nav_handler(const std::shared_ptr<geometry_msgs::msg::Twist> msg);
     void heart_beat_handler();
-    bool read_alignment();
     void read_uart();
 };
 

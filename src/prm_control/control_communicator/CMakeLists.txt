@@ -32,6 +32,7 @@ include_directories(include)
 
 add_executable(ControlCommunicatorNode 
   src/ControlCommunicatorNode.cpp
+  src/ControlCommunicator.cpp
   src/projectile_angle_convel.cpp
   src/utils.cpp
 )

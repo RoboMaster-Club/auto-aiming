@@ -9,10 +9,9 @@ ControlCommunicatorNode::ControlCommunicatorNode(const char *port) : Node("contr
     aim_stop_null_frame_count = this->declare_parameter("aim.stop_null_frame_count", 3);
     aim_bullet_speed = this->declare_parameter("aim.bullet_speed", 16.0f);
 
-    this->port = port;
-    this->start_uart(port);
+    this->control_communicator = ControlCommunicator(port);
 
-    if (this->read_alignment())
+    if (this->control_communicator.read_alignment())
     {
         RCLCPP_INFO(this->get_logger(), "Inital Read alignment success.");
     }
@@ -57,7 +56,6 @@ ControlCommunicatorNode::ControlCommunicatorNode(const char *port) : Node("contr
 
 ControlCommunicatorNode::~ControlCommunicatorNode()
 {
-    close(this->port_fd);
 }
 
 void ControlCommunicatorNode::publish_static_tf(float x, float y, float z, float roll, float pitch, float yaw, const char *frame_id, const char *child_frame_id)
@@ -82,65 +80,9 @@ void ControlCommunicatorNode::publish_static_tf(float x, float y, float z, float
     tf_static_broadcaster->sendTransform(t);
 }
 
-void ControlCommunicatorNode::start_uart(const char *port)
-{
-    this->is_connected = false;
-    this->port_fd = open(port, O_RDWR);
-
-    // Check for errors
-    if (this->port_fd < 0)
-    {
-        RCLCPP_ERROR(this->get_logger(), "Failed to open: %s, %s", port, strerror(errno));
-        return;
-    }
-
-    struct termios tty;
-
-    // Set UART TTY to 8n1
-    tty.c_cflag &= ~PARENB;
-    tty.c_cflag &= ~CSTOPB;
-    tty.c_cflag &= ~CSIZE;
-    tty.c_cflag |= CS8;
-
-    tty.c_cflag &= ~CRTSCTS;	   // No RTS/CTS flow control
-    tty.c_cflag |= CREAD | CLOCAL; // Turn on READ & ignore ctrl lines
-    tty.c_lflag &= ~ICANON;		   // Disable canonical mode
-
-    // Disable echo, erasure and newline echo
-    tty.c_lflag &= ~ECHO;
-    tty.c_lflag &= ~ECHOE;
-    tty.c_lflag &= ~ECHONL;
-
-    // Disable interpretation of INTR, QUIT and SUSP
-    tty.c_lflag &= ~ISIG;
-
-    // Disable special handling, interpretation, S/W flow control, \n conv.
-    tty.c_iflag &= ~(IXON | IXOFF | IXANY);
-    tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL);
-    tty.c_oflag &= ~OPOST;
-    tty.c_oflag &= ~ONLCR;
-
-    tty.c_cc[VTIME] = 10;				// Wait for up to 1s (10 deciseconds)
-    tty.c_cc[VMIN] = sizeof(PackageIn); // Block for sizeof(PackageOut) bits
-
-    // Set the baud rate
-    cfsetispeed(&tty, B1152000);
-
-    // Save tty settings, also checking for error
-    if (tcsetattr(this->port_fd, TCSANOW, &tty) != 0)
-    {
-        RCLCPP_ERROR(this->get_logger(), "Error %i from tcsetattr: %s", errno, strerror(errno));
-        return;
-    }
-    this->is_connected = true;
-    RCLCPP_INFO(this->get_logger(), "UART Connected");
-
-    return;
-}
-
 void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs::msg::PredictedArmor> msg)
 {
-    if (!is_connected || this->port_fd < 0)
+    if (!this->control_communicator.connected() || this->control_communicator.get_port_fd() < 0)
     {
         RCLCPP_WARN(this->get_logger(), "UART Not connected, ignoring aim message %d.", this->auto_aim_frame_id++);
         return;
@@ -166,16 +108,9 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
         pitch_yaw_gravity_model_movingtarget_const_v(P, V, grav, 0, &p, &y, &im);
         y = y * (msg->y > 0 ? -1 : 1); // currently a bug where yaw is never negative, so we just multiply by the sign of "y" of the target
     }
-
-    PackageOut package;
+    
     this->auto_aim_frame_id++;
-    package.frame_id = 0xAA;
-    package.frame_type = FRAME_TYPE_AUTO_AIM;
-    package.autoAimPackage.yaw = y;
-    package.autoAimPackage.pitch = p;
-    // for safety this is commented out unless on sentry    package.autoAimPackage.fire = msg->fire;
-    write(this->port_fd, &package, sizeof(PackageOut));
-    fsync(this->port_fd);
+    this->control_communicator.send_auto_aim_packet(y, p, msg->fire);
     if (this->auto_aim_frame_id % 1000 == 0)
     {
         RCLCPP_INFO(this->get_logger(), "Yaw, Pitch: %.3f, %.3f, FIRE=%.3f", yaw, pitch, msg->fire);
@@ -185,49 +120,35 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 
 void ControlCommunicatorNode::nav_handler(const std::shared_ptr<geometry_msgs::msg::Twist> msg)
 {
-    if (!is_connected || this->port_fd < 0)
+    if (!this->control_communicator.connected() || this->control_communicator.get_port_fd() < 0)
     {
         RCLCPP_WARN(this->get_logger(), "UART Not connected, ignoring nav message %d.", this->nav_frame_id++);
         return;
     }
 
-    PackageOut package;
-
-    package.frame_id = 0xAA;
-    package.frame_type = FRAME_TYPE_NAV;
-    package.navPackage.x_vel = msg->linear.x;
-    package.navPackage.y_vel = msg->linear.y;
-    package.navPackage.yaw_rad = msg->angular.z;
-    package.navPackage.state = 1;
-    write(this->port_fd, &package, sizeof(PackageOut));
-    fsync(this->port_fd);
-
-    RCLCPP_INFO(this->get_logger(), "x_vel = %f, y_vel = %f, yaw = %f", package.navPackage.x_vel, package.navPackage.y_vel, package.navPackage.yaw_rad);
+    this->control_communicator.send_nav_packet(msg->linear.x, msg->linear.y, msg->angular.z, 1);
+    RCLCPP_INFO(this->get_logger(), "x_vel = %f, y_vel = %f, yaw = %f", msg->linear.x, msg->linear.y, msg->angular.z);
 }
 
 void ControlCommunicatorNode::heart_beat_handler()
 {
-    if (!this->is_connected || this->port_fd < -1)
+    if (!this->control_communicator.connected() || this->control_communicator.get_port_fd() < 0)
     {
         RCLCPP_WARN(this->get_logger(), "UART Not connected, trying to reconnect.");
-        this->start_uart(this->port);
+        std::string error_message = this->control_communicator.start_uart();
+        if (error_message.length() > 0) {
+            RCLCPP_ERROR(this->get_logger(), error_message);
+        }
     }
 
-    PackageOut package;
-    this->heart_beat_frame_id++;
-    package.frame_id = 0xAA;
-    package.frame_type = FRAME_TYPE_HEART_BEAT;
-    package.heartBeatPackage._a = 0xAA;
-    package.heartBeatPackage._b = 0xAA;
-    package.heartBeatPackage._c = 0xAA;
-    package.heartBeatPackage._d = 0xAA;
-    int success = write(this->port_fd, &package, sizeof(PackageOut));
-    fsync(this->port_fd);
+    int success = this->control_communicator.send_heart_beat_packet();
     if (success == -1)
     {
-        this->is_connected = false;
         RCLCPP_ERROR(this->get_logger(), "Erro	r %i from write: %s", errno, strerror(errno));
-        start_uart(this->port);
+        std::string error_message = this->control_communicator.start_uart();
+        if (error_message.length() > 0) {
+            RCLCPP_ERROR(this->get_logger(), error_message);
+        }
     }
     if (this->heart_beat_frame_id % 10 == 0)
     {
@@ -235,45 +156,15 @@ void ControlCommunicatorNode::heart_beat_handler()
     }
 }
 
-bool ControlCommunicatorNode::read_alignment()
-{
-    RCLCPP_INFO(this->get_logger(), "Attemp to alignment.");
-    uint8_t i = 0;
-    uint8_t buffer[32];
-    do
-    {
-        int success = read(this->port_fd, &(buffer[0]), sizeof(buffer[0]));
-        if (success) i++;
-    } while (buffer[0] != 0xAA || i > sizeof(PackageIn) * 2);
-    read(this->port_fd, &buffer, sizeof(PackageIn) - 1);
-
-    return i <= sizeof(PackageIn) * 2;
-}
-
 void ControlCommunicatorNode::read_uart()
 {
-    PackageIn package;
-    int success = read(this->port_fd, &package, sizeof(PackageIn));
-
     rclcpp::Time curr_time = this->now();
-    if (success == -1)
-    {
-        RCLCPP_ERROR(this->get_logger(), "Error %i from read: %s", errno, strerror(errno));
-        return;
-    }
+    std::tuple<std::string, PackageIn> response = this->control_communicator.read_package();
+    std::string error_message = std::get<0>(response);
+    PackageIn package = std::get<1>(response);
 
-    // Package validation
-    if (package.head != 0xAA)
-    {
-        RCLCPP_WARN(this->get_logger(), "Packet miss aligned.");
-        if (this->read_alignment())
-        {
-            RCLCPP_INFO(this->get_logger(), "Read alignment success.");
-        }
-        else
-        {
-            RCLCPP_WARN(this->get_logger(), "Read alignment failed.");
-        }
+    if (error_message.length() > 0) {
+        RCLCPP_INFO(this->get_logger(), error_message);
         return;
     }
 
@@ -283,7 +174,6 @@ void ControlCommunicatorNode::read_uart()
     this->yaw_vel = package.yaw_vel;				// rad/s
     this->is_red = package.ref_flags & 2;			// second lowest  denotes if enemy is red
     this->is_match_running = package.ref_flags & 1; // LSB denotes if match is started
-    this->valid_read = true;
 
     // publishing color and match status
     std_msgs::msg::String target_robot_color;
