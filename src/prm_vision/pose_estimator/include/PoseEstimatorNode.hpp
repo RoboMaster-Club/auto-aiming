@@ -17,7 +17,6 @@
 
 // Pose Estimator classes
 #include "PoseEstimator.h"
-#include "ValidityFilter.hpp"
 
 class PoseEstimatorNode : public rclcpp::Node
 {
@@ -25,8 +24,10 @@ public:
     PoseEstimatorNode(const rclcpp::NodeOptions &options);
     ~PoseEstimatorNode();
 
+    PoseEstimator *pose_estimator = new PoseEstimator();
+    ValidityFilter &validity_filter_ = pose_estimator->validity_filter_; // Reference to the validity filter
+
 private:
-    PoseEstimator *pose_estimator;
     double _last_yaw_estimate = 0.0;
     int _allowed_missed_frames_before_no_fire = 0; // Gets set to 5 when we have a valid pose estimate
 
@@ -37,6 +38,8 @@ private:
     rclcpp::Subscription<vision_msgs::msg::KeyPoints>::SharedPtr key_points_subscriber;
     std::shared_ptr<rclcpp::Publisher<vision_msgs::msg::PredictedArmor>> predicted_armor_publisher;
     void keyPointsCallback(const vision_msgs::msg::KeyPoints::SharedPtr msg);
+    OnSetParametersCallbackHandle::SharedPtr params_callback_handle_;
+    rcl_interfaces::msg::SetParametersResult parameters_callback(const std::vector<rclcpp::Parameter> &parameters);
 };
 
 #endif // POSE_ESTIMATOR_NODE_HPP

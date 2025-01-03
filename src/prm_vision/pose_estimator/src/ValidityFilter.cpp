@@ -1,12 +1,12 @@
 #include "ValidityFilter.hpp"
 
-ValidityFilter::ValidityFilter(int lock_in_after, float max_distance, float min_distance, float max_shift_distance, float prev_len)
+ValidityFilter::ValidityFilter(int lock_in_after, float max_distance, float min_distance, float max_shift_distance, int prev_len)
 {
     this->_lock_in_after = lock_in_after;
     this->_max_distance = max_distance;
     this->_min_distance = min_distance;
     this->_max_shift_distance = max_shift_distance;
-    this->_prev_len = std::min(prev_len, 20.0f);
+    this->_prev_len = std::min(prev_len, 20);
 
     // Initialize arrays to track previous predictions
     for (int i = 0; i < this->_prev_len; i++)
@@ -17,7 +17,6 @@ ValidityFilter::ValidityFilter(int lock_in_after, float max_distance, float min_
     }
 }
 
-ValidityFilter::ValidityFilter() {}
 ValidityFilter::~ValidityFilter() {}
 
 /**

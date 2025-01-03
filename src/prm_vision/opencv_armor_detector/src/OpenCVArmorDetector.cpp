@@ -92,6 +92,12 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
             _search_area[2] = std::min(x_max + 50, WIDTH);
             _search_area[3] = std::min(y_max + 50, HEIGHT);
         }
+        else
+        {
+            // Reset the search area to the full frame
+            _reset_search_area = true;
+        }
+
         _detected_frame++;
     }
 

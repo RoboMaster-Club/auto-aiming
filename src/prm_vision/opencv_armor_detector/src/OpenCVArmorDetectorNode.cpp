@@ -68,6 +68,12 @@ rcl_interfaces::msg::SetParametersResult OpenCVArmorDetectorNode::parameters_cal
       RCLCPP_INFO(get_logger(), "New max missed frames: %d",
                   _max_missed_frames);
     }
+    else if (parameter.get_name() == "_reduce_search_area")
+    {
+      _reduce_search_area = parameter.as_bool();
+      RCLCPP_INFO(get_logger(), "New reduce search area: %s",
+                  _reduce_search_area ? "true" : "false");
+    }
     else
     {
       result.successful = false;
@@ -76,7 +82,7 @@ rcl_interfaces::msg::SetParametersResult OpenCVArmorDetectorNode::parameters_cal
   }
 
   // Update the detector's config
-  detector->setConfig({_target_color, _hue_range_limit, _saturation_lower_limit, _value_lower_limit, _max_missed_frames});
+  detector->setConfig({_target_color, _hue_range_limit, _saturation_lower_limit, _value_lower_limit, _max_missed_frames, _reduce_search_area});
   return result;
 }
 

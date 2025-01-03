@@ -4,15 +4,78 @@ PoseEstimatorNode::PoseEstimatorNode(const rclcpp::NodeOptions &options) : Node(
 {
     RCLCPP_INFO(get_logger(), "PoseEstimatorNode has been started.");
 
-    // Initialize the pose estimator
-    pose_estimator = new PoseEstimator();
-
     // Callbacks and pub/sub
     key_points_subscriber = this->create_subscription<vision_msgs::msg::KeyPoints>("key_points", 10, std::bind(&PoseEstimatorNode::keyPointsCallback, this, std::placeholders::_1));
     predicted_armor_publisher = this->create_publisher<vision_msgs::msg::PredictedArmor>("predicted_armor", 10);
+
+    // Dynamic parameters
+    pose_estimator->setNumFramesToFireAfter(this->declare_parameter("_num_frames_to_fire_after", 3));
+    validity_filter_.setLockInAfter(this->declare_parameter("_lock_in_after", 3));
+    validity_filter_.setMaxDistance(this->declare_parameter("_max_distance", 10000));
+    validity_filter_.setMinDistance(this->declare_parameter("_min_distance", 10));
+    validity_filter_.setMaxShiftDistance(this->declare_parameter("_max_shift_distance", 150));
+    validity_filter_.setPrevLen(this->declare_parameter("_prev_len", 5));
+    validity_filter_.setMaxDt(this->declare_parameter("_max_dt", 2000.0));
+    params_callback_handle_ = this->add_on_set_parameters_callback(std::bind(&PoseEstimatorNode::parameters_callback, this, std::placeholders::_1));
 }
 
 PoseEstimatorNode::~PoseEstimatorNode() { delete pose_estimator; }
+
+rcl_interfaces::msg::SetParametersResult PoseEstimatorNode::parameters_callback(
+    const std::vector<rclcpp::Parameter> &parameters)
+{
+    rcl_interfaces::msg::SetParametersResult result;
+    result.successful = true;
+    result.reason = "Parameters successfully updated.";
+
+    for (const auto &param : parameters)
+    {
+        if (param.get_name() == "_num_frames_to_fire_after" && param.get_type() == rclcpp::ParameterType::PARAMETER_INTEGER)
+        {
+            pose_estimator->setNumFramesToFireAfter(param.as_int());
+            RCLCPP_INFO(this->get_logger(), "Parameter '_num_frames_to_fire_after' updated to: %d", param.as_int());
+        }
+        else if (param.get_name() == "_lock_in_after" && param.get_type() == rclcpp::ParameterType::PARAMETER_INTEGER)
+        {
+            validity_filter_.setLockInAfter(param.as_int());
+            RCLCPP_INFO(this->get_logger(), "Parameter '_lock_in_after' updated to: %d", param.as_int());
+        }
+        else if (param.get_name() == "_max_distance" && param.get_type() == rclcpp::ParameterType::PARAMETER_INTEGER)
+        {
+            validity_filter_.setMaxDistance(param.as_int());
+            RCLCPP_INFO(this->get_logger(), "Parameter '_max_distance' updated to: %d", param.as_int());
+        }
+        else if (param.get_name() == "_min_distance" && param.get_type() == rclcpp::ParameterType::PARAMETER_INTEGER)
+        {
+            validity_filter_.setMinDistance(param.as_int());
+            RCLCPP_INFO(this->get_logger(), "Parameter '_min_distance' updated to: %d", param.as_int());
+        }
+        else if (param.get_name() == "_max_shift_distance" && param.get_type() == rclcpp::ParameterType::PARAMETER_INTEGER)
+        {
+            validity_filter_.setMaxShiftDistance(param.as_int());
+            RCLCPP_INFO(this->get_logger(), "Parameter '_max_shift_distance' updated to: %d", param.as_int());
+        }
+        else if (param.get_name() == "_prev_len" && param.get_type() == rclcpp::ParameterType::PARAMETER_INTEGER)
+        {
+            validity_filter_.setPrevLen(param.as_int());
+            RCLCPP_INFO(this->get_logger(), "Parameter '_prev_len' updated to: %d", param.as_int());
+        }
+        else if (param.get_name() == "_max_dt" && param.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE || param.get_type())
+        {
+            validity_filter_.setMaxDt(param.as_double());
+            RCLCPP_INFO(this->get_logger(), "Parameter '_max_dt' updated to: %f", param.as_double());
+            RCLCPP_INFO(this->get_logger(), "max dt is %f", validity_filter_._max_dt);
+        }
+        else
+        {
+            result.successful = false;
+            result.reason = "Invalid parameter or type.";
+            RCLCPP_WARN(this->get_logger(), "Failed to update parameter: %s", param.get_name().c_str());
+        }
+    }
+
+    return result;
+}
 
 void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::SharedPtr key_points_msg)
 {

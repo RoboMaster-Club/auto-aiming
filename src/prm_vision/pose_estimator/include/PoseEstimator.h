@@ -25,14 +25,18 @@ public:
     PoseEstimator() {}
     ~PoseEstimator() {}
 
+    ValidityFilter validity_filter_ = ValidityFilter();
+
     // Class methods
     double estimateYaw(const double yaw_guess, const std::vector<cv::Point2f> &image_points, const cv::Mat &tvec);
     void estimateTranslation(const std::vector<cv::Point2f> &image_points, bool largeArmor, cv::Mat &tvec, cv::Mat &rvec);
     bool isValid(float x, float y, float z, std::string &auto_aim_status, bool &reset_kalman);
 
+    // Setters
+    void setNumFramesToFireAfter(int num_frames_to_fire_after) { _num_frames_to_fire_after = num_frames_to_fire_after; }
+
 private:
     // Class methods
-    ValidityFilter validity_filter_ = ValidityFilter();
     double computeLoss(double yaw_guess, std::vector<cv::Point2f> image_points, cv::Mat tvec);
     double gradientWrtYawFinitediff(double yaw, std::vector<cv::Point2f> image_points, cv::Mat tvec);
 
@@ -40,6 +44,13 @@ private:
     int _consecutive_tracking_frames_ctr = 0;
     int _num_frames_to_fire_after = 3;
     std::chrono::time_point<std::chrono::system_clock> _last_fire_time;
+
+    // Validity filter parameters
+    int _lock_in_after = 3;
+    float _max_distance = 10000;
+    float _min_distance = 10;
+    float _max_shift_distance = 150;
+    int _prev_len = 5;
 
     /**
      * @brief Functor for the loss function and gradient computation.

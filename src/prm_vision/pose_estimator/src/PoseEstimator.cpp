@@ -93,8 +93,8 @@ bool PoseEstimator::isValid(float x, float y, float z, std::string &auto_aim_sta
     // We have enough valid detections to track the target
     else if (validity_filter_.state == TRACKING)
     {
-        // if validity filter valid for last 3 frames, increment locked_in_frames
-        if (validity_filter_.getLockInCounter() == 3)
+        // if validity filter valid for last number of frames, increment locked_in_frames
+        if (validity_filter_.getLockInCounter() == validity_filter_.getLockInAfter())
         {
             _consecutive_tracking_frames_ctr++;
         }
