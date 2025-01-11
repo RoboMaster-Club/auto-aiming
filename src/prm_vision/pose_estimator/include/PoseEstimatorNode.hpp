@@ -31,7 +31,7 @@ private:
     double _last_yaw_estimate = 0.0;
 
     // Class methods
-    void publishZeroPredictedArmor(std_msgs::msg::Header header);
+    void publishZeroPredictedArmor(std_msgs::msg::Header header, std::string new_auto_aim_status);
 
     // Callbacks and publishers/subscribers
     rclcpp::Subscription<vision_msgs::msg::KeyPoints>::SharedPtr key_points_subscriber;
