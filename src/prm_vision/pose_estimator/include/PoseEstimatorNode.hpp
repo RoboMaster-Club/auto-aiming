@@ -29,7 +29,6 @@ public:
 
 private:
     double _last_yaw_estimate = 0.0;
-    int _allowed_missed_frames_before_no_fire = 0; // Gets set to 5 when we have a valid pose estimate
 
     // Class methods
     void publishZeroPredictedArmor(std_msgs::msg::Header header);

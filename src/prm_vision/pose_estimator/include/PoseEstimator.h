@@ -34,6 +34,7 @@ public:
 
     // Setters
     void setNumFramesToFireAfter(int num_frames_to_fire_after) { _num_frames_to_fire_after = num_frames_to_fire_after; }
+    void setAllowedMissedFramesBeforeNoFire(int allowed_missed_frames_before_no_fire) { _allowed_missed_frames_before_no_fire = allowed_missed_frames_before_no_fire; }
 
 private:
     // Class methods
@@ -43,6 +44,8 @@ private:
     // Class variables
     int _consecutive_tracking_frames_ctr = 0;
     int _num_frames_to_fire_after = 3;
+    int _allowed_missed_frames_before_no_fire = 15;
+    int _remaining_missed_frames_before_no_fire = 0; // Gets set to 5 when we have a valid pose estimate
     std::chrono::time_point<std::chrono::system_clock> _last_fire_time;
 
     // Validity filter parameters

@@ -77,8 +77,6 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
             image_points.emplace_back(cv::Point2f(points.at(i).x + _search_area[0], points.at(i).y + _search_area[1]));
         }
 
-        // RCLCPP_INFO(rclcpp::get_logger("rclcpp"), " [*] Detected Armor: (%.2f, %.2f), (%.2f, %.2f), (%.2f, %.2f), (%.2f, %.2f)", image_points.at(0).x, image_points.at(0).y, image_points.at(1).x, image_points.at(1).y, image_points.at(2).x, image_points.at(2).y, image_points.at(3).x, image_points.at(3).y);
-
         if (_reduce_search_area)
         {
             // Change the search area to the bounding box of the armor with a 50 pixel buffer
@@ -168,8 +166,6 @@ std::vector<cv::Point2f> OpenCVArmorDetector::detectArmorsInFrame(cv::Mat &frame
                 std::swap(rect.size.width, rect.size.height);
                 rect.angle -= 90;
             }
-
-            // cv::RotatedRect rect = cv::fitEllipse(contour);
 
             if (isLightBar(rect))
             {

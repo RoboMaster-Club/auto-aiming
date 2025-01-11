@@ -9,6 +9,7 @@ PoseEstimatorNode::PoseEstimatorNode(const rclcpp::NodeOptions &options) : Node(
     predicted_armor_publisher = this->create_publisher<vision_msgs::msg::PredictedArmor>("predicted_armor", 10);
 
     // Dynamic parameters
+    pose_estimator->setAllowedMissedFramesBeforeNoFire(this->declare_parameter("_allowed_missed_frames_before_no_fire", 15));
     pose_estimator->setNumFramesToFireAfter(this->declare_parameter("_num_frames_to_fire_after", 3));
     validity_filter_.setLockInAfter(this->declare_parameter("_lock_in_after", 3));
     validity_filter_.setMaxDistance(this->declare_parameter("_max_distance", 10000));
@@ -64,7 +65,11 @@ rcl_interfaces::msg::SetParametersResult PoseEstimatorNode::parameters_callback(
         {
             validity_filter_.setMaxDt(param.as_double());
             RCLCPP_INFO(this->get_logger(), "Parameter '_max_dt' updated to: %f", param.as_double());
-            RCLCPP_INFO(this->get_logger(), "max dt is %f", validity_filter_._max_dt);
+        }
+        else if (param.get_name() == "_allowed_missed_frames_before_no_fire" && param.get_type() == rclcpp::ParameterType::PARAMETER_INTEGER)
+        {
+            pose_estimator->setAllowedMissedFramesBeforeNoFire(param.as_int());
+            RCLCPP_INFO(this->get_logger(), "Parameter '_allowed_missed_frames_before_no_fire' updated to: %d", param.as_int());
         }
         else
         {
@@ -82,7 +87,7 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
     if (key_points_msg->points.size() != 8 || key_points_msg->points[4] == 0) // idx 4 is x-coord of top right corner, so if it's 0, we know there's no armor
     {
         // No armor detected
-        publishZeroPredictedArmor(key_points_msg->header);
+        publishZeroPredictedArmor(key_points_msg->header, "NO_ARMOR");
         return;
     }
 
@@ -105,8 +110,6 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
     // Publish the predicted armor if the pose is valid (we are tracking or firing)
     if (valid_pose_estimate)
     {
-        _allowed_missed_frames_before_no_fire = 5;
-
         vision_msgs::msg::PredictedArmor predicted_armor_msg;
         predicted_armor_msg.header = key_points_msg->header;
         predicted_armor_msg.x = tvec.at<float>(0);
@@ -121,13 +124,16 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
         predicted_armor_msg.fire = (new_auto_aim_status == "FIRE");
         predicted_armor_publisher->publish(predicted_armor_msg);
     }
-    else
+
+    else if (new_auto_aim_status == "STOPPING")
     {
-        publishZeroPredictedArmor(key_points_msg->header);
+        publishZeroPredictedArmor(key_points_msg->header, new_auto_aim_status);
     }
+
+    RCLCPP_INFO(get_logger(), "status %s", new_auto_aim_status.c_str());
 }
 
-void PoseEstimatorNode::publishZeroPredictedArmor(std_msgs::msg::Header header)
+void PoseEstimatorNode::publishZeroPredictedArmor(std_msgs::msg::Header header, std::string new_auto_aim_status)
 {
     vision_msgs::msg::PredictedArmor predicted_armor_msg;
     predicted_armor_msg.header = header;
@@ -140,7 +146,7 @@ void PoseEstimatorNode::publishZeroPredictedArmor(std_msgs::msg::Header header)
     predicted_armor_msg.x_vel = 0;
     predicted_armor_msg.y_vel = 0;
     predicted_armor_msg.z_vel = 0;
-    predicted_armor_msg.fire = (_allowed_missed_frames_before_no_fire-- > 0);
+    predicted_armor_msg.fire = (new_auto_aim_status == "FIRE");
 
     predicted_armor_publisher->publish(predicted_armor_msg);
 }

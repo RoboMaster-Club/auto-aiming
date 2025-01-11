@@ -108,10 +108,20 @@ bool PoseEstimator::isValid(float x, float y, float z, std::string &auto_aim_sta
         if (_consecutive_tracking_frames_ctr >= _num_frames_to_fire_after)
         {
             auto_aim_status = "FIRE";
+            _remaining_missed_frames_before_no_fire = _allowed_missed_frames_before_no_fire;
         }
         else
         {
-            auto_aim_status = "TRACKING";
+            // If currently firing, allow for a few more frames to fire
+            if (_remaining_missed_frames_before_no_fire > 0)
+            {
+                _remaining_missed_frames_before_no_fire--;
+                auto_aim_status = "FIRE";
+            }
+            else
+            {
+                auto_aim_status = "TRACKING";
+            }
         }
     }
 
