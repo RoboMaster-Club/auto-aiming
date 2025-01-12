@@ -19,7 +19,7 @@ include_directories(include)
 
 # Build target
 add_library(PoseEstimator STATIC src/PoseEstimator.cpp)
-target_link_libraries(PoseEstimator ${OpenCV_LIBS} Eigen3::Eigen)
+target_link_libraries(PoseEstimator ${OpenCV_LIBS} ValidityFilter Eigen3::Eigen)
 
 add_library(ValidityFilter STATIC src/ValidityFilter.cpp)
 
