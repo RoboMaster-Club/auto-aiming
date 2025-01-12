@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.8)
 project(pose_estimator CXX)
 set(CMAKE_CXX_STANDARD 17) # for filesystem support
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
 
 # Dependencies
 find_package(ament_cmake REQUIRED)
