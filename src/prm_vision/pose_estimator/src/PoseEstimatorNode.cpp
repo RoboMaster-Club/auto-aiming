@@ -112,12 +112,12 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
     {
         vision_msgs::msg::PredictedArmor predicted_armor_msg;
         predicted_armor_msg.header = key_points_msg->header;
-        predicted_armor_msg.x = tvec.at<float>(0);
-        predicted_armor_msg.y = tvec.at<float>(1);
-        predicted_armor_msg.z = tvec.at<float>(2);
-        predicted_armor_msg.pitch = 15 * CV_PI / 180; // 15 degrees in radians
-        predicted_armor_msg.yaw = _last_yaw_estimate; // Use the latest yaw estimate
-        predicted_armor_msg.roll = 0;                 // Roll is always 0
+        predicted_armor_msg.x = tvec.at<double>(0);
+        predicted_armor_msg.y = tvec.at<double>(1);
+        predicted_armor_msg.z = tvec.at<double>(2);
+        predicted_armor_msg.pitch = 15;                             // Pitch is always 15
+        predicted_armor_msg.yaw = 180 * _last_yaw_estimate / CV_PI; // Convert to degrees
+        predicted_armor_msg.roll = 0;                               // Roll is always 0
         predicted_armor_msg.x_vel = 0;
         predicted_armor_msg.y_vel = 0; // TODO: compute yaw rate
         predicted_armor_msg.z_vel = 0;
@@ -129,8 +129,6 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
     {
         publishZeroPredictedArmor(key_points_msg->header, new_auto_aim_status);
     }
-
-    RCLCPP_INFO(get_logger(), "status %s", new_auto_aim_status.c_str());
 }
 
 void PoseEstimatorNode::publishZeroPredictedArmor(std_msgs::msg::Header header, std::string new_auto_aim_status)

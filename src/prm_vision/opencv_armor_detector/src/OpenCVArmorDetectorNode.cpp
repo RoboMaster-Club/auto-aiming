@@ -104,7 +104,7 @@ void OpenCVArmorDetectorNode::imageCallback(
 
   keypoints_msg.header = image_msg->header;
   keypoints_msg.points = points_array;
-  keypoints_msg.is_large_armor = (w / h) > 3; // 3 is the width ratio threshold before it is considered a large armor
+  keypoints_msg.is_large_armor = (w / h) > 3.5; // 3.3 is the width ratio threshold before it is considered a large armor
 
   // Publish the message
   keypoints_publisher->publish(keypoints_msg);

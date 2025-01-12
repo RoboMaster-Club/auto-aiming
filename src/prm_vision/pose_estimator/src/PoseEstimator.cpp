@@ -45,9 +45,9 @@ double PoseEstimator::estimateYaw(const double yaw_guess, const std::vector<cv::
     LBFGSBSolver<double> solver(param);
     LossAndGradient loss(*this, image_points, tvec);
 
-    // Bound yaw to -45 to 45 degrees
-    VectorXd lb = VectorXd::Constant(n, -CV_PI / 4);
-    VectorXd ub = VectorXd::Constant(n, CV_PI / 4);
+    // Bound yaw to -60 and 60 degrees
+    VectorXd lb = VectorXd::Constant(n, -CV_PI / 3);
+    VectorXd ub = VectorXd::Constant(n, CV_PI / 3);
     VectorXd x = VectorXd::Constant(n, yaw_guess);
 
     solver.minimize(loss, x, fx, lb, ub);
