@@ -34,7 +34,6 @@ add_executable(ControlCommunicatorNode
   src/ControlCommunicatorNode.cpp
   src/ControlCommunicator.cpp
   src/PitchLookupModel.cpp
-  src/utils.cpp
 )
 
 

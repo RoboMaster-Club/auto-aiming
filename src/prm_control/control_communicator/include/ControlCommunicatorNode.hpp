@@ -41,8 +41,6 @@
 #include "nav_msgs/msg/odometry.hpp"
 #include "messages.hpp"
 
-#include "utils.hpp"
-#include "time_debug.hpp"
 #include "ControlCommunicator.hpp"
 
 class ControlCommunicatorNode : public rclcpp::Node

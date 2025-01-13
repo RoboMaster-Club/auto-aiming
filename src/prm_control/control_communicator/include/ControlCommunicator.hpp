@@ -11,9 +11,7 @@
 
 #include <errno.h> // Error integer and strerror() function
 
-#include "utils.hpp"
 #include "messages.hpp"
-#include "time_debug.hpp"
 
 class ControlCommunicator
 {

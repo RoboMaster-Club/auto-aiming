@@ -89,9 +89,6 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 
     float pitch = this->pitch_lookup_model.get_pitch(msg->x / 1000, msg->z / 1000);
     float yaw = -atan(msg->y / msg->x) * 180 / PI;
-
-    
-    
     
     this->auto_aim_frame_id++;
     this->control_communicator.send_auto_aim_packet(yaw, pitch, msg->fire);
