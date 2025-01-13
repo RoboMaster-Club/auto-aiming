@@ -128,15 +128,6 @@ void PNPSolverNode::publishPredictedArmor(vision_msgs::msg::PredictedArmor *pred
     predicted_armor_msg->y = tvec[1] + 50;
     predicted_armor_msg->z = tvec[2] - 60; // 50mm coordinate transform in Z     // + (0.1*distance + -127.75);
 
-    vec3 P(tvec[0] / 1000, tvec[1] / 1000, tvec[2] / 1000), V(0, 0, 0), grav(0, 0, 9.81);
-    double p = 0, y = 0;
-    bool im = 0;
-    pitch_yaw_gravity_model_movingtarget_const_v(P, V, grav, 0, &p, &y, &im);
-    y = y * (tvec[1] > 0 ? -1 : 1); // currently a bug where yaw is never negative, so we just multiply by the sign of "y" of the target
-
-    double yaw = -atan(tvec[1] / tvec[0]) * 180 / PI;
-    double pitch = atan(tvec[2] / tvec[0]) * 180 / PI;
-
     // fire at the target
     predicted_armor_msg->fire = locked_in_frames > num_frames_to_fire_after;
 

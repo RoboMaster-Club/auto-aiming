@@ -5,10 +5,9 @@ using namespace std::placeholders;
 
 ControlCommunicatorNode::ControlCommunicatorNode(const char *port) : Node("control_communicator_node")
 {
-
-    aim_stop_null_frame_count = this->declare_parameter("aim.stop_null_frame_count", 3);
-    aim_bullet_speed = this->declare_parameter("aim.bullet_speed", 16.0f);
-
+    this->lookup_table_path = this->declare_parameter("aim.lookup_table_path", "./src/prm_control/control_communicator/pitch_lookup_table.txt");
+    
+    this->pitch_lookup_model = PitchLookupModel(this->lookup_table_path);
     this->control_communicator = ControlCommunicator(port);
 
     if (this->control_communicator.read_alignment())
@@ -87,30 +86,15 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
         RCLCPP_WARN(this->get_logger(), "UART Not connected, ignoring aim message %d.", this->auto_aim_frame_id++);
         return;
     }
-    rclcpp::Time curr_time(msg->header.stamp.sec, msg->header.stamp.nanosec, RCL_ROS_TIME);
 
-    // yaw/pitch and XYZ
-    vec3 P(msg->x / 1000, msg->y / 1000, msg->z / 1000), V(0, 0, 0), grav(0, 0, 9.81);
-    double p = 0, y = 0;
-    bool im = 0;
+    float pitch = this->pitch_lookup_model.get_pitch(msg->x / 1000, msg->z / 1000);
+    float yaw = -atan(msg->y / msg->x) * 180 / PI;
 
-    float yaw = 0;
-    float pitch = 0;
-
-    if (msg->x != 0 && msg->z != 0)
-    {
-        float pred_x = msg->x;
-        float pred_y = msg->y;
-        float pred_z = msg->z;
-        yaw = -atan(pred_y / pred_x) * 180 / PI;
-        pitch = atan(pred_z / pred_x) * 180 / PI;
-
-        pitch_yaw_gravity_model_movingtarget_const_v(P, V, grav, 0, &p, &y, &im);
-        y = y * (msg->y > 0 ? -1 : 1); // currently a bug where yaw is never negative, so we just multiply by the sign of "y" of the target
-    }
+    
+    
     
     this->auto_aim_frame_id++;
-    this->control_communicator.send_auto_aim_packet(y, p, msg->fire);
+    this->control_communicator.send_auto_aim_packet(yaw, pitch, msg->fire);
     if (this->auto_aim_frame_id % 1000 == 0)
     {
         RCLCPP_INFO(this->get_logger(), "Yaw, Pitch: %.3f, %.3f, FIRE=%.3f", yaw, pitch, msg->fire);

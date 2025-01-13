@@ -34,7 +34,7 @@
 #include "tf2_ros/transform_listener.h"
 #include "tf2_ros/buffer.h"
 
-#include "projectile_angle_convel.hpp"
+#include "PitchLookupModel.hpp"
 
 #include "vision_msgs/msg/yaw_pitch.hpp"
 #include "vision_msgs/msg/predicted_armor.hpp"
@@ -63,15 +63,13 @@ private:
     uint32_t nav_frame_id = 0;
     uint32_t heart_beat_frame_id = 0;
 
-    int aim_stop_null_frame_count;
-    int aim_null_frame_count = 0;
-
-    float aim_bullet_speed; // mm/s
-
     int8_t curr_pois = 0;
     bool right = true;
 
+    std::string lookup_table_path;
+
     ControlCommunicator control_communicator;
+    PitchLookupModel pitch_lookup_model;
 
     std::unique_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster;
     std::shared_ptr<tf2_ros::StaticTransformBroadcaster> tf_static_broadcaster;
