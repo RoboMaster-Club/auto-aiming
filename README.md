@@ -3,6 +3,27 @@ Revitalized auto-aiming suite for Purdue RoboMaster Club 2024-2025.
 
 ![build status](https://github.com/RoboMaster-Club/auto-aiming/actions/workflows/colcon-tests.yml/badge.svg)
 
+## Usage  
+Clone this repository into your `ros2-ws` directory. We provide a `run` script that can be used to build, run, test, and clean the workspace with no hassle. The script supports the following functionalities:
+
+- **Building**
+  - `./auto-aiming/run build`
+- **Launch ROS2 code**
+  - `./auto-aiming/run run <launch_file>`
+  - "launch files" basically run several ROS2 nodes at once. The main one is `video2detector.py`.
+- **Run automated tests (GTest)**
+  - `./auto-aiming/run test`
+- **Clean the workspace (remove build and install folders)**
+  - `./auto-aiming/run clean`
+- _Optional flags_
+  - `--quiet`: Suppresses console output, logs output to `command_output.log`.
+  - `--debug`: Builds with debug flags enabled. Used to display a detection results window and debug logs.
+
+### Example to run the detector:
+```
+./auto-aiming/run --debug --quiet run video2detector.py
+```
+
 ## Overall Suite Requirements
 ### Functional Requirements:
 - [ ] **Detect an enemy armor plate in the camera's FOV.**
@@ -31,27 +52,6 @@ Revitalized auto-aiming suite for Purdue RoboMaster Club 2024-2025.
   - Maintain modularity by separating ROS2 and C++ logic into `xyzNode.cpp` and `xyz.cpp` files.  
   - Provide thorough documentation, including doxygen-style comments for functions and README files for modules.
 
-
-
-## Usage  
-Clone this repository into your `ros2-ws` directory. We provide a `run` script that can be used to build, run, test, and clean the workspace with the following options:
-
-- **Build**
-  - `./auto-aiming/run build`
-- **Launch ROS2 code**
-  - `./auto-aiming/run run <launch_file>`
-- **Run automated tests (GTest)**
-  - `./auto-aiming/run test`
-- **Clean the workspace**
-  - `./auto-aiming/run clean`
-- _Optional flags_
-  - `--quiet`: Suppresses console output, logs output to `command_output.log`.
-  - `--debug`: Builds with debug flags enabled.
-
-### Example:
-```
-./auto-aiming/run --debug --quiet run video2detector.py
-```
 
 ## Architecture Diagram
 
