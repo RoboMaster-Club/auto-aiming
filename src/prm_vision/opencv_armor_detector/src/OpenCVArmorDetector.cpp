@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <math.h>
-
-#include <opencv2/opencv.hpp>
 #include "OpenCVArmorDetector.h"
 
 void OpenCVArmorDetector::setConfig(DetectorConfig config)
@@ -40,16 +36,6 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
 
     // Detect the armor in the cropped frame
     std::vector<cv::Point2f> points = detectArmorsInFrame(croppedFrame);
-
-    // Print FPS every 500 frames
-    if (_frame_count % 500 == 0 && _frame_count != 0)
-    {
-        // Calculate and print FPS
-        auto current_time = std::chrono::steady_clock::now();
-        double elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(current_time - last_time).count();
-        last_time = current_time;
-        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), " [*] Detecting Armor (%d) FPS: %.2f", _frame_count, 500.0 / (elapsed_time / 1000.0));
-    }
     _frame_count++;
 
 // Display the cropped frame for debugging
@@ -60,13 +46,13 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
     const std::string window_name = "Detection Results";
     cv::imshow(window_name, croppedFrame);
 
-    // Update the window title (OpenCV >= 4.5)
+    // Update the window title
     cv::setWindowTitle(window_name,
                        "detected: " + std::to_string(_detected_frame) + " / " +
                            std::to_string(_frame_count) + " (" +
                            std::to_string(_detected_frame * 100 / _frame_count) + "%) and missed: " + std::to_string(_missed_frames) + std::string(" frames"));
 
-    cv::waitKey(1000);
+    cv::waitKey(30);
 #endif
 
     // If we didn't find an armor for a few frames (ROS2 param), reset the search area
@@ -82,10 +68,13 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
     {
         // We found an armor, so reset the missed frames and return the keypoints
         _missed_frames = 0;
+        std::vector<cv::Point2f> image_points;
         for (int i = 0; i < 4; i++)
         {
             detected_keypoints[i * 2] = points.at(i).x + _search_area[0];
             detected_keypoints[i * 2 + 1] = points.at(i).y + _search_area[1];
+
+            image_points.emplace_back(cv::Point2f(points.at(i).x + _search_area[0], points.at(i).y + _search_area[1]));
         }
 
         if (_reduce_search_area)
@@ -101,6 +90,12 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
             _search_area[2] = std::min(x_max + 50, WIDTH);
             _search_area[3] = std::min(y_max + 50, HEIGHT);
         }
+        else
+        {
+            // Reset the search area to the full frame
+            _reset_search_area = true;
+        }
+
         _detected_frame++;
     }
 
