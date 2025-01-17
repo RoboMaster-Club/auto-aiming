@@ -1,6 +1,8 @@
 # auto-aiming
 Revitalized auto-aiming suite for Purdue RoboMaster Club 2024-2025.
 
+![build status](https://github.com/RoboMaster-Club/auto-aiming/actions/workflows/colcon-tests.yml/badge.svg)
+
 ## Overall Suite Requirements
 ### Functional Requirements:
 - [ ] **Detect an enemy armor plate in the camera's FOV.**
