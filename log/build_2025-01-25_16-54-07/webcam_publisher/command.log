@@ -1,0 +1,4 @@
+Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/webcam_publisher': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/webcam_publisher -- -j8 -l8
+Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/webcam_publisher' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/webcam_publisher -- -j8 -l8
+Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/webcam_publisher': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/user-accounts/lee4649/auto-aiming/build/webcam_publisher
+Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/webcam_publisher' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/user-accounts/lee4649/auto-aiming/build/webcam_publisher

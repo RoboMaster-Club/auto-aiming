@@ -43,6 +43,7 @@ struct DetectorConfig
   int _saturation_lower_limit;
   int _value_lower_limit;
   int _max_missed_frames;
+  int _max_armors_search;
   bool _reduce_search_area = true;
 };
 
@@ -53,7 +54,7 @@ public:
   ~OpenCVArmorDetector() {}
 
   // Class methods
-  std::vector<_Float32> search(cv::Mat &frame);
+  std::vector<std::vector<_Float32>> search(cv::Mat &frame);
 
   // Other class variables
   int _detected_frame = 0;
@@ -74,7 +75,7 @@ public:
 
 private:
   // Class methods
-  std::vector<cv::Point2f> detectArmorsInFrame(cv::Mat &frame);
+  std::vector<std::vector<cv::Point2f>> detectArmorsInFrame(cv::Mat &frame);
 
   // Class variables
   DetectorConfig _config;
@@ -85,6 +86,7 @@ private:
   // Dynamic parameters
   TargetColor _targetColor;
   int _max_missed_frames;
+  int _max_armors_search;
   bool _reduce_search_area;
 
   // Helpers

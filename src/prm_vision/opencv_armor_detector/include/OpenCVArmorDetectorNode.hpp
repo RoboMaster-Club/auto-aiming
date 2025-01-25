@@ -10,6 +10,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "rcutils/time.h"
 
+#include "vision_msgs/msg/key_point_groups.hpp"
 #include "vision_msgs/msg/key_points.hpp"
 #include "std_msgs/msg/string.hpp"
 #include "std_msgs/msg/bool.hpp"
@@ -34,11 +35,12 @@ private:
     int _value_lower_limit;
     TargetColor _target_color;
     int _max_missed_frames;
+    int _max_armors_search;
     bool _reduce_search_area;
 
     // Callbacks and publishers/subscribers
     void imageCallback(const sensor_msgs::msg::Image::ConstSharedPtr &image_msg);
-    std::shared_ptr<rclcpp::Publisher<vision_msgs::msg::KeyPoints>> keypoints_publisher = NULL;
+    std::shared_ptr<rclcpp::Publisher<vision_msgs::msg::KeyPointGroups>> keypoints_publisher = NULL;
     rcl_interfaces::msg::SetParametersResult parameters_callback(const std::vector<rclcpp::Parameter> &parameters);
     OnSetParametersCallbackHandle::SharedPtr params_callback_handle_;
 

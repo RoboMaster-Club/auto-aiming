@@ -1,0 +1,46 @@
+[35m[1mScanning dependencies of target OpenCVArmorDetector[0m
+[ 30%] Built target gtest
+[ 40%] Built target gtest_main
+[ 50%] [32mBuilding CXX object CMakeFiles/OpenCVArmorDetector.dir/src/OpenCVArmorDetector.cpp.o[0m
+[ 60%] [32m[1mLinking CXX static library libOpenCVArmorDetector.a[0m
+[ 60%] Built target OpenCVArmorDetector
+[35m[1mScanning dependencies of target OpenCVArmorDetectorNode[0m
+[35m[1mScanning dependencies of target test_OpenCVArmorDetector[0m
+[ 70%] [32mBuilding CXX object CMakeFiles/test_OpenCVArmorDetector.dir/test/test_OpenCVArmorDetector.cpp.o[0m
+[ 80%] [32mBuilding CXX object CMakeFiles/OpenCVArmorDetectorNode.dir/src/OpenCVArmorDetectorNode.cpp.o[0m
+[01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetectorNode.cpp:[m[K In constructor ‘[01m[KOpenCVArmorDetectorNode::OpenCVArmorDetectorNode(const rclcpp::NodeOptions&)[m[K’:
+[01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetectorNode.cpp:18:66:[m[K [01;31m[Kerror: [m[K‘[01m[KKeyPointGroups[m[K’ is not a member of ‘[01m[Kvision_msgs::msg[m[K’; did you mean ‘[01m[KKeyPoints[m[K’?
+   18 |   keypoints_publisher = this->create_publisher<vision_msgs::msg::[01;31m[KKeyPointGroups[m[K>("key_points", 10);
+      |                                                                  [01;31m[K^~~~~~~~~~~~~~[m[K
+      |                                                                  [32m[KKeyPoints[m[K
+[01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetectorNode.cpp:18:98:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KOpenCVArmorDetectorNode::create_publisher<<expression error> >(const char [11], int)[m[K’
+   18 |   keypoints_publisher = this->create_publisher<vision_msgs::msg::KeyPointGroups>("key_points", 10[01;31m[K)[m[K;
+      |                                                                                                  [01;31m[K^[m[K
+In file included from [01m[K/opt/ros/foxy/include/image_transport/image_transport.hpp:43[m[K,
+                 from [01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/include/OpenCVArmorDetectorNode.hpp:8[m[K,
+                 from [01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetectorNode.cpp:1[m[K:
+[01m[K/opt/ros/foxy/include/rclcpp/node.hpp:184:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class MessageT, class AllocatorT, class PublisherT> std::shared_ptr<PublisherT> rclcpp::Node::create_publisher(const string&, const rclcpp::QoS&, const rclcpp::PublisherOptionsWithAllocator<AllocatorT>&)[m[K’
+  184 |   [01;36m[Kcreate_publisher[m[K(
+      |   [01;36m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/opt/ros/foxy/include/rclcpp/node.hpp:184:3:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetectorNode.cpp:18:98:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+   18 |   keypoints_publisher = this->create_publisher<vision_msgs::msg::KeyPointGroups>("key_points", 10[01;31m[K)[m[K;
+      |                                                                                                  [01;31m[K^[m[K
+[01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetectorNode.cpp:[m[K In member function ‘[01m[Kvoid OpenCVArmorDetectorNode::imageCallback(const ConstSharedPtr&)[m[K’:
+[01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetectorNode.cpp:98:21:[m[K [01;31m[Kerror: [m[K‘[01m[KKeyPointGroups[m[K’ is not a member of ‘[01m[Kvision_msgs::msg[m[K’; did you mean ‘[01m[KKeyPoints[m[K’?
+   98 |   vision_msgs::msg::[01;31m[KKeyPointGroups[m[K keypoint_group_msg;
+      |                     [01;31m[K^~~~~~~~~~~~~~[m[K
+      |                     [32m[KKeyPoints[m[K
+[01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetectorNode.cpp:114:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kkeypoint_group_msg[m[K’ was not declared in this scope; did you mean ‘[01m[Kkeypoints_msg[m[K’?
+  114 |     [01;31m[Kkeypoint_group_msg[m[K.groups[armor_count] = keypoints_msg;
+      |     [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+      |     [32m[Kkeypoints_msg[m[K
+[01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetectorNode.cpp:120:32:[m[K [01;31m[Kerror: [m[K‘[01m[Kkeypoint_group_msg[m[K’ was not declared in this scope
+  120 |   keypoints_publisher->publish([01;31m[Kkeypoint_group_msg[m[K);
+      |                                [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+make[2]: *** [CMakeFiles/OpenCVArmorDetectorNode.dir/build.make:63: CMakeFiles/OpenCVArmorDetectorNode.dir/src/OpenCVArmorDetectorNode.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:159: CMakeFiles/OpenCVArmorDetectorNode.dir/all] Error 2
+make[1]: *** Waiting for unfinished jobs....
+[ 90%] [32m[1mLinking CXX executable test_OpenCVArmorDetector[0m
+[ 90%] Built target test_OpenCVArmorDetector
+make: *** [Makefile:141: all] Error 2

@@ -1,0 +1,32 @@
+[01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetector.cpp:[m[K In member function ‘[01m[Kstd::vector<std::vector<float> > OpenCVArmorDetector::search(cv::Mat&)[m[K’:
+[01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetector.cpp:58:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kvision_msgs[m[K’ has not been declared
+   58 |     [01;31m[Kvision_msgs[m[K::msg::KeyPointGroups keypoint_group_msg;
+      |     [01;31m[K^~~~~~~~~~~[m[K
+[01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetector.cpp:74:26:[m[K [01;31m[Kerror: [m[K‘[01m[KPoint2f[m[K’ was not declared in this scope; did you mean ‘[01m[Kcv::Point2f[m[K’?
+   74 |         for (std::vector<[01;31m[KPoint2f[m[K> points : armors) {
+      |                          [01;31m[K^~~~~~~[m[K
+      |                          [32m[Kcv::Point2f[m[K
+In file included from [01m[K/usr/local/include/opencv4/opencv2/core.hpp:57[m[K,
+                 from [01m[K/usr/local/include/opencv4/opencv2/opencv.hpp:52[m[K,
+                 from [01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/include/OpenCVArmorDetector.h:5[m[K,
+                 from [01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetector.cpp:1[m[K:
+[01m[K/usr/local/include/opencv4/opencv2/core/types.hpp:202:23:[m[K [01;36m[Knote: [m[K‘[01m[Kcv::Point2f[m[K’ declared here
+  202 | typedef Point_<float> [01;36m[KPoint2f[m[K;
+      |                       [01;36m[K^~~~~~~[m[K
+[01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetector.cpp:74:33:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+   74 |         for (std::vector<Point2f[01;31m[K>[m[K points : armors) {
+      |                                 [01;31m[K^[m[K
+[01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetector.cpp:74:33:[m[K [01;31m[Kerror: [m[Ktemplate argument 2 is invalid
+[01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetector.cpp:74:44:[m[K [01;31m[Kerror: [m[Kcannot convert ‘[01m[Kstd::vector<cv::Point_<float> >[m[K’ to ‘[01m[Kint[m[K’ in initialization
+   74 |         for (std::vector<Point2f> points : [01;31m[Karmors[m[K) {
+      |                                            [01;31m[K^~~~~~[m[K
+[01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetector.cpp:83:52:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Kat[m[K’ in ‘[01m[Kpoints[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+   83 |                 detected_keypoints[i * 2] = points.[01;31m[Kat[m[K(i).x + _search_area[0];
+      |                                                    [01;31m[K^~[m[K
+[01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetector.cpp:84:56:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Kat[m[K’ in ‘[01m[Kpoints[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+   84 |                 detected_keypoints[i * 2 + 1] = points.[01;31m[Kat[m[K(i).y + _search_area[1];
+      |                                                        [01;31m[K^~[m[K
+make[2]: *** [CMakeFiles/OpenCVArmorDetector.dir/build.make:63: CMakeFiles/OpenCVArmorDetector.dir/src/OpenCVArmorDetector.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:132: CMakeFiles/OpenCVArmorDetector.dir/all] Error 2
+make[1]: *** Waiting for unfinished jobs....
+make: *** [Makefile:141: all] Error 2

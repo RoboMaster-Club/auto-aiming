@@ -1,0 +1,29 @@
+[0.048s] Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/webcam_publisher': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/webcam_publisher -- -j8 -l8
+[0.171s] [100%] Built target VideoCaptureNode
+[0.186s] Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/webcam_publisher' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/webcam_publisher -- -j8 -l8
+[0.243s] Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/webcam_publisher': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/user-accounts/lee4649/auto-aiming/build/webcam_publisher
+[0.257s] -- Install configuration: "Release"
+[0.258s] -- Execute custom install script
+[0.259s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/lib/webcam_publisher/VideoCaptureNode
+[0.259s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/launch/video.py
+[0.260s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/launch/webcam.py
+[0.260s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/resources/1.mp4
+[0.261s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/config/webcam_info.yaml
+[0.261s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/ament_index/resource_index/package_run_dependencies/webcam_publisher
+[0.262s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/ament_index/resource_index/parent_prefix_path/webcam_publisher
+[0.262s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/environment/ament_prefix_path.sh
+[0.262s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/environment/ament_prefix_path.dsv
+[0.263s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/environment/path.sh
+[0.263s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/environment/path.dsv
+[0.264s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/local_setup.bash
+[0.264s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/local_setup.sh
+[0.264s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/local_setup.zsh
+[0.265s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/local_setup.dsv
+[0.265s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/package.dsv
+[0.279s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/ament_index/resource_index/packages/webcam_publisher
+[0.279s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/cmake/ament_cmake_export_include_directories-extras.cmake
+[0.279s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/cmake/ament_cmake_export_dependencies-extras.cmake
+[0.280s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/cmake/webcam_publisherConfig.cmake
+[0.280s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/cmake/webcam_publisherConfig-version.cmake
+[0.280s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/package.xml
+[0.321s] Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/webcam_publisher' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/user-accounts/lee4649/auto-aiming/build/webcam_publisher

@@ -1,0 +1,473 @@
+[0.332s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build', '--symlink-install', '--cmake-args', '-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_FLAGS_RELEASE=-O3', '-DPYTHON_EXECUTABLE=/usr/bin/python3.8', '--allow-overriding', 'opencv_armor_detector']
+[0.332s] DEBUG:colcon:Parsed command line arguments: Namespace(allow_overriding=['opencv_armor_detector'], ament_cmake_args=None, base_paths=['.'], build_base='build', catkin_cmake_args=None, catkin_skip_building_tests=False, cmake_args=['-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_FLAGS_RELEASE=-O3', '-DPYTHON_EXECUTABLE=/usr/bin/python3.8'], cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, cmake_target=None, cmake_target_skip_unavailable=False, continue_on_error=False, event_handlers=None, executor='parallel', ignore_user_meta=False, install_base='install', log_base=None, log_level=None, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0xffff90a13400>>, merge_install=False, metas=['./colcon.meta'], mixin=None, mixin_files=None, mixin_verb=('build',), packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_end=None, packages_ignore=None, packages_ignore_regex=None, packages_select=None, packages_select_build_failed=False, packages_select_by_dep=None, packages_select_regex=None, packages_select_test_failures=False, packages_skip=None, packages_skip_build_finished=False, packages_skip_by_dep=None, packages_skip_regex=None, packages_skip_test_passed=False, packages_skip_up_to=None, packages_start=None, packages_up_to=None, packages_up_to_regex=None, parallel_workers=8, paths=None, symlink_install=True, test_result_base=None, verb_extension=<colcon_core.verb.build.BuildVerb object at 0xffff90a13400>, verb_name='build', verb_parser=<colcon_mixin.mixin.mixin_argument.MixinArgumentDecorator object at 0xffff90a13dc0>)
+[0.597s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.598s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.598s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.598s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.598s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.598s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.598s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/user-accounts/lee4649/auto-aiming'
+[0.598s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.599s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.599s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.599s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.599s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.599s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.599s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.599s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.599s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.615s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.616s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.616s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.616s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.616s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.616s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.616s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.616s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.617s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.617s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.617s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.617s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.617s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.617s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.617s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ignore', 'ignore_ament_install']
+[0.617s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore'
+[0.618s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore_ament_install'
+[0.618s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_pkg']
+[0.618s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_pkg'
+[0.618s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_meta']
+[0.618s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_meta'
+[0.618s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ros']
+[0.618s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ros'
+[0.618s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['cmake', 'python']
+[0.618s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'cmake'
+[0.618s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python'
+[0.618s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['python_setup_py']
+[0.618s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python_setup_py'
+[0.619s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera) by extensions ['ignore', 'ignore_ament_install']
+[0.619s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera) by extension 'ignore'
+[0.619s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera) by extension 'ignore_ament_install'
+[0.619s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera) by extensions ['colcon_pkg']
+[0.619s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera) by extension 'colcon_pkg'
+[0.619s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera) by extensions ['colcon_meta']
+[0.619s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera) by extension 'colcon_meta'
+[0.619s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera) by extensions ['ros']
+[0.619s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera) by extension 'ros'
+[0.619s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera) by extensions ['cmake', 'python']
+[0.619s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera) by extension 'cmake'
+[0.619s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera) by extension 'python'
+[0.620s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera) by extensions ['python_setup_py']
+[0.620s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera) by extension 'python_setup_py'
+[0.620s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/mv_publisher) by extensions ['ignore', 'ignore_ament_install']
+[0.620s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/mv_publisher) by extension 'ignore'
+[0.620s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/mv_publisher) by extension 'ignore_ament_install'
+[0.620s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/mv_publisher) by extensions ['colcon_pkg']
+[0.620s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/mv_publisher) by extension 'colcon_pkg'
+[0.620s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/mv_publisher) by extensions ['colcon_meta']
+[0.620s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/mv_publisher) by extension 'colcon_meta'
+[0.620s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/mv_publisher) by extensions ['ros']
+[0.620s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/mv_publisher) by extension 'ros'
+[0.625s] DEBUG:colcon.colcon_core.package_identification:Package 'src/prm_camera/mv_publisher' with type 'ros.ament_cmake' and name 'mv_publisher'
+[0.625s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/recorder_cv) by extensions ['ignore', 'ignore_ament_install']
+[0.625s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/recorder_cv) by extension 'ignore'
+[0.626s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/recorder_cv) by extension 'ignore_ament_install'
+[0.626s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/recorder_cv) by extensions ['colcon_pkg']
+[0.626s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/recorder_cv) by extension 'colcon_pkg'
+[0.626s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/recorder_cv) by extensions ['colcon_meta']
+[0.626s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/recorder_cv) by extension 'colcon_meta'
+[0.626s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/recorder_cv) by extensions ['ros']
+[0.626s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/recorder_cv) by extension 'ros'
+[0.627s] DEBUG:colcon.colcon_core.package_identification:Package 'src/prm_camera/recorder_cv' with type 'ros.ament_cmake' and name 'recorder'
+[0.627s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/webcam_publisher) by extensions ['ignore', 'ignore_ament_install']
+[0.627s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/webcam_publisher) by extension 'ignore'
+[0.627s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/webcam_publisher) by extension 'ignore_ament_install'
+[0.627s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/webcam_publisher) by extensions ['colcon_pkg']
+[0.627s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/webcam_publisher) by extension 'colcon_pkg'
+[0.628s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/webcam_publisher) by extensions ['colcon_meta']
+[0.628s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/webcam_publisher) by extension 'colcon_meta'
+[0.628s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/webcam_publisher) by extensions ['ros']
+[0.628s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_camera/webcam_publisher) by extension 'ros'
+[0.629s] DEBUG:colcon.colcon_core.package_identification:Package 'src/prm_camera/webcam_publisher' with type 'ros.ament_cmake' and name 'webcam_publisher'
+[0.629s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_launch) by extensions ['ignore', 'ignore_ament_install']
+[0.630s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_launch) by extension 'ignore'
+[0.630s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_launch) by extension 'ignore_ament_install'
+[0.630s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_launch) by extensions ['colcon_pkg']
+[0.630s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_launch) by extension 'colcon_pkg'
+[0.630s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_launch) by extensions ['colcon_meta']
+[0.630s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_launch) by extension 'colcon_meta'
+[0.630s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_launch) by extensions ['ros']
+[0.630s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_launch) by extension 'ros'
+[0.631s] DEBUG:colcon.colcon_core.package_identification:Package 'src/prm_launch' with type 'ros.ament_cmake' and name 'prm_launch'
+[0.631s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision) by extensions ['ignore', 'ignore_ament_install']
+[0.631s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision) by extension 'ignore'
+[0.632s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision) by extension 'ignore_ament_install'
+[0.632s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision) by extensions ['colcon_pkg']
+[0.632s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision) by extension 'colcon_pkg'
+[0.632s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision) by extensions ['colcon_meta']
+[0.632s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision) by extension 'colcon_meta'
+[0.632s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision) by extensions ['ros']
+[0.632s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision) by extension 'ros'
+[0.632s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision) by extensions ['cmake', 'python']
+[0.632s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision) by extension 'cmake'
+[0.632s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision) by extension 'python'
+[0.632s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision) by extensions ['python_setup_py']
+[0.632s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision) by extension 'python_setup_py'
+[0.633s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/opencv_armor_detector) by extensions ['ignore', 'ignore_ament_install']
+[0.633s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/opencv_armor_detector) by extension 'ignore'
+[0.633s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/opencv_armor_detector) by extension 'ignore_ament_install'
+[0.633s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/opencv_armor_detector) by extensions ['colcon_pkg']
+[0.633s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/opencv_armor_detector) by extension 'colcon_pkg'
+[0.633s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/opencv_armor_detector) by extensions ['colcon_meta']
+[0.633s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/opencv_armor_detector) by extension 'colcon_meta'
+[0.633s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/opencv_armor_detector) by extensions ['ros']
+[0.633s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/opencv_armor_detector) by extension 'ros'
+[0.634s] DEBUG:colcon.colcon_core.package_identification:Package 'src/prm_vision/opencv_armor_detector' with type 'ros.ament_cmake' and name 'opencv_armor_detector'
+[0.635s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/pose_estimator) by extensions ['ignore', 'ignore_ament_install']
+[0.635s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/pose_estimator) by extension 'ignore'
+[0.635s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/pose_estimator) by extension 'ignore_ament_install'
+[0.635s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/pose_estimator) by extensions ['colcon_pkg']
+[0.635s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/pose_estimator) by extension 'colcon_pkg'
+[0.635s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/pose_estimator) by extensions ['colcon_meta']
+[0.635s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/pose_estimator) by extension 'colcon_meta'
+[0.635s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/pose_estimator) by extensions ['ros']
+[0.635s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/pose_estimator) by extension 'ros'
+[0.637s] DEBUG:colcon.colcon_core.package_identification:Package 'src/prm_vision/pose_estimator' with type 'ros.ament_cmake' and name 'pose_estimator'
+[0.637s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/vision_msgs) by extensions ['ignore', 'ignore_ament_install']
+[0.637s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/vision_msgs) by extension 'ignore'
+[0.637s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/vision_msgs) by extension 'ignore_ament_install'
+[0.637s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/vision_msgs) by extensions ['colcon_pkg']
+[0.637s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/vision_msgs) by extension 'colcon_pkg'
+[0.637s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/vision_msgs) by extensions ['colcon_meta']
+[0.637s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/vision_msgs) by extension 'colcon_meta'
+[0.637s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/vision_msgs) by extensions ['ros']
+[0.637s] Level 1:colcon.colcon_core.package_identification:_identify(src/prm_vision/vision_msgs) by extension 'ros'
+[0.638s] DEBUG:colcon.colcon_core.package_identification:Package 'src/prm_vision/vision_msgs' with type 'ros.ament_cmake' and name 'vision_msgs'
+[0.638s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.638s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.638s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.638s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.639s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.667s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.667s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.671s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 327 installed packages in /opt/ros/foxy
+[0.674s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[0.800s] Level 5:colcon.colcon_core.verb:set package 'mv_publisher' build argument 'cmake_args' from command line to '['-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_FLAGS_RELEASE=-O3', '-DPYTHON_EXECUTABLE=/usr/bin/python3.8']'
+[0.800s] Level 5:colcon.colcon_core.verb:set package 'mv_publisher' build argument 'cmake_target' from command line to 'None'
+[0.800s] Level 5:colcon.colcon_core.verb:set package 'mv_publisher' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.800s] Level 5:colcon.colcon_core.verb:set package 'mv_publisher' build argument 'cmake_clean_cache' from command line to 'False'
+[0.800s] Level 5:colcon.colcon_core.verb:set package 'mv_publisher' build argument 'cmake_clean_first' from command line to 'False'
+[0.801s] Level 5:colcon.colcon_core.verb:set package 'mv_publisher' build argument 'cmake_force_configure' from command line to 'False'
+[0.801s] Level 5:colcon.colcon_core.verb:set package 'mv_publisher' build argument 'ament_cmake_args' from command line to 'None'
+[0.801s] Level 5:colcon.colcon_core.verb:set package 'mv_publisher' build argument 'catkin_cmake_args' from command line to 'None'
+[0.801s] Level 5:colcon.colcon_core.verb:set package 'mv_publisher' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.801s] DEBUG:colcon.colcon_core.verb:Building package 'mv_publisher' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/user-accounts/lee4649/auto-aiming/build/mv_publisher', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': ['-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_FLAGS_RELEASE=-O3', '-DPYTHON_EXECUTABLE=/usr/bin/python3.8'], 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher', 'merge_install': False, 'path': '/home/user-accounts/lee4649/auto-aiming/src/prm_camera/mv_publisher', 'symlink_install': True, 'test_result_base': None}
+[0.801s] Level 5:colcon.colcon_core.verb:set package 'recorder' build argument 'cmake_args' from command line to '['-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_FLAGS_RELEASE=-O3', '-DPYTHON_EXECUTABLE=/usr/bin/python3.8']'
+[0.801s] Level 5:colcon.colcon_core.verb:set package 'recorder' build argument 'cmake_target' from command line to 'None'
+[0.801s] Level 5:colcon.colcon_core.verb:set package 'recorder' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.802s] Level 5:colcon.colcon_core.verb:set package 'recorder' build argument 'cmake_clean_cache' from command line to 'False'
+[0.802s] Level 5:colcon.colcon_core.verb:set package 'recorder' build argument 'cmake_clean_first' from command line to 'False'
+[0.802s] Level 5:colcon.colcon_core.verb:set package 'recorder' build argument 'cmake_force_configure' from command line to 'False'
+[0.802s] Level 5:colcon.colcon_core.verb:set package 'recorder' build argument 'ament_cmake_args' from command line to 'None'
+[0.802s] Level 5:colcon.colcon_core.verb:set package 'recorder' build argument 'catkin_cmake_args' from command line to 'None'
+[0.802s] Level 5:colcon.colcon_core.verb:set package 'recorder' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.802s] DEBUG:colcon.colcon_core.verb:Building package 'recorder' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/user-accounts/lee4649/auto-aiming/build/recorder', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': ['-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_FLAGS_RELEASE=-O3', '-DPYTHON_EXECUTABLE=/usr/bin/python3.8'], 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/user-accounts/lee4649/auto-aiming/install/recorder', 'merge_install': False, 'path': '/home/user-accounts/lee4649/auto-aiming/src/prm_camera/recorder_cv', 'symlink_install': True, 'test_result_base': None}
+[0.802s] Level 5:colcon.colcon_core.verb:set package 'vision_msgs' build argument 'cmake_args' from command line to '['-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_FLAGS_RELEASE=-O3', '-DPYTHON_EXECUTABLE=/usr/bin/python3.8']'
+[0.802s] Level 5:colcon.colcon_core.verb:set package 'vision_msgs' build argument 'cmake_target' from command line to 'None'
+[0.802s] Level 5:colcon.colcon_core.verb:set package 'vision_msgs' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.802s] Level 5:colcon.colcon_core.verb:set package 'vision_msgs' build argument 'cmake_clean_cache' from command line to 'False'
+[0.802s] Level 5:colcon.colcon_core.verb:set package 'vision_msgs' build argument 'cmake_clean_first' from command line to 'False'
+[0.802s] Level 5:colcon.colcon_core.verb:set package 'vision_msgs' build argument 'cmake_force_configure' from command line to 'False'
+[0.803s] Level 5:colcon.colcon_core.verb:set package 'vision_msgs' build argument 'ament_cmake_args' from command line to 'None'
+[0.803s] Level 5:colcon.colcon_core.verb:set package 'vision_msgs' build argument 'catkin_cmake_args' from command line to 'None'
+[0.803s] Level 5:colcon.colcon_core.verb:set package 'vision_msgs' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.803s] DEBUG:colcon.colcon_core.verb:Building package 'vision_msgs' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/user-accounts/lee4649/auto-aiming/build/vision_msgs', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': ['-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_FLAGS_RELEASE=-O3', '-DPYTHON_EXECUTABLE=/usr/bin/python3.8'], 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs', 'merge_install': False, 'path': '/home/user-accounts/lee4649/auto-aiming/src/prm_vision/vision_msgs', 'symlink_install': True, 'test_result_base': None}
+[0.803s] Level 5:colcon.colcon_core.verb:set package 'webcam_publisher' build argument 'cmake_args' from command line to '['-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_FLAGS_RELEASE=-O3', '-DPYTHON_EXECUTABLE=/usr/bin/python3.8']'
+[0.803s] Level 5:colcon.colcon_core.verb:set package 'webcam_publisher' build argument 'cmake_target' from command line to 'None'
+[0.803s] Level 5:colcon.colcon_core.verb:set package 'webcam_publisher' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.803s] Level 5:colcon.colcon_core.verb:set package 'webcam_publisher' build argument 'cmake_clean_cache' from command line to 'False'
+[0.803s] Level 5:colcon.colcon_core.verb:set package 'webcam_publisher' build argument 'cmake_clean_first' from command line to 'False'
+[0.803s] Level 5:colcon.colcon_core.verb:set package 'webcam_publisher' build argument 'cmake_force_configure' from command line to 'False'
+[0.803s] Level 5:colcon.colcon_core.verb:set package 'webcam_publisher' build argument 'ament_cmake_args' from command line to 'None'
+[0.803s] Level 5:colcon.colcon_core.verb:set package 'webcam_publisher' build argument 'catkin_cmake_args' from command line to 'None'
+[0.804s] Level 5:colcon.colcon_core.verb:set package 'webcam_publisher' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.804s] DEBUG:colcon.colcon_core.verb:Building package 'webcam_publisher' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/user-accounts/lee4649/auto-aiming/build/webcam_publisher', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': ['-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_FLAGS_RELEASE=-O3', '-DPYTHON_EXECUTABLE=/usr/bin/python3.8'], 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher', 'merge_install': False, 'path': '/home/user-accounts/lee4649/auto-aiming/src/prm_camera/webcam_publisher', 'symlink_install': True, 'test_result_base': None}
+[0.804s] Level 5:colcon.colcon_core.verb:set package 'opencv_armor_detector' build argument 'cmake_args' from command line to '['-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_FLAGS_RELEASE=-O3', '-DPYTHON_EXECUTABLE=/usr/bin/python3.8']'
+[0.804s] Level 5:colcon.colcon_core.verb:set package 'opencv_armor_detector' build argument 'cmake_target' from command line to 'None'
+[0.804s] Level 5:colcon.colcon_core.verb:set package 'opencv_armor_detector' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.804s] Level 5:colcon.colcon_core.verb:set package 'opencv_armor_detector' build argument 'cmake_clean_cache' from command line to 'False'
+[0.804s] Level 5:colcon.colcon_core.verb:set package 'opencv_armor_detector' build argument 'cmake_clean_first' from command line to 'False'
+[0.804s] Level 5:colcon.colcon_core.verb:set package 'opencv_armor_detector' build argument 'cmake_force_configure' from command line to 'False'
+[0.804s] Level 5:colcon.colcon_core.verb:set package 'opencv_armor_detector' build argument 'ament_cmake_args' from command line to 'None'
+[0.804s] Level 5:colcon.colcon_core.verb:set package 'opencv_armor_detector' build argument 'catkin_cmake_args' from command line to 'None'
+[0.804s] Level 5:colcon.colcon_core.verb:set package 'opencv_armor_detector' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.804s] DEBUG:colcon.colcon_core.verb:Building package 'opencv_armor_detector' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/user-accounts/lee4649/auto-aiming/build/opencv_armor_detector', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': ['-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_FLAGS_RELEASE=-O3', '-DPYTHON_EXECUTABLE=/usr/bin/python3.8'], 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/user-accounts/lee4649/auto-aiming/install/opencv_armor_detector', 'merge_install': False, 'path': '/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector', 'symlink_install': True, 'test_result_base': None}
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'pose_estimator' build argument 'cmake_args' from command line to '['-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_FLAGS_RELEASE=-O3', '-DPYTHON_EXECUTABLE=/usr/bin/python3.8']'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'pose_estimator' build argument 'cmake_target' from command line to 'None'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'pose_estimator' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'pose_estimator' build argument 'cmake_clean_cache' from command line to 'False'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'pose_estimator' build argument 'cmake_clean_first' from command line to 'False'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'pose_estimator' build argument 'cmake_force_configure' from command line to 'False'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'pose_estimator' build argument 'ament_cmake_args' from command line to 'None'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'pose_estimator' build argument 'catkin_cmake_args' from command line to 'None'
+[0.805s] Level 5:colcon.colcon_core.verb:set package 'pose_estimator' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.805s] DEBUG:colcon.colcon_core.verb:Building package 'pose_estimator' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/user-accounts/lee4649/auto-aiming/build/pose_estimator', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': ['-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_FLAGS_RELEASE=-O3', '-DPYTHON_EXECUTABLE=/usr/bin/python3.8'], 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/user-accounts/lee4649/auto-aiming/install/pose_estimator', 'merge_install': False, 'path': '/home/user-accounts/lee4649/auto-aiming/src/prm_vision/pose_estimator', 'symlink_install': True, 'test_result_base': None}
+[0.806s] Level 5:colcon.colcon_core.verb:set package 'prm_launch' build argument 'cmake_args' from command line to '['-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_FLAGS_RELEASE=-O3', '-DPYTHON_EXECUTABLE=/usr/bin/python3.8']'
+[0.806s] Level 5:colcon.colcon_core.verb:set package 'prm_launch' build argument 'cmake_target' from command line to 'None'
+[0.806s] Level 5:colcon.colcon_core.verb:set package 'prm_launch' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.806s] Level 5:colcon.colcon_core.verb:set package 'prm_launch' build argument 'cmake_clean_cache' from command line to 'False'
+[0.806s] Level 5:colcon.colcon_core.verb:set package 'prm_launch' build argument 'cmake_clean_first' from command line to 'False'
+[0.806s] Level 5:colcon.colcon_core.verb:set package 'prm_launch' build argument 'cmake_force_configure' from command line to 'False'
+[0.806s] Level 5:colcon.colcon_core.verb:set package 'prm_launch' build argument 'ament_cmake_args' from command line to 'None'
+[0.806s] Level 5:colcon.colcon_core.verb:set package 'prm_launch' build argument 'catkin_cmake_args' from command line to 'None'
+[0.806s] Level 5:colcon.colcon_core.verb:set package 'prm_launch' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.806s] DEBUG:colcon.colcon_core.verb:Building package 'prm_launch' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/user-accounts/lee4649/auto-aiming/build/prm_launch', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': ['-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_FLAGS_RELEASE=-O3', '-DPYTHON_EXECUTABLE=/usr/bin/python3.8'], 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/user-accounts/lee4649/auto-aiming/install/prm_launch', 'merge_install': False, 'path': '/home/user-accounts/lee4649/auto-aiming/src/prm_launch', 'symlink_install': True, 'test_result_base': None}
+[0.806s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.808s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.809s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/user-accounts/lee4649/auto-aiming/src/prm_vision/vision_msgs' with build type 'ament_cmake'
+[0.809s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/user-accounts/lee4649/auto-aiming/src/prm_vision/vision_msgs'
+[0.813s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.813s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.814s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.822s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/user-accounts/lee4649/auto-aiming/src/prm_camera/mv_publisher' with build type 'ament_cmake'
+[0.822s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/user-accounts/lee4649/auto-aiming/src/prm_camera/mv_publisher'
+[0.823s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.824s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.837s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/user-accounts/lee4649/auto-aiming/src/prm_camera/recorder_cv' with build type 'ament_cmake'
+[0.838s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/user-accounts/lee4649/auto-aiming/src/prm_camera/recorder_cv'
+[0.839s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.839s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.846s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/user-accounts/lee4649/auto-aiming/src/prm_camera/webcam_publisher' with build type 'ament_cmake'
+[0.846s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/user-accounts/lee4649/auto-aiming/src/prm_camera/webcam_publisher'
+[0.847s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.847s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.859s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/vision_msgs': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake /home/user-accounts/lee4649/auto-aiming/src/prm_vision/vision_msgs -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DPYTHON_EXECUTABLE=/usr/bin/python3.8 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs
+[0.869s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/mv_publisher': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake /home/user-accounts/lee4649/auto-aiming/src/prm_camera/mv_publisher -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DPYTHON_EXECUTABLE=/usr/bin/python3.8 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/user-accounts/lee4649/auto-aiming/install/mv_publisher
+[0.875s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/recorder': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake /home/user-accounts/lee4649/auto-aiming/src/prm_camera/recorder_cv -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DPYTHON_EXECUTABLE=/usr/bin/python3.8 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/user-accounts/lee4649/auto-aiming/install/recorder
+[0.886s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/webcam_publisher': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake /home/user-accounts/lee4649/auto-aiming/src/prm_camera/webcam_publisher -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DPYTHON_EXECUTABLE=/usr/bin/python3.8 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher
+[3.716s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/recorder' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake /home/user-accounts/lee4649/auto-aiming/src/prm_camera/recorder_cv -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DPYTHON_EXECUTABLE=/usr/bin/python3.8 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/user-accounts/lee4649/auto-aiming/install/recorder
+[3.722s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/recorder': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/recorder -- -j8 -l8
+[3.755s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/vision_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake /home/user-accounts/lee4649/auto-aiming/src/prm_vision/vision_msgs -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DPYTHON_EXECUTABLE=/usr/bin/python3.8 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs
+[3.760s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/vision_msgs': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/vision_msgs -- -j8 -l8
+[3.874s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/mv_publisher' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake /home/user-accounts/lee4649/auto-aiming/src/prm_camera/mv_publisher -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DPYTHON_EXECUTABLE=/usr/bin/python3.8 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/user-accounts/lee4649/auto-aiming/install/mv_publisher
+[3.875s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/mv_publisher': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/mv_publisher -- -j8 -l8
+[4.068s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/webcam_publisher' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake /home/user-accounts/lee4649/auto-aiming/src/prm_camera/webcam_publisher -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DPYTHON_EXECUTABLE=/usr/bin/python3.8 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher
+[4.073s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/webcam_publisher': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/webcam_publisher -- -j8 -l8
+[10.988s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/mv_publisher' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/mv_publisher -- -j8 -l8
+[11.050s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/mv_publisher': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/user-accounts/lee4649/auto-aiming/build/mv_publisher
+[11.401s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(mv_publisher)
+[11.404s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/mv_publisher' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/user-accounts/lee4649/auto-aiming/build/mv_publisher
+[11.408s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher' for CMake module files
+[11.409s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher' for CMake config files
+[11.410s] Level 1:colcon.colcon_core.shell:create_environment_hook('mv_publisher', 'cmake_prefix_path')
+[11.411s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/hook/cmake_prefix_path.ps1'
+[11.412s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/hook/cmake_prefix_path.dsv'
+[11.413s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/hook/cmake_prefix_path.sh'
+[11.415s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/lib'
+[11.415s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/bin'
+[11.416s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/lib/pkgconfig/mv_publisher.pc'
+[11.416s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/lib/python3.8/site-packages'
+[11.416s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/bin'
+[11.417s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/package.ps1'
+[11.419s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/package.dsv'
+[11.420s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/package.sh'
+[11.421s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/package.bash'
+[11.422s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/package.zsh'
+[11.423s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/colcon-core/packages/mv_publisher)
+[11.473s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(mv_publisher)
+[11.474s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher' for CMake module files
+[11.475s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher' for CMake config files
+[11.476s] Level 1:colcon.colcon_core.shell:create_environment_hook('mv_publisher', 'cmake_prefix_path')
+[11.476s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/hook/cmake_prefix_path.ps1'
+[11.478s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/hook/cmake_prefix_path.dsv'
+[11.478s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/hook/cmake_prefix_path.sh'
+[11.479s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/lib'
+[11.480s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/bin'
+[11.480s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/lib/pkgconfig/mv_publisher.pc'
+[11.480s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/lib/python3.8/site-packages'
+[11.480s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/bin'
+[11.481s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/package.ps1'
+[11.482s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/package.dsv'
+[11.483s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/package.sh'
+[11.484s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/package.bash'
+[11.485s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/package.zsh'
+[11.485s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/colcon-core/packages/mv_publisher)
+[12.036s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/vision_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/vision_msgs -- -j8 -l8
+[12.175s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/vision_msgs': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/user-accounts/lee4649/auto-aiming/build/vision_msgs
+[13.978s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(vision_msgs)
+[13.979s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs' for CMake module files
+[13.980s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/vision_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/user-accounts/lee4649/auto-aiming/build/vision_msgs
+[13.981s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs' for CMake config files
+[13.983s] Level 1:colcon.colcon_core.shell:create_environment_hook('vision_msgs', 'cmake_prefix_path')
+[13.984s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/hook/cmake_prefix_path.ps1'
+[13.985s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/hook/cmake_prefix_path.dsv'
+[13.985s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/hook/cmake_prefix_path.sh'
+[13.986s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib'
+[13.986s] Level 1:colcon.colcon_core.shell:create_environment_hook('vision_msgs', 'ld_library_path_lib')
+[13.987s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/hook/ld_library_path_lib.ps1'
+[13.987s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/hook/ld_library_path_lib.dsv'
+[13.988s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/hook/ld_library_path_lib.sh'
+[13.988s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/bin'
+[13.988s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib/pkgconfig/vision_msgs.pc'
+[13.989s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib/python3.8/site-packages'
+[13.989s] Level 1:colcon.colcon_core.shell:create_environment_hook('vision_msgs', 'pythonpath')
+[13.989s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/hook/pythonpath.ps1'
+[13.990s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/hook/pythonpath.dsv'
+[13.991s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/hook/pythonpath.sh'
+[13.991s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/bin'
+[13.992s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/package.ps1'
+[13.993s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/package.dsv'
+[13.994s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/package.sh'
+[13.994s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/package.bash'
+[13.995s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/package.zsh'
+[13.995s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/colcon-core/packages/vision_msgs)
+[14.121s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(vision_msgs)
+[14.122s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs' for CMake module files
+[14.123s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs' for CMake config files
+[14.125s] Level 1:colcon.colcon_core.shell:create_environment_hook('vision_msgs', 'cmake_prefix_path')
+[14.125s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/hook/cmake_prefix_path.ps1'
+[14.127s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/hook/cmake_prefix_path.dsv'
+[14.127s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/hook/cmake_prefix_path.sh'
+[14.128s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib'
+[14.129s] Level 1:colcon.colcon_core.shell:create_environment_hook('vision_msgs', 'ld_library_path_lib')
+[14.129s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/hook/ld_library_path_lib.ps1'
+[14.129s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/hook/ld_library_path_lib.dsv'
+[14.130s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/hook/ld_library_path_lib.sh'
+[14.130s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/bin'
+[14.131s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib/pkgconfig/vision_msgs.pc'
+[14.131s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib/python3.8/site-packages'
+[14.131s] Level 1:colcon.colcon_core.shell:create_environment_hook('vision_msgs', 'pythonpath')
+[14.132s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/hook/pythonpath.ps1'
+[14.132s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/hook/pythonpath.dsv'
+[14.133s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/hook/pythonpath.sh'
+[14.134s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/bin'
+[14.135s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/package.ps1'
+[14.136s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/package.dsv'
+[14.137s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/package.sh'
+[14.138s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/package.bash'
+[14.139s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/package.zsh'
+[14.139s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/colcon-core/packages/vision_msgs)
+[14.140s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector' with build type 'ament_cmake'
+[14.141s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector'
+[14.141s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[14.142s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[14.152s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/user-accounts/lee4649/auto-aiming/src/prm_vision/pose_estimator' with build type 'ament_cmake'
+[14.153s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/user-accounts/lee4649/auto-aiming/src/prm_vision/pose_estimator'
+[14.154s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[14.154s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[14.174s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/opencv_armor_detector': AMENT_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake /home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DPYTHON_EXECUTABLE=/usr/bin/python3.8 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/user-accounts/lee4649/auto-aiming/install/opencv_armor_detector
+[14.183s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/pose_estimator': AMENT_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake /home/user-accounts/lee4649/auto-aiming/src/prm_vision/pose_estimator -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DPYTHON_EXECUTABLE=/usr/bin/python3.8 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/user-accounts/lee4649/auto-aiming/install/pose_estimator
+[14.754s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/recorder' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/recorder -- -j8 -l8
+[14.796s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/recorder': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/user-accounts/lee4649/auto-aiming/build/recorder
+[15.155s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(recorder)
+[15.156s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/recorder' for CMake module files
+[15.157s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/recorder' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/user-accounts/lee4649/auto-aiming/build/recorder
+[15.158s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/recorder' for CMake config files
+[15.158s] Level 1:colcon.colcon_core.shell:create_environment_hook('recorder', 'cmake_prefix_path')
+[15.159s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/hook/cmake_prefix_path.ps1'
+[15.160s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/hook/cmake_prefix_path.dsv'
+[15.160s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/hook/cmake_prefix_path.sh'
+[15.162s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/recorder/lib'
+[15.162s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/recorder/bin'
+[15.162s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/recorder/lib/pkgconfig/recorder.pc'
+[15.163s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/recorder/lib/python3.8/site-packages'
+[15.163s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/recorder/bin'
+[15.163s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/package.ps1'
+[15.164s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/package.dsv'
+[15.165s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/package.sh'
+[15.165s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/package.bash'
+[15.166s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/package.zsh'
+[15.166s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/user-accounts/lee4649/auto-aiming/install/recorder/share/colcon-core/packages/recorder)
+[15.205s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(recorder)
+[15.206s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/recorder' for CMake module files
+[15.206s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/recorder' for CMake config files
+[15.207s] Level 1:colcon.colcon_core.shell:create_environment_hook('recorder', 'cmake_prefix_path')
+[15.207s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/hook/cmake_prefix_path.ps1'
+[15.209s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/hook/cmake_prefix_path.dsv'
+[15.209s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/hook/cmake_prefix_path.sh'
+[15.211s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/recorder/lib'
+[15.211s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/recorder/bin'
+[15.211s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/recorder/lib/pkgconfig/recorder.pc'
+[15.212s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/recorder/lib/python3.8/site-packages'
+[15.212s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/recorder/bin'
+[15.213s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/package.ps1'
+[15.214s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/package.dsv'
+[15.214s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/package.sh'
+[15.215s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/package.bash'
+[15.216s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/package.zsh'
+[15.216s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/user-accounts/lee4649/auto-aiming/install/recorder/share/colcon-core/packages/recorder)
+[16.638s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/webcam_publisher' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/webcam_publisher -- -j8 -l8
+[16.678s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/webcam_publisher': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/user-accounts/lee4649/auto-aiming/build/webcam_publisher
+[17.034s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(webcam_publisher)
+[17.036s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher' for CMake module files
+[17.037s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/webcam_publisher' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/user-accounts/lee4649/auto-aiming/build/webcam_publisher
+[17.038s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher' for CMake config files
+[17.039s] Level 1:colcon.colcon_core.shell:create_environment_hook('webcam_publisher', 'cmake_prefix_path')
+[17.039s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/hook/cmake_prefix_path.ps1'
+[17.040s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/hook/cmake_prefix_path.dsv'
+[17.041s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/hook/cmake_prefix_path.sh'
+[17.042s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/lib'
+[17.042s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/bin'
+[17.043s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/lib/pkgconfig/webcam_publisher.pc'
+[17.043s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/lib/python3.8/site-packages'
+[17.043s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/bin'
+[17.044s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/package.ps1'
+[17.045s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/package.dsv'
+[17.046s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/package.sh'
+[17.046s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/package.bash'
+[17.047s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/package.zsh'
+[17.047s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/colcon-core/packages/webcam_publisher)
+[17.084s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(webcam_publisher)
+[17.085s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher' for CMake module files
+[17.087s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher' for CMake config files
+[17.088s] Level 1:colcon.colcon_core.shell:create_environment_hook('webcam_publisher', 'cmake_prefix_path')
+[17.089s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/hook/cmake_prefix_path.ps1'
+[17.090s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/hook/cmake_prefix_path.dsv'
+[17.091s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/hook/cmake_prefix_path.sh'
+[17.093s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/lib'
+[17.093s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/bin'
+[17.093s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/lib/pkgconfig/webcam_publisher.pc'
+[17.094s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/lib/python3.8/site-packages'
+[17.094s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/bin'
+[17.095s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/package.ps1'
+[17.096s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/package.dsv'
+[17.097s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/package.sh'
+[17.098s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/package.bash'
+[17.099s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/webcam_publisher/package.zsh'
+[17.100s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/user-accounts/lee4649/auto-aiming/install/webcam_publisher/share/colcon-core/packages/webcam_publisher)
+[17.439s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/opencv_armor_detector' returned '0': AMENT_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake /home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DPYTHON_EXECUTABLE=/usr/bin/python3.8 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/user-accounts/lee4649/auto-aiming/install/opencv_armor_detector
+[17.446s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/opencv_armor_detector': AMENT_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/opencv_armor_detector -- -j8 -l8
+[17.830s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/pose_estimator' returned '0': AMENT_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake /home/user-accounts/lee4649/auto-aiming/src/prm_vision/pose_estimator -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DPYTHON_EXECUTABLE=/usr/bin/python3.8 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/user-accounts/lee4649/auto-aiming/install/pose_estimator
+[17.835s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/pose_estimator': AMENT_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/pose_estimator -- -j8 -l8
+[32.447s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/opencv_armor_detector' returned '2': AMENT_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/opencv_armor_detector -- -j8 -l8
+[32.490s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(opencv_armor_detector)
+[32.490s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/opencv_armor_detector' for CMake module files
+[32.491s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/opencv_armor_detector' for CMake config files
+[32.491s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/opencv_armor_detector/bin'
+[32.491s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/opencv_armor_detector/lib/pkgconfig/opencv_armor_detector.pc'
+[32.492s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/opencv_armor_detector/lib/python3.8/site-packages'
+[32.492s] Level 1:colcon.colcon_core.environment:checking '/home/user-accounts/lee4649/auto-aiming/install/opencv_armor_detector/bin'
+[32.492s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/opencv_armor_detector/share/opencv_armor_detector/package.ps1'
+[32.494s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/user-accounts/lee4649/auto-aiming/install/opencv_armor_detector/share/opencv_armor_detector/package.dsv'
+[32.495s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/opencv_armor_detector/share/opencv_armor_detector/package.sh'
+[32.496s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/opencv_armor_detector/share/opencv_armor_detector/package.bash'
+[32.497s] INFO:colcon.colcon_core.shell:Creating package script '/home/user-accounts/lee4649/auto-aiming/install/opencv_armor_detector/share/opencv_armor_detector/package.zsh'
+[32.498s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/user-accounts/lee4649/auto-aiming/install/opencv_armor_detector/share/colcon-core/packages/opencv_armor_detector)
+[53.542s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[53.544s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[53.545s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '2'
+[53.545s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[53.582s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[53.583s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[53.583s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[53.638s] DEBUG:colcon.colcon_notification.desktop_notification.notify2:Failed to initialize notify2: org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.Notifications exited with status 1
+[53.638s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[53.639s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/user-accounts/lee4649/auto-aiming/install/local_setup.ps1'
+[53.641s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/user-accounts/lee4649/auto-aiming/install/_local_setup_util_ps1.py'
+[53.645s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/user-accounts/lee4649/auto-aiming/install/setup.ps1'
+[53.649s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/user-accounts/lee4649/auto-aiming/install/local_setup.sh'
+[53.650s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/user-accounts/lee4649/auto-aiming/install/_local_setup_util_sh.py'
+[53.652s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/user-accounts/lee4649/auto-aiming/install/setup.sh'
+[53.655s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/user-accounts/lee4649/auto-aiming/install/local_setup.bash'
+[53.657s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/user-accounts/lee4649/auto-aiming/install/setup.bash'
+[53.660s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/user-accounts/lee4649/auto-aiming/install/local_setup.zsh'
+[53.661s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/user-accounts/lee4649/auto-aiming/install/setup.zsh'

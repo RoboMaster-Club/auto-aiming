@@ -10,11 +10,12 @@ OpenCVArmorDetectorNode::OpenCVArmorDetectorNode(const rclcpp::NodeOptions &opti
   _value_lower_limit = this->declare_parameter("_value_lower_limit", 150);
   _target_color = this->declare_parameter("_target_red", true) ? RED : BLUE;
   _max_missed_frames = this->declare_parameter("_max_missed_frames", 1);
+  _max_armors_search = this->declare_parameter("_max_armors_search", 2);
   _reduce_search_area = this->declare_parameter("_reduce_search_area", true);
 
   // Callbacks and pub/sub
   params_callback_handle_ = this->add_on_set_parameters_callback(std::bind(&OpenCVArmorDetectorNode::parameters_callback, this, std::placeholders::_1));
-  keypoints_publisher = this->create_publisher<vision_msgs::msg::KeyPoints>("key_points", 10);
+  keypoints_publisher = this->create_publisher<vision_msgs::msg::KeyPointGroups>("key_points", 10);
 
   // Initialize the detector
   DetectorConfig config = {_target_color, _hue_range_limit, _saturation_lower_limit, _value_lower_limit, _max_missed_frames, _reduce_search_area};
@@ -93,21 +94,30 @@ void OpenCVArmorDetectorNode::imageCallback(
   cv::resize(frame, frame, cv::Size(WIDTH, HEIGHT));
 
   // Call the detector's search method with both HSV ranges
-  std::vector<_Float32> points = detector->search(frame);
+  std::vector<std::vector<_Float32>> armors = detector->search(frame);
+  vision_msgs::msg::KeyPointGroups keypoint_group_msg;
+  short armor_count = 0;
+  for (std::vector<_Float32> points : armors) {
+    if (armor_count >= _max_armors_search) {
+      break;
+    }
+    // Prep the message to be published
+    vision_msgs::msg::KeyPoints keypoints_msg;
+    std::array<float, 8> points_array;
+    std::copy(points.begin(), points.end(), points_array.begin());
+    float h = std::min(cv::norm(points.at(1) - points.at(0)), cv::norm(points.at(3) - points.at(2)));
+    float w = cv::norm((points.at(0) + points.at(1)) / 2 - (points.at(2) + points.at(3)) / 2);
 
-  // Prep the message to be published
-  vision_msgs::msg::KeyPoints keypoints_msg;
-  std::array<float, 8> points_array;
-  std::copy(points.begin(), points.end(), points_array.begin());
-  float h = std::min(cv::norm(points.at(1) - points.at(0)), cv::norm(points.at(3) - points.at(2)));
-  float w = cv::norm((points.at(0) + points.at(1)) / 2 - (points.at(2) + points.at(3)) / 2);
+    keypoints_msg.header = image_msg->header;
+    keypoints_msg.points = points_array;
+    keypoints_msg.is_large_armor = (w / h) > 3.5; // 3.3 is the width ratio threshold before it is considered a large armor
+    keypoint_group_msg.groups[armor_count] = keypoints_msg;
 
-  keypoints_msg.header = image_msg->header;
-  keypoints_msg.points = points_array;
-  keypoints_msg.is_large_armor = (w / h) > 3.5; // 3.3 is the width ratio threshold before it is considered a large armor
+    armor_count++;
+  }
 
   // Publish the message
-  keypoints_publisher->publish(keypoints_msg);
+  keypoints_publisher->publish(keypoint_group_msg);
 }
 
 int main(int argc, char *argv[])

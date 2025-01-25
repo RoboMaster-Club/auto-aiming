@@ -1,0 +1,25 @@
+[0.036s] Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/opencv_armor_detector': AMENT_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/opencv_armor_detector -- -j8 -l8
+[0.119s] [ 40%] Built target gtest
+[0.120s] [ 40%] Built target gtest_main
+[0.121s] [ 60%] Built target OpenCVArmorDetector
+[0.141s] [35m[1mScanning dependencies of target test_OpenCVArmorDetector[0m
+[0.141s] [35m[1mScanning dependencies of target OpenCVArmorDetectorNode[0m
+[0.167s] [ 70%] [32mBuilding CXX object CMakeFiles/test_OpenCVArmorDetector.dir/test/test_OpenCVArmorDetector.cpp.o[0m
+[0.200s] [ 80%] [32mBuilding CXX object CMakeFiles/OpenCVArmorDetectorNode.dir/src/OpenCVArmorDetectorNode.cpp.o[0m
+[4.324s] [01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/test/test_OpenCVArmorDetector.cpp:[m[K In function ‘[01m[Kvoid testImgs(std::string, std::string, OpenCVArmorDetector*, float, float)[m[K’:
+[4.325s] [01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/test/test_OpenCVArmorDetector.cpp:315:54:[m[K [01;31m[Kerror: [m[K‘[01m[Kdcdsc[m[K’ was not declared in this scope
+[4.325s]   315 |         std::string img_path = entry.path().string();[01;31m[Kdcdsc[m[K
+[4.325s]       |                                                      [01;31m[K^~~~~[m[K
+[4.328s] [01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/test/test_OpenCVArmorDetector.cpp:317:20:[m[K [01;31m[Kerror: [m[K‘[01m[Kframe[m[K’ was not declared in this scope
+[4.328s]   317 |         cv::resize([01;31m[Kframe[m[K, frame, cv::Size(WIDTH, HEIGHT));
+[4.328s]       |                    [01;31m[K^~~~~[m[K
+[5.621s] make[2]: *** [CMakeFiles/test_OpenCVArmorDetector.dir/build.make:63: CMakeFiles/test_OpenCVArmorDetector.dir/test/test_OpenCVArmorDetector.cpp.o] Error 1
+[5.622s] make[1]: *** [CMakeFiles/Makefile2:105: CMakeFiles/test_OpenCVArmorDetector.dir/all] Error 2
+[5.622s] make[1]: *** Waiting for unfinished jobs....
+[11.372s] [ 90%] [32m[1mLinking CXX executable OpenCVArmorDetectorNode[0m
+[12.164s] /usr/bin/ld: warning: libopencv_imgcodecs.so.4.2, needed by /opt/ros/foxy/lib/libcv_bridge.so, may conflict with libopencv_imgcodecs.so.406
+[12.165s] /usr/bin/ld: warning: libopencv_imgproc.so.4.2, needed by /opt/ros/foxy/lib/libcv_bridge.so, may conflict with libopencv_imgproc.so.406
+[12.165s] /usr/bin/ld: warning: libopencv_core.so.4.2, needed by /opt/ros/foxy/lib/libcv_bridge.so, may conflict with libopencv_core.so.406
+[12.193s] [ 90%] Built target OpenCVArmorDetectorNode
+[12.195s] make: *** [Makefile:141: all] Error 2
+[12.200s] Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/opencv_armor_detector' returned '2': AMENT_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/opencv_armor_detector -- -j8 -l8

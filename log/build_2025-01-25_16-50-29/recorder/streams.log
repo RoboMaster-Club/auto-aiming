@@ -1,0 +1,28 @@
+[0.049s] Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/recorder': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/recorder -- -j8 -l8
+[0.176s] [100%] Built target VideoRecorderNode
+[0.202s] Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/recorder' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/recorder -- -j8 -l8
+[0.296s] Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/recorder': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/user-accounts/lee4649/auto-aiming/build/recorder
+[0.308s] -- Install configuration: "Release"
+[0.309s] -- Execute custom install script
+[0.310s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/recorder/lib/recorder/VideoRecorderNode
+[0.311s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/launch/mv2image.py
+[0.311s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/launch/mv_recorder.py
+[0.312s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/launch/old_mv2image.py
+[0.312s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/launch/webcam_recorder.py
+[0.313s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/ament_index/resource_index/package_run_dependencies/recorder
+[0.313s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/ament_index/resource_index/parent_prefix_path/recorder
+[0.313s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/environment/ament_prefix_path.sh
+[0.314s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/environment/ament_prefix_path.dsv
+[0.314s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/environment/path.sh
+[0.315s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/environment/path.dsv
+[0.315s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/local_setup.bash
+[0.315s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/local_setup.sh
+[0.316s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/local_setup.zsh
+[0.316s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/local_setup.dsv
+[0.316s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/package.dsv
+[0.335s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/ament_index/resource_index/packages/recorder
+[0.335s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/cmake/ament_cmake_export_dependencies-extras.cmake
+[0.335s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/cmake/recorderConfig.cmake
+[0.337s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/cmake/recorderConfig-version.cmake
+[0.337s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/package.xml
+[0.374s] Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/recorder' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/user-accounts/lee4649/auto-aiming/build/recorder

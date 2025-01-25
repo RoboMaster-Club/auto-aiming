@@ -1,0 +1,1 @@
+/home/user-accounts/lee4649/auto-aiming/build/recorder/ament_cmake_core/recorderConfig.cmake

@@ -1,0 +1,10 @@
+/home/user-accounts/lee4649/auto-aiming/build/recorder/CMakeFiles/install/strip.dir
+/home/user-accounts/lee4649/auto-aiming/build/recorder/CMakeFiles/install/local.dir
+/home/user-accounts/lee4649/auto-aiming/build/recorder/CMakeFiles/install.dir
+/home/user-accounts/lee4649/auto-aiming/build/recorder/CMakeFiles/list_install_components.dir
+/home/user-accounts/lee4649/auto-aiming/build/recorder/CMakeFiles/rebuild_cache.dir
+/home/user-accounts/lee4649/auto-aiming/build/recorder/CMakeFiles/edit_cache.dir
+/home/user-accounts/lee4649/auto-aiming/build/recorder/CMakeFiles/test.dir
+/home/user-accounts/lee4649/auto-aiming/build/recorder/CMakeFiles/VideoRecorderNode.dir
+/home/user-accounts/lee4649/auto-aiming/build/recorder/CMakeFiles/recorder_uninstall.dir
+/home/user-accounts/lee4649/auto-aiming/build/recorder/CMakeFiles/uninstall.dir

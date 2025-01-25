@@ -1,0 +1,1 @@
+/home/user-accounts/lee4649/auto-aiming/build/vision_msgs/rosidl_generator_cpp/vision_msgs/msg/detail/predicted_armor__type_support.hpp

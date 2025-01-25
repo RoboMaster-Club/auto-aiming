@@ -1,0 +1,65 @@
+-- The C compiler identification is GNU 9.4.0
+-- The CXX compiler identification is GNU 9.4.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake_auto: 0.9.12 (/opt/ros/foxy/share/ament_cmake_auto/cmake)
+-- Found PythonInterp: /usr/bin/python3.8 (found suitable version "3.8.10", minimum required is "3") 
+-- Using PYTHON_EXECUTABLE: /usr/bin/python3.8
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+-- Found rosidl_adapter: 1.3.1 (/opt/ros/foxy/share/rosidl_adapter/cmake)
+-- Found OpenSSL: /usr/lib/aarch64-linux-gnu/libcrypto.so (found version "1.1.1f")  
+-- Found FastRTPS: /opt/ros/foxy/include  
+-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+-- Found rmw_implementation_cmake: 1.0.4 (/opt/ros/foxy/share/rmw_implementation_cmake/cmake)
+-- Using RMW implementation 'rmw_fastrtps_cpp' as default
+-- Looking for pthread.h
+-- Looking for pthread.h - found
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Looking for pthread_create in pthreads
+-- Looking for pthread_create in pthreads - not found
+-- Looking for pthread_create in pthread
+-- Looking for pthread_create in pthread - found
+-- Found Threads: TRUE  
+-- Found CUDA: /usr/local/cuda (found suitable exact version "11.4") 
+-- Setting yaml-cpp_DIR to: '/opt/ros/foxy/share/yaml_cpp_vendor/cmake/../../../opt/yaml_cpp_vendor/lib/cmake/yaml-cpp'
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/user-accounts/lee4649/auto-aiming/build/mv_publisher
+[35m[1mScanning dependencies of target MVCameraNode[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/MVCameraNode.dir/src/MVCameraNode.cpp.o[0m
+[100%] [32m[1mLinking CXX executable MVCameraNode[0m
+[100%] Built target MVCameraNode
+-- Install configuration: "Release"
+-- Execute custom install script
+-- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/mv_publisher/lib/mv_publisher/MVCameraNode
+-- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/launch/temp.py
+-- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/config/mv_133_4_info.yaml
+-- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/ament_index/resource_index/package_run_dependencies/mv_publisher
+-- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/ament_index/resource_index/parent_prefix_path/mv_publisher
+-- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/environment/ament_prefix_path.sh
+-- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/environment/ament_prefix_path.dsv
+-- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/environment/path.sh
+-- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/environment/path.dsv
+-- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/local_setup.bash
+-- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/local_setup.sh
+-- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/local_setup.zsh
+-- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/local_setup.dsv
+-- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/package.dsv
+-- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/ament_index/resource_index/packages/mv_publisher
+-- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/cmake/ament_cmake_export_include_directories-extras.cmake
+-- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/cmake/ament_cmake_export_dependencies-extras.cmake
+-- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/cmake/mv_publisherConfig.cmake
+-- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/cmake/mv_publisherConfig-version.cmake
+-- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/mv_publisher/share/mv_publisher/package.xml

@@ -1,0 +1,81 @@
+[0.029s] Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/pose_estimator': AMENT_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake /home/user-accounts/lee4649/auto-aiming/src/prm_vision/pose_estimator -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DPYTHON_EXECUTABLE=/usr/bin/python3.8 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/user-accounts/lee4649/auto-aiming/install/pose_estimator
+[0.131s] -- The CXX compiler identification is GNU 9.4.0
+[0.139s] -- Check for working CXX compiler: /usr/bin/c++
+[0.268s] -- Check for working CXX compiler: /usr/bin/c++ -- works
+[0.269s] -- Detecting CXX compiler ABI info
+[0.407s] -- Detecting CXX compiler ABI info - done
+[0.420s] -- Detecting CXX compile features
+[0.420s] -- Detecting CXX compile features - done
+[0.424s] -- Found ament_cmake: 0.9.12 (/opt/ros/foxy/share/ament_cmake/cmake)
+[0.466s] -- Found PythonInterp: /usr/bin/python3.8 (found suitable version "3.8.10", minimum required is "3") 
+[0.466s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3.8
+[0.793s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.833s] -- Found rclcpp: 2.4.3 (/opt/ros/foxy/share/rclcpp/cmake)
+[0.901s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.911s] -- Found rosidl_adapter: 1.3.1 (/opt/ros/foxy/share/rosidl_adapter/cmake)
+[1.058s] -- Found OpenSSL: /usr/lib/aarch64-linux-gnu/libcrypto.so (found version "1.1.1f")  
+[1.108s] -- Found FastRTPS: /opt/ros/foxy/include  
+[1.232s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[1.313s] -- Found rmw_implementation_cmake: 1.0.4 (/opt/ros/foxy/share/rmw_implementation_cmake/cmake)
+[1.315s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[1.316s] -- Looking for C++ include pthread.h
+[1.452s] -- Looking for C++ include pthread.h - found
+[1.452s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[1.601s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+[1.601s] -- Looking for pthread_create in pthreads
+[1.730s] -- Looking for pthread_create in pthreads - not found
+[1.730s] -- Looking for pthread_create in pthread
+[1.863s] -- Looking for pthread_create in pthread - found
+[1.863s] -- Found Threads: TRUE  
+[2.080s] -- Found vision_msgs: 0.0.0 (/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/share/vision_msgs/cmake)
+[2.284s] -- Found CUDA: /usr/local/cuda (found suitable exact version "11.4") 
+[2.311s] -- Found OpenCV: /usr/local (found suitable version "4.6.0", minimum required is "4.6.0") 
+[2.313s] -- Found cv_bridge: 3.0.7 (/opt/ros/foxy/share/cv_bridge/cmake)
+[2.441s] -- Found tf2: 0.13.14 (/opt/ros/foxy/share/tf2/cmake)
+[2.457s] -- Found tf2_ros: 0.13.14 (/opt/ros/foxy/share/tf2_ros/cmake)
+[2.933s] -- Found ament_cmake_gtest: 0.9.12 (/opt/ros/foxy/share/ament_cmake_gtest/cmake)
+[2.953s] -- Found gtest sources under '/opt/ros/foxy/src/gtest_vendor': C++ tests using 'Google Test' will be built
+[3.022s] -- The C compiler identification is GNU 9.4.0
+[3.027s] -- Check for working C compiler: /usr/bin/cc
+[3.144s] -- Check for working C compiler: /usr/bin/cc -- works
+[3.145s] -- Detecting C compiler ABI info
+[3.255s] -- Detecting C compiler ABI info - done
+[3.286s] -- Detecting C compile features
+[3.290s] -- Detecting C compile features - done
+[3.295s] -- Check if compiler accepts -pthread
+[3.438s] -- Check if compiler accepts -pthread - yes
+[3.563s] -- Configuring done
+[3.642s] -- Generating done
+[3.646s] -- Build files have been written to: /home/user-accounts/lee4649/auto-aiming/build/pose_estimator
+[3.677s] Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/pose_estimator' returned '0': AMENT_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake /home/user-accounts/lee4649/auto-aiming/src/prm_vision/pose_estimator -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DPYTHON_EXECUTABLE=/usr/bin/python3.8 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/user-accounts/lee4649/auto-aiming/install/pose_estimator
+[3.682s] Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/pose_estimator': AMENT_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/pose_estimator -- -j8 -l8
+[3.756s] [35m[1mScanning dependencies of target gtest_main[0m
+[3.756s] [35m[1mScanning dependencies of target gtest[0m
+[3.756s] [35m[1mScanning dependencies of target ValidityFilter[0m
+[3.777s] [  7%] [32mBuilding CXX object CMakeFiles/ValidityFilter.dir/src/ValidityFilter.cpp.o[0m
+[3.782s] [ 14%] [32mBuilding CXX object gtest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o[0m
+[3.786s] [ 21%] [32mBuilding CXX object gtest/CMakeFiles/gtest.dir/src/gtest-all.cc.o[0m
+[4.796s] [ 28%] [32m[1mLinking CXX static library libValidityFilter.a[0m
+[4.856s] [ 28%] Built target ValidityFilter
+[4.876s] [35m[1mScanning dependencies of target PoseEstimator[0m
+[4.937s] [ 35%] [32mBuilding CXX object CMakeFiles/PoseEstimator.dir/src/PoseEstimator.cpp.o[0m
+[5.774s] [ 42%] [32m[1mLinking CXX static library libgtest_main.a[0m
+[5.836s] [ 42%] Built target gtest_main
+[18.859s] [ 50%] [32m[1mLinking CXX static library libgtest.a[0m
+[18.918s] [ 50%] Built target gtest
+[18.935s] [35m[1mScanning dependencies of target test_ValidityFilter[0m
+[18.959s] [ 57%] [32mBuilding CXX object CMakeFiles/test_ValidityFilter.dir/test/test_ValidityFilter.cpp.o[0m
+[20.998s] [ 64%] [32m[1mLinking CXX static library libPoseEstimator.a[0m
+[21.052s] [ 64%] Built target PoseEstimator
+[21.071s] [35m[1mScanning dependencies of target PoseEstimatorNode[0m
+[21.071s] [35m[1mScanning dependencies of target test_PoseEstimator[0m
+[21.134s] [ 71%] [32mBuilding CXX object CMakeFiles/test_PoseEstimator.dir/test/test_PoseEstimator.cpp.o[0m
+[21.174s] [ 78%] [32mBuilding CXX object CMakeFiles/PoseEstimatorNode.dir/src/PoseEstimatorNode.cpp.o[0m
+[23.425s] [ 85%] [32m[1mLinking CXX executable test_ValidityFilter[0m
+[23.568s] [ 85%] Built target test_ValidityFilter
+[27.219s] [ 92%] [32m[1mLinking CXX executable test_PoseEstimator[0m
+[27.467s] [ 92%] Built target test_PoseEstimator
+[38.494s] [100%] [32m[1mLinking CXX executable PoseEstimatorNode[0m
+[39.304s] /usr/bin/ld: warning: libopencv_imgcodecs.so.4.2, needed by /opt/ros/foxy/lib/libcv_bridge.so, may conflict with libopencv_imgcodecs.so.406
+[39.304s] /usr/bin/ld: warning: libopencv_core.so.4.2, needed by /opt/ros/foxy/lib/libcv_bridge.so, may conflict with libopencv_core.so.406
+[39.354s] [100%] Built target PoseEstimatorNode

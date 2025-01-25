@@ -15,12 +15,13 @@ void OpenCVArmorDetector::setConfig(DetectorConfig config)
     // Set the other config variables
     _targetColor = config._target_color;
     _max_missed_frames = config._max_missed_frames;
+    _max_armors_search = config._max_armors_search;
     _reduce_search_area = config._reduce_search_area;
 }
 
-std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
+std::vector<std::vector<_Float32>> OpenCVArmorDetector::search(cv::Mat &frame)
 {
-    std::vector<_Float32> detected_keypoints(8, 0);
+    std::vector<std::vector<_Float32>> detected_armors;
     static auto last_time = std::chrono::steady_clock::now(); // Static to persist across calls
 
     if (_reset_search_area)
@@ -35,7 +36,7 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
     cv::Mat croppedFrame = frame(cv::Range(_search_area[1], _search_area[3]), cv::Range(_search_area[0], _search_area[2])).clone();
 
     // Detect the armor in the cropped frame
-    std::vector<cv::Point2f> points = detectArmorsInFrame(croppedFrame);
+    std::vector<std::vector<cv::Point2f>> armors = detectArmorsInFrame(croppedFrame);
     _frame_count++;
 
 // Display the cropped frame for debugging
@@ -54,9 +55,8 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
 
     cv::waitKey(30);
 #endif
-
     // If we didn't find an armor for a few frames (ROS2 param), reset the search area
-    if (points.size() == 0)
+    if (armors.size() == 0)
     {
         _missed_frames++;
         if (_missed_frames >= _max_missed_frames)
@@ -68,23 +68,33 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
     {
         // We found an armor, so reset the missed frames and return the keypoints
         _missed_frames = 0;
-        std::vector<cv::Point2f> image_points;
-        for (int i = 0; i < 4; i++)
-        {
-            detected_keypoints[i * 2] = points.at(i).x + _search_area[0];
-            detected_keypoints[i * 2 + 1] = points.at(i).y + _search_area[1];
+        short armor_count = 0;
+        for (std::vector<cv::Point2f> points : armors) {
+            if (armor_count >= _max_armors_search) {
+                break;
+            }
 
-            image_points.emplace_back(cv::Point2f(points.at(i).x + _search_area[0], points.at(i).y + _search_area[1]));
+            std::vector<_Float32> detected_keypoints(8, 0);
+            for (int i = 0; i < 4; i++)
+            {
+
+                detected_keypoints[i * 2] = points.at(i).x + _search_area[0];
+                detected_keypoints[i * 2 + 1] = points.at(i).y + _search_area[1];
+
+                detected_armors.push_back(detected_keypoints);
+
+            }
+            armor_count++;
         }
 
         if (_reduce_search_area)
         {
             // Change the search area to the bounding box of the armor with a 50 pixel buffer
             _reset_search_area = false; // We got a detection, so don't reset the search area next frame
-            int x_min = (int)std::min(detected_keypoints[0], detected_keypoints[2]);
-            int x_max = (int)std::max(detected_keypoints[4], detected_keypoints[6]);
-            int y_min = (int)std::min(detected_keypoints[1], detected_keypoints[5]);
-            int y_max = (int)std::max(detected_keypoints[3], detected_keypoints[7]);
+            int x_min = (int)std::min(detected_armors[0][0], detected_armors[0][2]);
+            int x_max = (int)std::max(detected_armors[0][4], detected_armors[0][6]);
+            int y_min = (int)std::min(detected_armors[0][1], detected_armors[0][5]);
+            int y_max = (int)std::max(detected_armors[0][3], detected_armors[0][7]);
             _search_area[0] = std::max(x_min - 50, 0);
             _search_area[1] = std::max(y_min - 50, 0);
             _search_area[2] = std::min(x_max + 50, WIDTH);
@@ -99,11 +109,11 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
         _detected_frame++;
     }
 
-    return detected_keypoints;
+    return detected_armors;
 }
 
 /**
- * @brief Detects an armor plate in the given frame.
+ * @brief Detects armor plates in the given frame.
  *
  * We Gaussian blur the input frame and convert it to HSV color space.
  * A mask is created for the desired color ranges (blue and red) and we find contours in the mask.
@@ -111,9 +121,9 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
  * Finally, we filter for probable light bars, and attempt to find a match forming an armor plate.
  *
  * @param frame The input frame in which to search for armor.
- * @return A vector of two cv::RotatedRect objects representing the detected armor, or an empty vector if no armor is found.
+ * @return A vector containing vectors of two cv::RotatedRect objects representing the detected armor, or an empty vector if no armor is found.
  */
-std::vector<cv::Point2f> OpenCVArmorDetector::detectArmorsInFrame(cv::Mat &frame)
+std::vector<std::vector<cv::Point2f>> OpenCVArmorDetector::detectArmorsInFrame(cv::Mat &frame)
 {
     cv::Mat hsvFrame, result;
 
@@ -179,6 +189,9 @@ std::vector<cv::Point2f> OpenCVArmorDetector::detectArmorsInFrame(cv::Mat &frame
     std::sort(light_bar_candidates.begin(), light_bar_candidates.end(), [](cv::RotatedRect &a, cv::RotatedRect &b)
               { return a.center.x < b.center.x; });
 
+    int armors_found = 0;
+    std::vector<std::vector<cv::Point2f>> armors;
+
     // If we have at least 2 light bars, we can attempt to match them to find an armor
     if (light_bar_candidates.size() >= 2)
     {
@@ -205,12 +218,17 @@ std::vector<cv::Point2f> OpenCVArmorDetector::detectArmorsInFrame(cv::Mat &frame
                     cv::circle(frame, armor_points_2[0], 0, cv::Scalar(0, 255, 0), -1);
                     cv::circle(frame, armor_points_2[1], 0, cv::Scalar(0, 255, 0), -1);
 
-                    return {rectToPoint(first)[0], rectToPoint(first)[1], rectToPoint(second)[0], rectToPoint(second)[1]};
+                    armors_found++;
+                    armors.push_back({rectToPoint(first)[0], rectToPoint(first)[1], rectToPoint(second)[0], rectToPoint(second)[1]});
+
+                    if (armors_found >= _max_armors_search) {
+                        return armors;
+                    }
                 }
             }
         }
     }
-    return {}; // no armor found
+    return armors;
 }
 
 void OpenCVArmorDetector::drawRotatedRect(cv::Mat &frame, cv::RotatedRect &rect)

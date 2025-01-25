@@ -1,0 +1,2 @@
+# Hashes of file build rules.
+ce85d6c6c27f64792ae70d6a38a79062 CMakeFiles/opencv_armor_detector_uninstall

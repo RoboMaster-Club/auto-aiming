@@ -1,0 +1,48 @@
+[0.039s] Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/opencv_armor_detector': AMENT_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/opencv_armor_detector -- -j8 -l8
+[0.105s] [35m[1mScanning dependencies of target OpenCVArmorDetector[0m
+[0.122s] [ 30%] Built target gtest
+[0.122s] [ 40%] Built target gtest_main
+[0.132s] [ 50%] [32mBuilding CXX object CMakeFiles/OpenCVArmorDetector.dir/src/OpenCVArmorDetector.cpp.o[0m
+[5.089s] [ 60%] [32m[1mLinking CXX static library libOpenCVArmorDetector.a[0m
+[5.152s] [ 60%] Built target OpenCVArmorDetector
+[5.172s] [35m[1mScanning dependencies of target OpenCVArmorDetectorNode[0m
+[5.172s] [35m[1mScanning dependencies of target test_OpenCVArmorDetector[0m
+[5.216s] [ 70%] [32mBuilding CXX object CMakeFiles/test_OpenCVArmorDetector.dir/test/test_OpenCVArmorDetector.cpp.o[0m
+[5.256s] [ 80%] [32mBuilding CXX object CMakeFiles/OpenCVArmorDetectorNode.dir/src/OpenCVArmorDetectorNode.cpp.o[0m
+[10.117s] [01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetectorNode.cpp:[m[K In constructor ‘[01m[KOpenCVArmorDetectorNode::OpenCVArmorDetectorNode(const rclcpp::NodeOptions&)[m[K’:
+[10.117s] [01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetectorNode.cpp:18:66:[m[K [01;31m[Kerror: [m[K‘[01m[KKeyPointGroups[m[K’ is not a member of ‘[01m[Kvision_msgs::msg[m[K’; did you mean ‘[01m[KKeyPoints[m[K’?
+[10.118s]    18 |   keypoints_publisher = this->create_publisher<vision_msgs::msg::[01;31m[KKeyPointGroups[m[K>("key_points", 10);
+[10.118s]       |                                                                  [01;31m[K^~~~~~~~~~~~~~[m[K
+[10.118s]       |                                                                  [32m[KKeyPoints[m[K
+[10.118s] [01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetectorNode.cpp:18:98:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KOpenCVArmorDetectorNode::create_publisher<<expression error> >(const char [11], int)[m[K’
+[10.118s]    18 |   keypoints_publisher = this->create_publisher<vision_msgs::msg::KeyPointGroups>("key_points", 10[01;31m[K)[m[K;
+[10.118s]       |                                                                                                  [01;31m[K^[m[K
+[10.118s] In file included from [01m[K/opt/ros/foxy/include/image_transport/image_transport.hpp:43[m[K,
+[10.118s]                  from [01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/include/OpenCVArmorDetectorNode.hpp:8[m[K,
+[10.118s]                  from [01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetectorNode.cpp:1[m[K:
+[10.118s] [01m[K/opt/ros/foxy/include/rclcpp/node.hpp:184:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class MessageT, class AllocatorT, class PublisherT> std::shared_ptr<PublisherT> rclcpp::Node::create_publisher(const string&, const rclcpp::QoS&, const rclcpp::PublisherOptionsWithAllocator<AllocatorT>&)[m[K’
+[10.119s]   184 |   [01;36m[Kcreate_publisher[m[K(
+[10.119s]       |   [01;36m[K^~~~~~~~~~~~~~~~[m[K
+[10.119s] [01m[K/opt/ros/foxy/include/rclcpp/node.hpp:184:3:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[10.119s] [01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetectorNode.cpp:18:98:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+[10.119s]    18 |   keypoints_publisher = this->create_publisher<vision_msgs::msg::KeyPointGroups>("key_points", 10[01;31m[K)[m[K;
+[10.119s]       |                                                                                                  [01;31m[K^[m[K
+[10.151s] [01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetectorNode.cpp:[m[K In member function ‘[01m[Kvoid OpenCVArmorDetectorNode::imageCallback(const ConstSharedPtr&)[m[K’:
+[10.151s] [01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetectorNode.cpp:98:21:[m[K [01;31m[Kerror: [m[K‘[01m[KKeyPointGroups[m[K’ is not a member of ‘[01m[Kvision_msgs::msg[m[K’; did you mean ‘[01m[KKeyPoints[m[K’?
+[10.152s]    98 |   vision_msgs::msg::[01;31m[KKeyPointGroups[m[K keypoint_group_msg;
+[10.152s]       |                     [01;31m[K^~~~~~~~~~~~~~[m[K
+[10.152s]       |                     [32m[KKeyPoints[m[K
+[10.170s] [01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetectorNode.cpp:114:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kkeypoint_group_msg[m[K’ was not declared in this scope; did you mean ‘[01m[Kkeypoints_msg[m[K’?
+[10.170s]   114 |     [01;31m[Kkeypoint_group_msg[m[K.groups[armor_count] = keypoints_msg;
+[10.170s]       |     [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+[10.171s]       |     [32m[Kkeypoints_msg[m[K
+[10.194s] [01m[K/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/src/OpenCVArmorDetectorNode.cpp:120:32:[m[K [01;31m[Kerror: [m[K‘[01m[Kkeypoint_group_msg[m[K’ was not declared in this scope
+[10.195s]   120 |   keypoints_publisher->publish([01;31m[Kkeypoint_group_msg[m[K);
+[10.195s]       |                                [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+[12.484s] make[2]: *** [CMakeFiles/OpenCVArmorDetectorNode.dir/build.make:63: CMakeFiles/OpenCVArmorDetectorNode.dir/src/OpenCVArmorDetectorNode.cpp.o] Error 1
+[12.485s] make[1]: *** [CMakeFiles/Makefile2:159: CMakeFiles/OpenCVArmorDetectorNode.dir/all] Error 2
+[12.485s] make[1]: *** Waiting for unfinished jobs....
+[13.678s] [ 90%] [32m[1mLinking CXX executable test_OpenCVArmorDetector[0m
+[14.146s] [ 90%] Built target test_OpenCVArmorDetector
+[14.148s] make: *** [Makefile:141: all] Error 2
+[14.152s] Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/opencv_armor_detector' returned '2': AMENT_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/opencv_armor_detector -- -j8 -l8

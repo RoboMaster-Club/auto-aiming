@@ -1,0 +1,31 @@
+[0.031s] Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/pose_estimator': AMENT_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/pose_estimator -- -j8 -l8
+[0.115s] [ 28%] Built target gtest_main
+[0.115s] [ 28%] Built target ValidityFilter
+[0.116s] [ 42%] Built target gtest
+[0.151s] [ 57%] Built target test_ValidityFilter
+[0.153s] [ 71%] Built target PoseEstimator
+[0.204s] [ 85%] Built target test_PoseEstimator
+[0.213s] [100%] Built target PoseEstimatorNode
+[0.235s] Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/pose_estimator' returned '0': AMENT_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/pose_estimator -- -j8 -l8
+[0.288s] Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/pose_estimator': AMENT_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --install /home/user-accounts/lee4649/auto-aiming/build/pose_estimator
+[0.304s] -- Install configuration: "Release"
+[0.304s] -- Execute custom install script
+[0.305s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/pose_estimator/lib/pose_estimator/PoseEstimatorNode
+[0.306s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/pose_estimator/share/ament_index/resource_index/package_run_dependencies/pose_estimator
+[0.307s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/pose_estimator/share/ament_index/resource_index/parent_prefix_path/pose_estimator
+[0.307s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/pose_estimator/share/pose_estimator/environment/ament_prefix_path.sh
+[0.307s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/pose_estimator/share/pose_estimator/environment/ament_prefix_path.dsv
+[0.307s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/pose_estimator/share/pose_estimator/environment/path.sh
+[0.308s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/pose_estimator/share/pose_estimator/environment/path.dsv
+[0.308s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/pose_estimator/share/pose_estimator/local_setup.bash
+[0.309s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/pose_estimator/share/pose_estimator/local_setup.sh
+[0.309s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/pose_estimator/share/pose_estimator/local_setup.zsh
+[0.309s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/pose_estimator/share/pose_estimator/local_setup.dsv
+[0.310s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/pose_estimator/share/pose_estimator/package.dsv
+[0.327s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/pose_estimator/share/ament_index/resource_index/packages/pose_estimator
+[0.327s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/pose_estimator/share/pose_estimator/cmake/ament_cmake_export_include_directories-extras.cmake
+[0.327s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/pose_estimator/share/pose_estimator/cmake/ament_cmake_export_dependencies-extras.cmake
+[0.327s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/pose_estimator/share/pose_estimator/cmake/pose_estimatorConfig.cmake
+[0.328s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/pose_estimator/share/pose_estimator/cmake/pose_estimatorConfig-version.cmake
+[0.328s] -- Up-to-date symlink: /home/user-accounts/lee4649/auto-aiming/install/pose_estimator/share/pose_estimator/package.xml
+[0.333s] Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/pose_estimator' returned '0': AMENT_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user-accounts/lee4649/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --install /home/user-accounts/lee4649/auto-aiming/build/pose_estimator

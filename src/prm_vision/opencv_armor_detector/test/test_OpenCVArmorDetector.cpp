@@ -37,7 +37,7 @@ protected:
 
     void SetUp() override
     {
-        DetectorConfig config = {RED, 30, 100, 150, 1, true};
+        DetectorConfig config = {RED, 30, 100, 150, 1, 2, true};
         detector = new OpenCVArmorDetector(config);
     }
 
@@ -58,13 +58,14 @@ TEST_F(OpenCVArmorDetectorTest, test_Config)
     EXPECT_EQ(c._saturation_lower_limit, 100);
     EXPECT_EQ(c._value_lower_limit, 150);
     EXPECT_EQ(c._max_missed_frames, 1);
+    EXPECT_EQ(c._max_armors_search, 2);
     EXPECT_EQ(c._reduce_search_area, true);
 }
 
 TEST_F(OpenCVArmorDetectorTest, test_SetConfig)
 {
     std::cout << "Testing setConfig" << std::endl;
-    DetectorConfig config = {BLUE, 1, 2, 3, 4, false};
+    DetectorConfig config = {BLUE, 1, 2, 3, 4, 5, false};
     detector->setConfig(config);
     DetectorConfig c = detector->getConfig();
     EXPECT_EQ(c._target_color, BLUE);
@@ -72,6 +73,7 @@ TEST_F(OpenCVArmorDetectorTest, test_SetConfig)
     EXPECT_EQ(c._saturation_lower_limit, 2);
     EXPECT_EQ(c._value_lower_limit, 3);
     EXPECT_EQ(c._max_missed_frames, 4);
+    EXPECT_EQ(c._max_armors_search, 5);
     EXPECT_EQ(c._reduce_search_area, false);
     detector->setConfig({RED, 30, 100, 150, 1, true}); // Reset the config
 }
@@ -187,12 +189,8 @@ TEST_F(OpenCVArmorDetectorTest, test_search_no_armor)
     EXPECT_EQ(detector->_detected_frame, 0);
 
     cv::Mat frame = cv::Mat::zeros(HEIGHT, WIDTH, CV_8UC3);
-    std::vector<_Float32> points = detector->search(frame);
-    EXPECT_EQ(points.size(), 8);
-    for (int i = 0; i < 8; i++)
-    {
-        EXPECT_EQ(points.at(i), 0);
-    }
+    std::vector<std::vector<_Float32>> armors = detector->search(frame);
+    EXPECT_EQ(armors.size(), 0);
 
     EXPECT_EQ(detector->getMissedFrames(), 1);
     EXPECT_EQ(detector->_detected_frame, 0);
@@ -207,7 +205,7 @@ TEST_F(OpenCVArmorDetectorTest, test_search_armor_easy)
 {
     // We install the test resources to the package share directory (done in the CMakeLists.txt)
     std::string package_share_dir = ament_index_cpp::get_package_share_directory("opencv_armor_detector");
-    OpenCVArmorDetector *detector_easy = new OpenCVArmorDetector({RED, 30, 100, 150, 1, false});
+    OpenCVArmorDetector *detector_easy = new OpenCVArmorDetector({RED, 30, 100, 150, 1, 2, false});
 
     // Should be no missed frames or detected frames at the start
     EXPECT_EQ(detector_easy->getMissedFrames(), 0);
@@ -226,7 +224,7 @@ TEST_F(OpenCVArmorDetectorTest, test_search_armor_blue)
 {
     // We install the test resources to the package share directory (done in the CMakeLists.txt)
     std::string package_share_dir = ament_index_cpp::get_package_share_directory("opencv_armor_detector");
-    OpenCVArmorDetector *detector_blue = new OpenCVArmorDetector({BLUE, 30, 100, 150, 1, false});
+    OpenCVArmorDetector *detector_blue = new OpenCVArmorDetector({BLUE, 30, 100, 150, 1, 2, false});
 
     // Should be no missed frames or detected frames at the start
     EXPECT_EQ(detector_blue->getMissedFrames(), 0);
@@ -244,7 +242,7 @@ TEST_F(OpenCVArmorDetectorTest, test_search_armor_far_back)
 {
     // We install the test resources to the package share directory (done in the CMakeLists.txt)
     std::string package_share_dir = ament_index_cpp::get_package_share_directory("opencv_armor_detector");
-    OpenCVArmorDetector *detector_far_back = new OpenCVArmorDetector({RED, 30, 100, 150, 1, false});
+    OpenCVArmorDetector *detector_far_back = new OpenCVArmorDetector({RED, 30, 100, 150, 1, 2, false});
 
     // Should be no missed frames or detected frames at the start
     EXPECT_EQ(detector_far_back->getMissedFrames(), 0);
@@ -262,7 +260,7 @@ TEST_F(OpenCVArmorDetectorTest, test_search_armor_close_video)
 {
     // We install the test resources to the package share directory (done in the CMakeLists.txt)
     std::string package_share_dir = ament_index_cpp::get_package_share_directory("opencv_armor_detector");
-    OpenCVArmorDetector *detector_close = new OpenCVArmorDetector({RED, 30, 100, 150, 1, true});
+    OpenCVArmorDetector *detector_close = new OpenCVArmorDetector({RED, 30, 100, 150, 1, 2, true});
 
     // Should be no missed frames or detected frames at the start
     EXPECT_EQ(detector_close->getMissedFrames(), 0);
@@ -279,7 +277,7 @@ TEST_F(OpenCVArmorDetectorTest, test_search_armor_far_back_spin_and_move_video)
 {
     // We install the test resources to the package share directory (done in the CMakeLists.txt)
     std::string package_share_dir = ament_index_cpp::get_package_share_directory("opencv_armor_detector");
-    OpenCVArmorDetector *detector_far_back_spin_and_move = new OpenCVArmorDetector({RED, 30, 100, 150, 1, true});
+    OpenCVArmorDetector *detector_far_back_spin_and_move = new OpenCVArmorDetector({RED, 30, 100, 150, 1, 2, true});
 
     // Should be no missed frames or detected frames at the start
     EXPECT_EQ(detector_far_back_spin_and_move->getMissedFrames(), 0);
@@ -317,11 +315,13 @@ void testImgs(std::string folder_path, std::string gt_path, OpenCVArmorDetector 
         std::string img_path = entry.path().string();
         cv::Mat frame = cv::imread(img_path);
         cv::resize(frame, frame, cv::Size(WIDTH, HEIGHT));
-        std::vector<_Float32> points = detector->search(frame);
+        std::vector<std::vector<_Float32>> armors = detector->search(frame);
 
         // Loss between the detected points and the ground truth
         // Skip if no armor detected in gt or in the frame (all zeros) since we want to check loss given a detection. Detection rate is accounted for separately
-        if ((gt.at(frame_idx).at(0) == cv::Point2f(0, 0) && gt.at(frame_idx).at(1) == cv::Point2f(0, 0) && gt.at(frame_idx).at(2) == cv::Point2f(0, 0) && gt.at(frame_idx).at(3) == cv::Point2f(0, 0)) || (points.at(0) == 0 && points.at(1) == 0 && points.at(2) == 0 && points.at(3) == 0 && points.at(4) == 0 && points.at(5) == 0 && points.at(6) == 0 && points.at(7) == 0))
+        if ((gt.at(frame_idx).at(0) == cv::Point2f(0, 0) && gt.at(frame_idx).at(1) == cv::Point2f(0, 0) && gt.at(frame_idx).at(2) == cv::Point2f(0, 0) && gt.at(frame_idx).at(3) == cv::Point2f(0, 0)) ||
+            (armors.size() == 0) ||
+            (armors[0].at(0) == 0 && armors[0].at(1) == 0 && armors[0].at(2) == 0 && armors[0].at(3) == 0 && armors[0].at(4) == 0 && armors[0].at(5) == 0 && armors[0].at(6) == 0 && armors[0].at(7) == 0))
         {
             frame_idx++;
             continue;
@@ -329,7 +329,7 @@ void testImgs(std::string folder_path, std::string gt_path, OpenCVArmorDetector 
 
         for (int i = 0; i < 4; i++)
         {
-            cv::Point2f detected_point(points.at(i * 2), points.at(i * 2 + 1));
+            cv::Point2f detected_point(armors[0].at(i * 2), armors[0].at(i * 2 + 1));
             cv::Point2f gt_point = gt.at(frame_idx).at(i);
 
             total_loss += 0.25 * cv::norm(detected_point - gt_point);
@@ -375,11 +375,13 @@ void testVideo(std::string video_path, std::string gt_path, OpenCVArmorDetector 
     while (cap.read(frame))
     {
         cv::resize(frame, frame, cv::Size(WIDTH, HEIGHT));
-        std::vector<_Float32> points = detector->search(frame);
+        std::vector<std::vector<_Float32>> armors = detector->search(frame);
 
         // Loss between the detected points and the ground truth
         // Skip if no armor detected in gt or in the frame (all zeros) since we want to check loss given a detection. Detection rate is accounted for separately
-        if ((gt.at(frame_idx).at(0) == cv::Point2f(0, 0) && gt.at(frame_idx).at(1) == cv::Point2f(0, 0) && gt.at(frame_idx).at(2) == cv::Point2f(0, 0) && gt.at(frame_idx).at(3) == cv::Point2f(0, 0)) || (points.at(0) == 0 && points.at(1) == 0 && points.at(2) == 0 && points.at(3) == 0 && points.at(4) == 0 && points.at(5) == 0 && points.at(6) == 0 && points.at(7) == 0))
+        if ((gt.at(frame_idx).at(0) == cv::Point2f(0, 0) && gt.at(frame_idx).at(1) == cv::Point2f(0, 0) && gt.at(frame_idx).at(2) == cv::Point2f(0, 0) && gt.at(frame_idx).at(3) == cv::Point2f(0, 0)) ||
+            (armors.size() == 0) ||
+            (armors[0].at(0) == 0 && armors[0].at(1) == 0 && armors[0].at(2) == 0 && armors[0].at(3) == 0 && armors[0].at(4) == 0 && armors[0].at(5) == 0 && armors[0].at(6) == 0 && armors[0].at(7) == 0))
         {
             frame_idx++;
             continue;
@@ -388,7 +390,7 @@ void testVideo(std::string video_path, std::string gt_path, OpenCVArmorDetector 
         // Loss is the sum of the L2 norm between the detected points and the ground truth
         for (int i = 0; i < 4; i++)
         {
-            cv::Point2f detected_point(points.at(i * 2), points.at(i * 2 + 1));
+            cv::Point2f detected_point(armors[0].at(i * 2), armors[0].at(i * 2 + 1));
             cv::Point2f gt_point = gt.at(frame_idx).at(i);
 
             total_loss += 0.25 * cv::norm(detected_point - gt_point);

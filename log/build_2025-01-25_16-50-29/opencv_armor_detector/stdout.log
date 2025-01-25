@@ -1,0 +1,6 @@
+[ 40%] Built target gtest
+[ 40%] Built target gtest_main
+[ 60%] Built target OpenCVArmorDetector
+[35m[1mScanning dependencies of target OpenCVArmorDetectorNode[0m
+[ 80%] Built target test_OpenCVArmorDetector
+[ 90%] [32mBuilding CXX object CMakeFiles/OpenCVArmorDetectorNode.dir/src/OpenCVArmorDetectorNode.cpp.o[0m

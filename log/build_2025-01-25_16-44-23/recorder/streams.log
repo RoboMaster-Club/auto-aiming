@@ -1,0 +1,79 @@
+[0.037s] Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/recorder': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake /home/user-accounts/lee4649/auto-aiming/src/prm_camera/recorder_cv -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DPYTHON_EXECUTABLE=/usr/bin/python3.8 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/user-accounts/lee4649/auto-aiming/install/recorder
+[0.122s] -- The C compiler identification is GNU 9.4.0
+[0.204s] -- The CXX compiler identification is GNU 9.4.0
+[0.211s] -- Check for working C compiler: /usr/bin/cc
+[0.318s] -- Check for working C compiler: /usr/bin/cc -- works
+[0.319s] -- Detecting C compiler ABI info
+[0.429s] -- Detecting C compiler ABI info - done
+[0.445s] -- Detecting C compile features
+[0.445s] -- Detecting C compile features - done
+[0.449s] -- Check for working CXX compiler: /usr/bin/c++
+[0.578s] -- Check for working CXX compiler: /usr/bin/c++ -- works
+[0.580s] -- Detecting CXX compiler ABI info
+[0.708s] -- Detecting CXX compiler ABI info - done
+[0.740s] -- Detecting CXX compile features
+[0.740s] -- Detecting CXX compile features - done
+[0.744s] -- Found ament_cmake: 0.9.12 (/opt/ros/foxy/share/ament_cmake/cmake)
+[0.784s] -- Found PythonInterp: /usr/bin/python3.8 (found suitable version "3.8.10", minimum required is "3") 
+[0.785s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3.8
+[1.104s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[1.143s] -- Found rclcpp: 2.4.3 (/opt/ros/foxy/share/rclcpp/cmake)
+[1.211s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[1.220s] -- Found rosidl_adapter: 1.3.1 (/opt/ros/foxy/share/rosidl_adapter/cmake)
+[1.361s] -- Found OpenSSL: /usr/lib/aarch64-linux-gnu/libcrypto.so (found version "1.1.1f")  
+[1.409s] -- Found FastRTPS: /opt/ros/foxy/include  
+[1.533s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[1.618s] -- Found rmw_implementation_cmake: 1.0.4 (/opt/ros/foxy/share/rmw_implementation_cmake/cmake)
+[1.620s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[1.621s] -- Looking for pthread.h
+[1.745s] -- Looking for pthread.h - found
+[1.745s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[1.877s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+[1.878s] -- Looking for pthread_create in pthreads
+[1.986s] -- Looking for pthread_create in pthreads - not found
+[1.987s] -- Looking for pthread_create in pthread
+[2.106s] -- Looking for pthread_create in pthread - found
+[2.107s] -- Found Threads: TRUE  
+[2.323s] -- Found sensor_msgs: 2.0.5 (/opt/ros/foxy/share/sensor_msgs/cmake)
+[2.486s] -- Found cv_bridge: 3.0.7 (/opt/ros/foxy/share/cv_bridge/cmake)
+[2.514s] -- Found CUDA: /usr/local/cuda (found suitable exact version "11.4") 
+[2.565s] -- Found image_transport: 2.4.0 (/opt/ros/foxy/share/image_transport/cmake)
+[2.655s] -- Found OpenCV: /usr/local (found suitable version "4.6.0", minimum required is "4.6.0") 
+[2.819s] -- Configuring done
+[2.852s] -- Generating done
+[2.855s] -- Build files have been written to: /home/user-accounts/lee4649/auto-aiming/build/recorder
+[2.878s] Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/recorder' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake /home/user-accounts/lee4649/auto-aiming/src/prm_camera/recorder_cv -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DPYTHON_EXECUTABLE=/usr/bin/python3.8 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/user-accounts/lee4649/auto-aiming/install/recorder
+[2.883s] Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/recorder': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/recorder -- -j8 -l8
+[2.950s] [35m[1mScanning dependencies of target VideoRecorderNode[0m
+[3.038s] [ 50%] [32mBuilding CXX object CMakeFiles/VideoRecorderNode.dir/src/VideoRecorderNode.cpp.o[0m
+[12.910s] [100%] [32m[1mLinking CXX executable VideoRecorderNode[0m
+[13.866s] /usr/bin/ld: warning: libopencv_imgcodecs.so.4.2, needed by /opt/ros/foxy/lib/libcv_bridge.so, may conflict with libopencv_imgcodecs.so.406
+[13.866s] /usr/bin/ld: warning: libopencv_imgproc.so.4.2, needed by /opt/ros/foxy/lib/libcv_bridge.so, may conflict with libopencv_imgproc.so.406
+[13.866s] /usr/bin/ld: warning: libopencv_core.so.4.2, needed by /opt/ros/foxy/lib/libcv_bridge.so, may conflict with libopencv_core.so.406
+[13.894s] [100%] Built target VideoRecorderNode
+[13.915s] Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/recorder' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/user-accounts/lee4649/auto-aiming/build/recorder -- -j8 -l8
+[13.957s] Invoking command in '/home/user-accounts/lee4649/auto-aiming/build/recorder': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/user-accounts/lee4649/auto-aiming/build/recorder
+[13.974s] -- Install configuration: "Release"
+[13.974s] -- Execute custom install script
+[13.975s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/recorder/lib/recorder/VideoRecorderNode
+[13.992s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/launch/mv2image.py
+[14.008s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/launch/mv_recorder.py
+[14.023s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/launch/old_mv2image.py
+[14.039s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/launch/webcam_recorder.py
+[14.055s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/ament_index/resource_index/package_run_dependencies/recorder
+[14.071s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/ament_index/resource_index/parent_prefix_path/recorder
+[14.088s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/environment/ament_prefix_path.sh
+[14.105s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/environment/ament_prefix_path.dsv
+[14.121s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/environment/path.sh
+[14.138s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/environment/path.dsv
+[14.154s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/local_setup.bash
+[14.169s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/local_setup.sh
+[14.186s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/local_setup.zsh
+[14.202s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/local_setup.dsv
+[14.219s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/package.dsv
+[14.235s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/ament_index/resource_index/packages/recorder
+[14.252s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/cmake/ament_cmake_export_dependencies-extras.cmake
+[14.268s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/cmake/recorderConfig.cmake
+[14.283s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/cmake/recorderConfig-version.cmake
+[14.298s] -- Symlinking: /home/user-accounts/lee4649/auto-aiming/install/recorder/share/recorder/package.xml
+[14.319s] Invoked command in '/home/user-accounts/lee4649/auto-aiming/build/recorder' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/user-accounts/lee4649/auto-aiming/build/recorder
