@@ -106,6 +106,8 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
     pose_estimator->estimateTranslation(image_points, key_points_msg->is_large_armor, tvec, rvec);
     _last_yaw_estimate = pose_estimator->estimateYaw(_last_yaw_estimate, image_points, tvec);
     bool valid_pose_estimate = pose_estimator->isValid(tvec.at<double>(0), tvec.at<double>(1), tvec.at<double>(2), new_auto_aim_status, reset_kalman);
+    
+    // TODO:: The coordinate transform should be around here
 
     // Publish the predicted armor if the pose is valid (we are tracking or firing)
     if (valid_pose_estimate)
