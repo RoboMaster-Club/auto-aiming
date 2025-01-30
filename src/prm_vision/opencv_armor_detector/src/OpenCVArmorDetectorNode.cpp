@@ -1,8 +1,6 @@
 #include "OpenCVArmorDetectorNode.hpp"
 
-OpenCVArmorDetectorNode::OpenCVArmorDetectorNode(
-    const rclcpp::NodeOptions &options)
-    : Node("opencv_armor_detector", options)
+OpenCVArmorDetectorNode::OpenCVArmorDetectorNode(const rclcpp::NodeOptions &options) : Node("opencv_armor_detector", options)
 {
   RCLCPP_INFO(get_logger(), "OpenCVArmorDetectorNode has been started.");
 
@@ -34,9 +32,7 @@ void OpenCVArmorDetectorNode::imageTransportInitilization()
                              std::placeholders::_1));
 }
 
-rcl_interfaces::msg::SetParametersResult
-OpenCVArmorDetectorNode::parameters_callback(
-    const std::vector<rclcpp::Parameter> &parameters)
+rcl_interfaces::msg::SetParametersResult OpenCVArmorDetectorNode::parameters_callback(const std::vector<rclcpp::Parameter> &parameters)
 {
   rcl_interfaces::msg::SetParametersResult result;
   result.successful = true;
@@ -72,6 +68,12 @@ OpenCVArmorDetectorNode::parameters_callback(
       RCLCPP_INFO(get_logger(), "New max missed frames: %d",
                   _max_missed_frames);
     }
+    else if (parameter.get_name() == "_reduce_search_area")
+    {
+      _reduce_search_area = parameter.as_bool();
+      RCLCPP_INFO(get_logger(), "New reduce search area: %s",
+                  _reduce_search_area ? "true" : "false");
+    }
     else
     {
       result.successful = false;
@@ -80,7 +82,7 @@ OpenCVArmorDetectorNode::parameters_callback(
   }
 
   // Update the detector's config
-  detector->setConfig({_target_color, _hue_range_limit, _saturation_lower_limit, _value_lower_limit, _max_missed_frames});
+  detector->setConfig({_target_color, _hue_range_limit, _saturation_lower_limit, _value_lower_limit, _max_missed_frames, _reduce_search_area});
   return result;
 }
 
@@ -97,14 +99,12 @@ void OpenCVArmorDetectorNode::imageCallback(
   vision_msgs::msg::KeyPoints keypoints_msg;
   std::array<float, 8> points_array;
   std::copy(points.begin(), points.end(), points_array.begin());
-  float h = std::min(cv::norm(points.at(1) - points.at(0)),
-                     cv::norm(points.at(3) - points.at(2)));
-  float w = cv::norm((points.at(0) + points.at(1)) / 2 -
-                     (points.at(2) + points.at(3)) / 2);
+  float h = std::min(cv::norm(points.at(1) - points.at(0)), cv::norm(points.at(3) - points.at(2)));
+  float w = cv::norm((points.at(0) + points.at(1)) / 2 - (points.at(2) + points.at(3)) / 2);
 
   keypoints_msg.header = image_msg->header;
   keypoints_msg.points = points_array;
-  keypoints_msg.large_armor = (w / h) > 3; // 3 is the width ratio threshold before it is considered a large armor
+  keypoints_msg.is_large_armor = (w / h) > 3.5; // 3.3 is the width ratio threshold before it is considered a large armor
 
   // Publish the message
   keypoints_publisher->publish(keypoints_msg);
