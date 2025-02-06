@@ -145,32 +145,6 @@ double PoseEstimator::gradientWrtYawFinitediff(double yaw, std::vector<cv::Point
     return grad;
 }
 
-// Loss = sqrt(0.25 * sum((x - x')^2 + (y - y')^2))
-double PoseEstimator::gradientWrtYawAnalytic(double yaw_guess, std::vector<cv::Point2f> observed_points, cv::Mat tvec)
-{
-    // We assume 0 pitch and roll, so they do not contribute to the rotation matrix
-    cv::Mat R = (cv::Mat_<double>(3, 3) << cos(yaw_guess), 0, sin(yaw_guess),
-                 0, 1, 0,
-                 -sin(yaw_guess), 0, cos(yaw_guess));
-
-    // Reproject the 3D object points using predicted yaw to the image plane
-    std::vector<cv::Point2f> projected_points;
-    cv::projectPoints(SMALL_ARMOR_OBJECT_POINTS, R, tvec, CAMERA_MATRIX, DISTORTION_COEFFS, projected_points);
-
-    // Compute the Jacobian matrix
-    cv::Mat J = cv::Mat::zeros(8, 1, CV_64F);
-    for (int i = 0; i < 8; i++)
-    {
-        cv::Point2d diff = observed_points[i] - projected_points[i];
-        J.at<double>(i, 0) = -0.5 * (diff.x * (-sin(yaw_guess)) + diff.y * cos(yaw_guess));
-    }
-
-    // Compute the gradient
-    cv::Mat JtJ = J.t() * J;
-    double grad = JtJ.at<double>(0, 0);
-    return grad;
-}
-
 /**
  * @brief Compute the loss between image points and reprojected points based on the yaw guess.
  *
