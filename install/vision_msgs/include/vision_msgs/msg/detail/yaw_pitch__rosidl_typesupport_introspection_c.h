@@ -1,1 +1,0 @@
-/home/user-accounts/lee4649/auto-aiming/build/vision_msgs/rosidl_typesupport_introspection_c/vision_msgs/msg/detail/yaw_pitch__rosidl_typesupport_introspection_c.h

@@ -1,1 +1,0 @@
-/home/user-accounts/lee4649/auto-aiming/build/vision_msgs/rosidl_typesupport_fastrtps_c/vision_msgs/msg/detail/key_points__rosidl_typesupport_fastrtps_c.h

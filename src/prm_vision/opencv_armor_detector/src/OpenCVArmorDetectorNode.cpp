@@ -116,6 +116,7 @@ void OpenCVArmorDetectorNode::imageCallback(
     armor_count++;
   }
 
+  keypoint_group_msg.num_armors = armor_count;
   // Publish the message
   keypoints_publisher->publish(keypoint_group_msg);
 }

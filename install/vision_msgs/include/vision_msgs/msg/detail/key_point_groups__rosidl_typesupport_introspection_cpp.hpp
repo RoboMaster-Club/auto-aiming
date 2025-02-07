@@ -1,1 +1,0 @@
-/home/user-accounts/lee4649/auto-aiming/build/vision_msgs/rosidl_typesupport_introspection_cpp/vision_msgs/msg/detail/key_point_groups__rosidl_typesupport_introspection_cpp.hpp

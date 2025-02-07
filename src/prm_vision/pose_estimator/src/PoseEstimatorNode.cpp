@@ -4,8 +4,13 @@ PoseEstimatorNode::PoseEstimatorNode(const rclcpp::NodeOptions &options) : Node(
 {
     RCLCPP_INFO(get_logger(), "PoseEstimatorNode has been started.");
 
+    anti_spintop = new AntiSpintop(10, 0.1);
+
     // Callbacks and pub/sub
-    key_points_subscriber = this->create_subscription<vision_msgs::msg::KeyPoints>("key_points", 10, std::bind(&PoseEstimatorNode::keyPointsCallback, this, std::placeholders::_1));
+    // key_points_subscriber = this->create_subscription<vision_msgs::msg::KeyPoints>("key_points", 10, std::bind(&PoseEstimatorNode::keyPointsCallback, this, std::placeholders::_1));
+    keypoint_groups_subscriber = this->create_subscription<vision_msgs::msg::KeyPointGroups>(
+        "key_points", 10, std::bind(&PoseEstimatorNode::keyPointsCallback, this, std::placeholders::_1));
+
     predicted_armor_publisher = this->create_publisher<vision_msgs::msg::PredictedArmor>("predicted_armor", 10);
 
     // Dynamic parameters
@@ -82,41 +87,66 @@ rcl_interfaces::msg::SetParametersResult PoseEstimatorNode::parameters_callback(
     return result;
 }
 
-void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::SharedPtr key_points_msg)
+void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPointGroups::SharedPtr keypoint_group_msg)
 {
-    if (key_points_msg->points.size() != 8 || key_points_msg->points[4] == 0) // idx 4 is x-coord of top right corner, so if it's 0, we know there's no armor
+    vision_msgs::msg::KeyPoints armors[2];
+    for (int index = 0; index < 2; index++) {
+        armors[index] = keypoint_group_msg->groups[index];
+    }
+
+    // if no armor detected
+    if (armors[0].points[0] == 0)
     {
-        // No armor detected
-        publishZeroPredictedArmor(key_points_msg->header, "NO_ARMOR");
+        publishZeroPredictedArmor(armors[0].header, "NO_ARMOR");
         return;
     }
 
-    cv::Mat tvec, rvec;
+    cv::Mat tvecs[2];
+
+    int spin_direction = anti_spintop->get_direction();
+
+    for (int index = 0; index < keypoint_group_msg->num_armors; index++) {
+        if (armors[index].points[0] == 0)
+        {
+            continue;
+        }
+        
+        std::vector<cv::Point2f> image_points;
+        cv::Mat tvec, rvec;
+
+        image_points.push_back(cv::Point2f(armors[index].points[0], armors[index].points[1]));
+        image_points.push_back(cv::Point2f(armors[index].points[2], armors[index].points[3]));
+        image_points.push_back(cv::Point2f(armors[index].points[4], armors[index].points[5]));
+        image_points.push_back(cv::Point2f(armors[index].points[6], armors[index].points[7]));
+
+        pose_estimator->estimateTranslation(image_points, keypoint_group_msg->groups[index].is_large_armor, tvec, rvec);
+        
+        short yaw_estimate_idx = spin_direction == 1 ? keypoint_group_msg->num_armors - 1 - index : index;
+        last_yaw_estimates[index] = pose_estimator->estimateYaw(last_yaw_estimates[yaw_estimate_idx], image_points, tvec);
+
+        tvecs[index] = tvec;
+    }
+
+
+    cv::Mat aim_tvec;
+    double aim_yaw;
     bool reset_kalman = false;
     std::string new_auto_aim_status;
-    std::vector<cv::Point2f> image_points;
 
-    // Convert the message to a vector of cv::Point2f
-    image_points.push_back(cv::Point2f(key_points_msg->points[0], key_points_msg->points[1]));
-    image_points.push_back(cv::Point2f(key_points_msg->points[2], key_points_msg->points[3]));
-    image_points.push_back(cv::Point2f(key_points_msg->points[4], key_points_msg->points[5]));
-    image_points.push_back(cv::Point2f(key_points_msg->points[6], key_points_msg->points[7]));
+    anti_spintop->calculate_aim_point(tvecs, last_yaw_estimates, keypoint_group_msg->num_armors, &aim_tvec, &aim_yaw);
 
-    // Compute armor's pose and validate it. We compute new yaw estimate based on the last yaw estimate.
-    pose_estimator->estimateTranslation(image_points, key_points_msg->is_large_armor, tvec, rvec);
-    _last_yaw_estimate = pose_estimator->estimateYaw(_last_yaw_estimate, image_points, tvec);
-    bool valid_pose_estimate = pose_estimator->isValid(tvec.at<double>(0), tvec.at<double>(1), tvec.at<double>(2), new_auto_aim_status, reset_kalman);
+    bool valid_pose_estimate = pose_estimator->isValid(aim_tvec.at<double>(0), aim_tvec.at<double>(1), aim_tvec.at<double>(2), new_auto_aim_status, reset_kalman);
 
     // Publish the predicted armor if the pose is valid (we are tracking or firing)
     if (valid_pose_estimate)
     {
         vision_msgs::msg::PredictedArmor predicted_armor_msg;
-        predicted_armor_msg.header = key_points_msg->header;
-        predicted_armor_msg.x = tvec.at<double>(0);
-        predicted_armor_msg.y = tvec.at<double>(1);
-        predicted_armor_msg.z = tvec.at<double>(2);
+        predicted_armor_msg.header = keypoint_group_msg->groups[0].header;
+        predicted_armor_msg.x = aim_tvec.at<double>(0);
+        predicted_armor_msg.y = aim_tvec.at<double>(1);
+        predicted_armor_msg.z = aim_tvec.at<double>(2);
         predicted_armor_msg.pitch = 15;                             // Pitch is always 15
-        predicted_armor_msg.yaw = 180 * _last_yaw_estimate / CV_PI; // Convert to degrees
+        predicted_armor_msg.yaw = 180 * aim_yaw / CV_PI;            // Convert to degrees
         predicted_armor_msg.roll = 0;                               // Roll is always 0
         predicted_armor_msg.x_vel = 0;
         predicted_armor_msg.y_vel = 0; // TODO: compute yaw rate
@@ -127,7 +157,7 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
 
     else if (new_auto_aim_status == "STOPPING")
     {
-        publishZeroPredictedArmor(key_points_msg->header, new_auto_aim_status);
+        publishZeroPredictedArmor(keypoint_group_msg->groups[0].header, new_auto_aim_status);
     }
 }
 

@@ -1,9 +1,0 @@
-# CMake generated Testfile for 
-# Source directory: /home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector
-# Build directory: /home/user-accounts/lee4649/auto-aiming/build/opencv_armor_detector
-# 
-# This file includes the relevant testing commands required for 
-# testing this directory and lists subdirectories to be tested as well.
-add_test(test_OpenCVArmorDetector "/usr/bin/python3.8" "-u" "/opt/ros/foxy/share/ament_cmake_test/cmake/run_test.py" "/home/user-accounts/lee4649/auto-aiming/build/opencv_armor_detector/test_results/opencv_armor_detector/test_OpenCVArmorDetector.gtest.xml" "--package-name" "opencv_armor_detector" "--output-file" "/home/user-accounts/lee4649/auto-aiming/build/opencv_armor_detector/ament_cmake_gtest/test_OpenCVArmorDetector.txt" "--command" "/home/user-accounts/lee4649/auto-aiming/build/opencv_armor_detector/test_OpenCVArmorDetector" "--gtest_output=xml:/home/user-accounts/lee4649/auto-aiming/build/opencv_armor_detector/test_results/opencv_armor_detector/test_OpenCVArmorDetector.gtest.xml")
-set_tests_properties(test_OpenCVArmorDetector PROPERTIES  LABELS "gtest" REQUIRED_FILES "/home/user-accounts/lee4649/auto-aiming/build/opencv_armor_detector/test_OpenCVArmorDetector" TIMEOUT "60" WORKING_DIRECTORY "/home/user-accounts/lee4649/auto-aiming/build/opencv_armor_detector" _BACKTRACE_TRIPLES "/opt/ros/foxy/share/ament_cmake_test/cmake/ament_add_test.cmake;118;add_test;/opt/ros/foxy/share/ament_cmake_gtest/cmake/ament_add_gtest_test.cmake;86;ament_add_test;/opt/ros/foxy/share/ament_cmake_gtest/cmake/ament_add_gtest.cmake;93;ament_add_gtest_test;/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/CMakeLists.txt;46;ament_add_gtest;/home/user-accounts/lee4649/auto-aiming/src/prm_vision/opencv_armor_detector/CMakeLists.txt;0;")
-subdirs("gtest")

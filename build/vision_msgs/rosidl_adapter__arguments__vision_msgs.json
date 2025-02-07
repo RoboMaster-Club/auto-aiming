@@ -1,9 +1,0 @@
-{
-  "package_name": "vision_msgs",
-  "non_idl_tuples": [
-    "/home/user-accounts/lee4649/auto-aiming/src/prm_vision/vision_msgs:msg/KeyPointGroups.msg",
-    "/home/user-accounts/lee4649/auto-aiming/src/prm_vision/vision_msgs:msg/KeyPoints.msg",
-    "/home/user-accounts/lee4649/auto-aiming/src/prm_vision/vision_msgs:msg/YawPitch.msg",
-    "/home/user-accounts/lee4649/auto-aiming/src/prm_vision/vision_msgs:msg/PredictedArmor.msg"
-  ]
-}

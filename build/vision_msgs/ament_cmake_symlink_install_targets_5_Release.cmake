@@ -1,1 +1,0 @@
-ament_cmake_symlink_install_targets("TARGET_FILES" "/home/user-accounts/lee4649/auto-aiming/build/vision_msgs/rosidl_generator_py/vision_msgs/libvision_msgs__python.so" "TARGETS" "vision_msgs__python" "ARCHIVE_DESTINATION" "lib" "LIBRARY_DESTINATION" "lib" "RUNTIME_DESTINATION" "bin")

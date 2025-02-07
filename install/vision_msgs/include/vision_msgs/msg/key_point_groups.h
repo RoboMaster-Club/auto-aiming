@@ -1,1 +1,0 @@
-/home/user-accounts/lee4649/auto-aiming/build/vision_msgs/rosidl_generator_c/vision_msgs/msg/key_point_groups.h

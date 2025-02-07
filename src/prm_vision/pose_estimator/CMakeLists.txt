@@ -23,10 +23,13 @@ include_directories(include)
 add_library(PoseEstimator STATIC src/PoseEstimator.cpp)
 target_link_libraries(PoseEstimator ${OpenCV_LIBS} ValidityFilter Eigen3::Eigen)
 
+add_library(AntiSpintop STATIC src/AntiSpintop.cpp)
+target_link_libraries(AntiSpintop ${OpenCV_LIBS})
+
 add_library(ValidityFilter STATIC src/ValidityFilter.cpp)
 
 add_executable(PoseEstimatorNode src/PoseEstimatorNode.cpp)
-target_link_libraries(PoseEstimatorNode PoseEstimator ValidityFilter ${OpenCV_LIBS})
+target_link_libraries(PoseEstimatorNode PoseEstimator ValidityFilter AntiSpintop ${OpenCV_LIBS})
 
 ament_target_dependencies(PoseEstimatorNode 
   rclcpp

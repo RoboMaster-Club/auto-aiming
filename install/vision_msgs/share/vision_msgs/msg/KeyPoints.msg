@@ -1,1 +1,0 @@
-/home/user-accounts/lee4649/auto-aiming/src/prm_vision/vision_msgs/msg/KeyPoints.msg

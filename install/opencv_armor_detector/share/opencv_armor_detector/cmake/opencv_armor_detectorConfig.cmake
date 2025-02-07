@@ -1,1 +1,0 @@
-/home/user-accounts/lee4649/auto-aiming/build/opencv_armor_detector/ament_cmake_core/opencv_armor_detectorConfig.cmake
