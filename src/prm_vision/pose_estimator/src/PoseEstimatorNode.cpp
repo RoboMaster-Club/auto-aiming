@@ -143,7 +143,6 @@ void PoseEstimatorNode::drawTopDownViewGivenRotation(double yaw, double X, doubl
     int target_x = Z;
     int target_y = X;
     cv::circle(top_down_view, cv::Point(target_x, target_y), 5, cv::Scalar(0, 255, 0), -1);
-    RCLCPP_INFO(get_logger(), "Drawn coordinates: (%d, %d)", target_x, target_y);
 
     cv::resize(top_down_view, top_down_view, cv::Size(640, 360));
     cv::imshow("Top Down View", top_down_view);

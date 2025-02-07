@@ -195,10 +195,7 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 	// for safety this is commented out unless on sentry    package.autoAimPackage.fire = msg->fire;
 	write(this->port_fd, &package, sizeof(PackageOut));
 	fsync(this->port_fd);
-	if (this->auto_aim_frame_id % 1000 == 0)
-	{
-		RCLCPP_INFO(this->get_logger(), "Yaw, Pitch: %.3f, %.3f, FIRE=%.3f", yaw, pitch, msg->fire);
-	}
+	RCLCPP_INFO(this->get_logger(), "Yaw, Pitch: %.3f, %.3f, FIRE=%.3f", yaw, pitch, msg->fire);
 	RCLCPP_INFO_ONCE(this->get_logger(), "First auto aim pkg sent.");
 }
 
@@ -261,7 +258,7 @@ bool ControlCommunicatorNode::read_alignment()
 {
 	RCLCPP_INFO(this->get_logger(), "Attemp to alignment.");
 	uint8_t i = 0;
-	uint8_t buffer[32];
+	uint8_t buffer[33];
 	do
 	{
 		int success = read(this->port_fd, &(buffer[0]), sizeof(buffer[0]));
