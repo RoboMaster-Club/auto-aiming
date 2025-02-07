@@ -23,48 +23,20 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
     std::vector<_Float32> detected_keypoints(8, 0);
     static auto last_time = std::chrono::steady_clock::now(); // Static to persist across calls
 
-    if (_reset_search_area)
-    {
-        _search_area[0] = 0;
-        _search_area[1] = 0;
-        _search_area[2] = WIDTH;
-        _search_area[3] = HEIGHT;
-        _reset_search_area = false;
-        _missed_frames = 0;
-    }
-    cv::Mat croppedFrame = frame(cv::Range(_search_area[1], _search_area[3]), cv::Range(_search_area[0], _search_area[2])).clone();
-
     // Detect the armor in the cropped frame
-    std::vector<cv::Point2f> points = detectArmorsInFrame(croppedFrame);
-    _frame_count++;
+    std::vector<cv::Point2f> points = detectArmorsInFrame(frame);
 
 // Display the cropped frame for debugging
 #ifdef DEBUG
-    cv::resize(croppedFrame, croppedFrame, cv::Size(WIDTH / 2, HEIGHT / 2));
 
     // Create a static window name
-    const std::string window_name = "Detection Results";
-    cv::imshow(window_name, croppedFrame);
-
-    // Update the window title
-    cv::setWindowTitle(window_name,
-                       "detected: " + std::to_string(_detected_frame) + " / " +
-                           std::to_string(_frame_count) + " (" +
-                           std::to_string(_detected_frame * 100 / _frame_count) + "%) and missed: " + std::to_string(_missed_frames) + std::string(" frames"));
-
+    // const std::string window_name = "Detection Results";
+    // cv::imshow(window_name, croppedFrame);
     cv::waitKey(30);
 #endif
 
     // If we didn't find an armor for a few frames (ROS2 param), reset the search area
-    if (points.size() == 0)
-    {
-        _missed_frames++;
-        if (_missed_frames >= _max_missed_frames)
-        {
-            _reset_search_area = true;
-        }
-    }
-    else
+    if (points.size() != 0)
     {
         // We found an armor, so reset the missed frames and return the keypoints
         _missed_frames = 0;
@@ -76,27 +48,6 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
 
             image_points.emplace_back(cv::Point2f(points.at(i).x + _search_area[0], points.at(i).y + _search_area[1]));
         }
-
-        if (_reduce_search_area)
-        {
-            // Change the search area to the bounding box of the armor with a 50 pixel buffer
-            _reset_search_area = false; // We got a detection, so don't reset the search area next frame
-            int x_min = (int)std::min(detected_keypoints[0], detected_keypoints[2]);
-            int x_max = (int)std::max(detected_keypoints[4], detected_keypoints[6]);
-            int y_min = (int)std::min(detected_keypoints[1], detected_keypoints[5]);
-            int y_max = (int)std::max(detected_keypoints[3], detected_keypoints[7]);
-            _search_area[0] = std::max(x_min - 50, 0);
-            _search_area[1] = std::max(y_min - 50, 0);
-            _search_area[2] = std::min(x_max + 50, WIDTH);
-            _search_area[3] = std::min(y_max + 50, HEIGHT);
-        }
-        else
-        {
-            // Reset the search area to the full frame
-            _reset_search_area = true;
-        }
-
-        _detected_frame++;
     }
 
     return detected_keypoints;
@@ -179,6 +130,8 @@ std::vector<cv::Point2f> OpenCVArmorDetector::detectArmorsInFrame(cv::Mat &frame
     std::sort(light_bar_candidates.begin(), light_bar_candidates.end(), [](cv::RotatedRect &a, cv::RotatedRect &b)
               { return a.center.x < b.center.x; });
 
+    // Create armor plate smart pointer vector to store
+    std::vector<std::shared_ptr<Armor>> armors;
     // If we have at least 2 light bars, we can attempt to match them to find an armor
     if (light_bar_candidates.size() >= 2)
     {
@@ -195,21 +148,45 @@ std::vector<cv::Point2f> OpenCVArmorDetector::detectArmorsInFrame(cv::Mat &frame
                     // We have found a match, return the pair (sorted left, right)
                     auto &first = (rect1.center.x < rect2.center.x) ? rect1 : rect2;
                     auto &second = (rect1.center.x < rect2.center.x) ? rect2 : rect1;
-
+                    
+                    #ifdef DEBUG
                     std::vector<cv::Point2f> armor_points_1 = rectToPoint(first);
                     std::vector<cv::Point2f> armor_points_2 = rectToPoint(second);
 
                     // Draw a dot on the top and bottom of each light bar using rectToPoint
-                    cv::circle(frame, armor_points_1[0], 0, cv::Scalar(0, 255, 0), -1);
-                    cv::circle(frame, armor_points_1[1], 0, cv::Scalar(0, 255, 0), -1);
-                    cv::circle(frame, armor_points_2[0], 0, cv::Scalar(0, 255, 0), -1);
-                    cv::circle(frame, armor_points_2[1], 0, cv::Scalar(0, 255, 0), -1);
+                    // cv::circle(frame, armor_points_1[0], 3, cv::Scalar(0, 255, 0), -1);
+                    // cv::circle(frame, armor_points_1[1], 3, cv::Scalar(0, 255, 0), -1);
+                    // cv::circle(frame, armor_points_2[0], 3, cv::Scalar(0, 255, 0), -1);
+                    // cv::circle(frame, armor_points_2[1], 3, cv::Scalar(0, 255, 0), -1);
+                    // Draw a box using four corner points
+                    cv::line(frame, armor_points_1[0], armor_points_2[0], cv::Scalar(0, 255, 0), 2);
+                    cv::line(frame, armor_points_1[1], armor_points_2[1], cv::Scalar(0, 255, 0), 2);
+                    cv::line(frame, armor_points_1[0], armor_points_1[1], cv::Scalar(0, 255, 0), 2);
+                    cv::line(frame, armor_points_2[0], armor_points_2[1], cv::Scalar(0, 255, 0), 2);
+                    #endif
 
-                    return {rectToPoint(first)[0], rectToPoint(first)[1], rectToPoint(second)[0], rectToPoint(second)[1]};
+                    std::vector<cv::Point2f> image_points = {rectToPoint(first)[0], rectToPoint(first)[1], rectToPoint(second)[0], rectToPoint(second)[1]};
+                    cv::Mat tvec, rvec;
+                    // Compute armor's pose and validate it. We compute new yaw estimate based on the last yaw estimate.
+                    bool is_large_armor = (cv::norm(image_points[1] - image_points[0]) / cv::norm(image_points[3] - image_points[2])) > 3.5;
+                    pose_estimator->estimateTranslation(image_points, is_large_armor, tvec, rvec);
+                    _last_yaw_estimate = pose_estimator->estimateYaw(_last_yaw_estimate, image_points, tvec);
+                    // create Armor object and pass it to the next node, extract x, y, z from tvec, yaw from _last_yaw_estimate
+                    int armor_num = 3;
+                    auto armor = std::make_shared<Armor>(Armor{tvec.at<double>(0), tvec.at<double>(1), tvec.at<double>(2),
+                                                        _last_yaw_estimate, armor_num, is_large_armor ? 1 : 0});
+                    armors.push_back(armor);
+                    // return ;
                 }
             }
         }
     }
+    #ifdef DEBUG
+    cv::resize(frame, frame, cv::Size(WIDTH / 2, HEIGHT / 2));
+    cv::imshow("", frame);
+    cv::imshow("result", result);
+    cv::waitKey(30);
+    #endif
     return {}; // no armor found
 }
 

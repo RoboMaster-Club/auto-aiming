@@ -9,7 +9,7 @@ find_package(ament_cmake REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(image_transport REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(OpenCV 4.6.0 REQUIRED)
+find_package(OpenCV)
 find_package(cv_bridge REQUIRED)
 find_package(vision_msgs REQUIRED)
 find_package(ament_index_cpp REQUIRED) # Filesystem search in tests
@@ -21,8 +21,11 @@ include_directories(/usr/include)
 include_directories(include)
 
 # Build target
+add_library(PoseEstimator STATIC src/PoseEstimator.cpp)
+target_link_libraries(PoseEstimator ${OpenCV_LIBS} Eigen3::Eigen)
+
 add_library(OpenCVArmorDetector STATIC src/OpenCVArmorDetector.cpp)
-target_link_libraries(OpenCVArmorDetector ${OpenCV_LIBS} Eigen3::Eigen)
+target_link_libraries(OpenCVArmorDetector PoseEstimator ${OpenCV_LIBS} Eigen3::Eigen)
 
 add_executable(OpenCVArmorDetectorNode src/OpenCVArmorDetectorNode.cpp)
 target_link_libraries(OpenCVArmorDetectorNode OpenCVArmorDetector ${OpenCV_LIBS})
@@ -40,6 +43,9 @@ ament_target_dependencies(OpenCVArmorDetectorNode
 ament_target_dependencies(OpenCVArmorDetector
   rclcpp
   ament_index_cpp
+)
+ament_target_dependencies(PoseEstimator
+  rclcpp
 )
 
 # GTest setup

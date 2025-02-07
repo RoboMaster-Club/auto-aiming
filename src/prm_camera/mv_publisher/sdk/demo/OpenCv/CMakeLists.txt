@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 project(MVOPENCV)
 
-find_package(OpenCV 4.6.0 REQUIRED)
+find_package(OpenCV)
 
 include_directories(/lib)
 

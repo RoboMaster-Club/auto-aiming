@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <math.h>
 
+#include "PoseEstimator.h"
+
 // Detector Constants
 #define LIGHT_BAR_ANGLE_LIMIT 10.0
 #define LIGHT_BAR_ASPECT_RATIO_LOWER_LIMIT 1.0
@@ -24,6 +26,13 @@ enum TargetColor
 {
   BLUE,
   RED
+};
+
+struct Armor
+{
+  double x, y, z, yaw;
+  int armor_num;
+  int armor_type; // 0 for small, 1 for large
 };
 
 /**
@@ -81,6 +90,7 @@ private:
   int _search_area[4] = {0, 0, WIDTH, HEIGHT};
   bool _reset_search_area = true;
   int _missed_frames = 0;
+  double _last_yaw_estimate = 0.0;
 
   // Dynamic parameters
   TargetColor _targetColor;
@@ -97,5 +107,8 @@ private:
   cv::Scalar _red_upper_limit_1;
   cv::Scalar _red_lower_limit_2;
   cv::Scalar _red_upper_limit_2;
+
+  // solver
+  std::shared_ptr<PoseEstimator> pose_estimator = std::make_shared<PoseEstimator>();
 };
 #endif //_OPENCVARMORDETECTOR_HPP

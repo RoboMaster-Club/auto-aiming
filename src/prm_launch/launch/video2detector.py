@@ -7,7 +7,7 @@ import os
 
 def generate_launch_description():
     webcam_publisher = get_package_share_path('webcam_publisher')
-    video_path = "/home/user-accounts/public/spintop/moving_but_no_spinning.avi" # example, can change to your liking
+    video_path = "/home/jason/boilerbot/algorithm/auto-aiming-ws/src/video/spinning_and_moving_target.avi" # example, can change to your liking
     return LaunchDescription([
         Node(
             package='webcam_publisher',
@@ -22,9 +22,5 @@ def generate_launch_description():
         Node(
             package='opencv_armor_detector',
             executable='OpenCVArmorDetectorNode',  
-        ),
-        Node(
-            package='pose_estimator',
-            executable='PoseEstimatorNode',
         ),
     ])
