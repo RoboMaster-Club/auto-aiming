@@ -107,7 +107,18 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
     _last_yaw_estimate = pose_estimator->estimateYaw(_last_yaw_estimate, image_points, tvec);
     bool valid_pose_estimate = pose_estimator->isValid(tvec.at<double>(0), tvec.at<double>(1), tvec.at<double>(2), new_auto_aim_status, reset_kalman);
     
-    // TODO:: The coordinate transform should be around here
+    // TODO:: Ensure that the tvec is order x, y, z
+
+    // Perform coordinate transform to account for offset of camera -> barrel. y is not being adjusted because of vertical fix of camera and barrel
+    double x_temp = tvec.at<double>(0);
+    double z_temp = tvec.at<double>(2);
+
+    // Get angle between camera and barrel from ros2 parameters
+    rclpp::Parameter cam_barrel_angle_param = this -> get_parameter("cam_barrel_angle");
+    double cam_barrel_angle = cam_barrel_angle_param();
+
+    tvec.at<double>(0) = (x_temp * cos(cam_barrel_angle)) + (z_temp * sin(cam_barrel_angle));
+    tvec.at<double>(2) = (-1 * x_temp * sin(cam_barrel_angle)) + (z_temp * cos(cam_barrel_angle));
 
     // Publish the predicted armor if the pose is valid (we are tracking or firing)
     if (valid_pose_estimate)

@@ -18,18 +18,24 @@
 // Pose Estimator classes
 #include "PoseEstimator.h"
 
+// Math for trig
+#include<cmath>
+
 class PoseEstimatorNode : public rclcpp::Node
 {
 public:
     PoseEstimatorNode(const rclcpp::NodeOptions &options);
     ~PoseEstimatorNode();
+    
+    // Declare ros2 parameter for camera barrel angle
+    this -> declare_parameter("cam_barrel_angle", rclcpp::PARAMETER_DOUBLE);
 
     PoseEstimator *pose_estimator = new PoseEstimator();
     ValidityFilter &validity_filter_ = pose_estimator->validity_filter_; // Reference to the validity filter
 
 private:
     double _last_yaw_estimate = 0.0;
-
+    
     // Class methods
     void publishZeroPredictedArmor(std_msgs::msg::Header header, std::string new_auto_aim_status);
 
