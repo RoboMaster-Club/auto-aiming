@@ -108,17 +108,61 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
     bool valid_pose_estimate = pose_estimator->isValid(tvec.at<double>(0), tvec.at<double>(1), tvec.at<double>(2), new_auto_aim_status, reset_kalman);
     
     // TODO:: Ensure that the tvec is order x, y, z
+    // TODO:: Verify units and set parameters
 
-    // Perform coordinate transform to account for offset of camera -> barrel. y is not being adjusted because of vertical fix of camera and barrel
-    double x_temp = tvec.at<double>(0);
-    double z_temp = tvec.at<double>(2);
+    // Transform camera coordinates to barrel coordinates
+    
+    // Get ros2 parameters
+    rclpp:Parameter cam_barrel_roll_param = this -> get_parameter("cam_barrel_roll");
+    rclpp:Parameter cam_barrel_pitch_param = this -> get_parameter("cam_barrel_pitch");
+    rclpp:Parameter cam_barrel_yaw_param = this -> get_parameter("cam_barrel_yaw");
+    rclpp:Parameter cam_barrel_x_param = this -> get_parameter("cam_barrel_x");
+    rclpp:Parameter cam_barrel_y_param = this -> get_parameter("cam_barrel_y");
+    rclpp:Parameter cam_barrel_z_param = this -> get_parameter("cam_barrel_z");
 
-    // Get angle between camera and barrel from ros2 parameters
-    rclpp::Parameter cam_barrel_angle_param = this -> get_parameter("cam_barrel_angle");
-    double cam_barrel_angle = cam_barrel_angle_param();
+    double cam_barrel_roll = cam_barrel_roll_param.as_double();
+    double cam_barrel_pitch = cam_barrel_pitch_param.as_double();
+    double cam_barrel_yaw = cam_barrel_yaw_param.as_double();
+    double cam_barrel_x = cam_barrel_x_param.as_double();
+    double cam_barrel_y = cam_barrel_y_param.as_double();
+    double cam_barrel_z = cam_barrel_z_param.as_double();
 
-    tvec.at<double>(0) = (x_temp * cos(cam_barrel_angle)) + (z_temp * sin(cam_barrel_angle));
-    tvec.at<double>(2) = (-1 * x_temp * sin(cam_barrel_angle)) + (z_temp * cos(cam_barrel_angle));
+    // Set up transformation matrices
+    Eigin::Matrix<double, 3, 3> r_roll = {
+        {1, 0, 0},
+        {0, cos(cam_barrel_roll), -sin(cam_barrel_roll)},
+        {0, sin(cam_barrel_roll, cos(cam_barrel_roll))}
+    };
+    
+    Eigin::Matrix<double, 3, 3> r_pitch = {
+        {cos(cam_barrel_pitch), 0, -1 * sin(cam_barrel_pitch)},
+        {0, 1, 0},
+        { -1 * sin(cam_barrel_roll, 0, cos(cam_barrel_roll))}
+    };
+
+    Eigin::Matrix<double, 3, 3> r_yaw = {
+        {cos(cam_barrel_yaw), sin(cam_barrel_yaw), 0},
+        {sin(cam_barrel_yaw), cos(cam_barrel_yaw), 0},
+        {0, 0, 1}
+    };
+
+    Eigin::Matrix<double, 3, 3> r_mat = r_roll * r_pitch * r_yaw;
+
+    Eigin::Matrix<double, 4, 4> transform_mat = {
+      {r_mat(0, 0), r_mat(0, 1), r_mat(0, 2), cam_barrel_x},
+      {r_mat(1, 0), r_mat(1, 1), r_mat(1, 2), cam_barrel_y}
+      {r_mat(2, 0), r_mat(2, 1), r_mat(2, 2), cam_barrel_z}
+      {0, 0, 0, 1}
+    }
+
+    // Multiply cam -> target vector by transformation matrix to get barrel -> target vector
+    Eigin::Vector3d cam_to_target = {tvec.at<double>(0), tvec.at<double>(1), tvec.at<double>(2)};
+    Eigin::Vector3d barrel_to_target = transform_mat * cam_to_target;
+
+    // Set tvec to contain the transformed xyz coordinates
+    tvec.at<double>(0) = barrel_to_target(0);
+    tvec.at<double>(1) = barrel_to_target(1);
+    tvec.at<double>(2) = barrel_to_target(2);
 
     // Publish the predicted armor if the pose is valid (we are tracking or firing)
     if (valid_pose_estimate)

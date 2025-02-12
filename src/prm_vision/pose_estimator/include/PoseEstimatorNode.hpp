@@ -18,8 +18,8 @@
 // Pose Estimator classes
 #include "PoseEstimator.h"
 
-// Math for trig
-#include<cmath>
+// Standard cpp math
+#include <cmath>
 
 class PoseEstimatorNode : public rclcpp::Node
 {
