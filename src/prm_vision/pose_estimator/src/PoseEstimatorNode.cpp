@@ -131,7 +131,9 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
     }
 
     // Draw top-down view
+#ifdef DEBUG
     drawTopDownViewGivenRotation(_last_yaw_estimate, tvec.at<double>(0), tvec.at<double>(1), tvec.at<double>(2));
+#endif
 }
 
 void PoseEstimatorNode::drawTopDownViewGivenRotation(double yaw, double X, double Y, double Z)
@@ -144,7 +146,7 @@ void PoseEstimatorNode::drawTopDownViewGivenRotation(double yaw, double X, doubl
     int target_y = X;
     cv::circle(top_down_view, cv::Point(target_x, target_y), 5, cv::Scalar(0, 255, 0), -1);
 
-    cv::resize(top_down_view, top_down_view, cv::Size(640, 360));
+    cv::resize(top_down_view, top_down_view, cv::Size(100, 100));
     cv::imshow("Top Down View", top_down_view);
     cv::waitKey(1);
 }
