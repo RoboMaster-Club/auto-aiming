@@ -196,7 +196,7 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 	package.autoAimPackage.fire = false;
 	write(this->port_fd, &package, sizeof(PackageOut));
 	fsync(this->port_fd);
-	RCLCPP_INFO(this->get_logger(), "Yaw, Pitch: %.3f, %.3f, FIRE=%i", yaw, pitch, msg->fire);
+	RCLCPP_INFO(this->get_logger(), "Yaw, Pitch: %.3f, %.3f, FIRE=%i", package.autoAimPackage.yaw, package.autoAimPackage.pitch, package.autoAimPackage.fire);
 	RCLCPP_INFO_ONCE(this->get_logger(), "First auto aim pkg sent.");
 }
 
