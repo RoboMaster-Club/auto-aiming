@@ -9,7 +9,14 @@ PoseEstimatorNode::PoseEstimatorNode(const rclcpp::NodeOptions &options) : Node(
     predicted_armor_publisher = this->create_publisher<vision_msgs::msg::PredictedArmor>("predicted_armor", 10);
 
     // Dynamic parameters
-    pose_estimator->setAllowedMissedFramesBeforeNoFire(this->declare_parameter("_allowed_missed_frames_before_no_fire", 150));
+    // Get ros2 parameters
+    cam_barrel_roll = this -> declare_parameter("cam_barrel_roll", 0.0);
+    cam_barrel_pitch = this -> declare_parameter("cam_barrel_pitch", 0.0);
+    cam_barrel_yaw = this -> declare_parameter("cam_barrel_yaw", 0.0);
+    cam_barrel_x = this -> declare_parameter("cam_barrel_x", -88.0);
+    cam_barrel_y = this -> declare_parameter("cam_barrel_y", -73.0);
+    cam_barrel_z = this -> declare_parameter("cam_barrel_z", 80.0);
+    pose_estimator->setAllowedMissedFramesBeforeNoFire(this->declare_parameter("_allowed_missed_frames_before_no_fire", 15));
     pose_estimator->setNumFramesToFireAfter(this->declare_parameter("_num_frames_to_fire_after", 3));
     validity_filter_.setLockInAfter(this->declare_parameter("_lock_in_after", 3));
     validity_filter_.setMaxDistance(this->declare_parameter("_max_distance", 10000));
@@ -71,6 +78,36 @@ rcl_interfaces::msg::SetParametersResult PoseEstimatorNode::parameters_callback(
             pose_estimator->setAllowedMissedFramesBeforeNoFire(param.as_int());
             RCLCPP_INFO(this->get_logger(), "Parameter '_allowed_missed_frames_before_no_fire' updated to: %d", param.as_int());
         }
+        else if (param.get_name() == "cam_barrel_roll" && param.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE)
+        {
+            cam_barrel_roll = param.as_double();
+            RCLCPP_INFO(this->get_logger(), "Parameter 'cam_barrel_roll' updated to: %f", param.as_double());
+        }
+        else if (param.get_name() == "cam_barrel_pitch" && param.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE)
+        {
+            cam_barrel_pitch = param.as_double();
+            RCLCPP_INFO(this->get_logger(), "Parameter 'cam_barrel_pitch' updated to: %f", param.as_double());
+        }
+        else if (param.get_name() == "cam_barrel_yaw" && param.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE)
+        {
+            cam_barrel_yaw = param.as_double();
+            RCLCPP_INFO(this->get_logger(), "Parameter 'cam_barrel_yaw' updated to: %f", param.as_double());
+        }
+        else if (param.get_name() == "cam_barrel_x" && param.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE)
+        {
+            cam_barrel_x = param.as_double();
+            RCLCPP_INFO(this->get_logger(), "Parameter 'cam_barrel_x' updated to: %f", param.as_double());
+        }
+        else if (param.get_name() == "cam_barrel_y" && param.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE)
+        {
+            cam_barrel_y = param.as_double();
+            RCLCPP_INFO(this->get_logger(), "Parameter 'cam_barrel_y' updated to: %f", param.as_double());
+        }
+        else if (param.get_name() == "cam_barrel_z" && param.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE)
+        {
+            cam_barrel_z = param.as_double();
+            RCLCPP_INFO(this->get_logger(), "Parameter 'cam_barrel_z' updated to: %f", param.as_double());
+        }
         else
         {
             result.successful = false;
@@ -106,6 +143,45 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
     pose_estimator->estimateTranslation(image_points, key_points_msg->is_large_armor, tvec, rvec);
     _last_yaw_estimate = pose_estimator->estimateYaw(_last_yaw_estimate, image_points, tvec);
     bool valid_pose_estimate = pose_estimator->isValid(tvec.at<double>(0), tvec.at<double>(1), tvec.at<double>(2), new_auto_aim_status, reset_kalman);
+    
+    // TODO:: Ensure that the tvec is order x, y, z
+    // TODO:: Verify units and set parameters
+
+    // Transform camera coordinates to barrel coordinates
+
+    // Set up transformation matrices
+    Eigen::Matrix<double, 3, 3> r_roll;
+    r_roll << 1, 0, 0,
+          0, cos(cam_barrel_roll), -sin(cam_barrel_roll),
+          0, sin(cam_barrel_roll), cos(cam_barrel_roll);
+
+    Eigen::Matrix<double, 3, 3> r_pitch;
+    r_pitch << cos(cam_barrel_pitch), 0, -sin(cam_barrel_pitch),
+           0, 1, 0,
+           sin(cam_barrel_pitch), 0, cos(cam_barrel_pitch);
+
+    Eigen::Matrix<double, 3, 3> r_yaw;
+    r_yaw << cos(cam_barrel_yaw), sin(cam_barrel_yaw), 0,
+         -sin(cam_barrel_yaw), cos(cam_barrel_yaw), 0,
+         0, 0, 1;
+
+    Eigen::Matrix<double, 3, 3> r_mat = r_roll * r_pitch * r_yaw;
+
+    Eigen::Matrix<double, 4, 4> transform_mat {
+      {r_mat(0, 0), r_mat(0, 1), r_mat(0, 2), cam_barrel_x},
+      {r_mat(1, 0), r_mat(1, 1), r_mat(1, 2), cam_barrel_y},
+      {r_mat(2, 0), r_mat(2, 1), r_mat(2, 2), cam_barrel_z},
+      {0, 0, 0, 1}
+    };
+
+    // Multiply cam -> target vector by transformation matrix to get barrel -> target vector
+    Eigen::Vector4d cam_to_target = {tvec.at<double>(0), tvec.at<double>(1), tvec.at<double>(2), 1};
+    Eigen::Vector4d barrel_to_target = transform_mat * cam_to_target;
+
+    // Set tvec to contain the transformed xyz coordinates
+    tvec.at<double>(0) = barrel_to_target(0);
+    tvec.at<double>(1) = barrel_to_target(1);
+    tvec.at<double>(2) = barrel_to_target(2);
 
     // Publish the predicted armor if the pose is valid (we are tracking or firing)
     if (valid_pose_estimate)
