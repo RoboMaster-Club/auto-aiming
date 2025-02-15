@@ -32,7 +32,7 @@ def generate_launch_description():
                         'cam_barrel_yaw': 0.0,
                         'cam_barrel_x': -88, # camera is 88 mm to left of barrel tip
                         'cam_barrel_y': 73, # camera is 73 mm above barrel tip
-                        'cam_barrel_z': -80, # camera is 80 mm behind barrel tip
+                        'cam_barrel_z': 80, # camera is 80 mm behind barrel tip
                         }]
         ),
 
