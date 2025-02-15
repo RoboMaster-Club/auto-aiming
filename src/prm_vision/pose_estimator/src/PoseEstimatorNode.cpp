@@ -128,23 +128,20 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
     double cam_barrel_z = cam_barrel_z_param.as_double();
 
     // Set up transformation matrices
-    Eigen::Matrix<double, 3, 3> r_roll {
-        {1, 0, 0},
-        {0, cos(cam_barrel_roll), -sin(cam_barrel_roll)},
-        {0, sin(cam_barrel_roll), cos(cam_barrel_roll)}
-    };
-    
-    Eigen::Matrix<double, 3, 3> r_pitch {
-        {cos(cam_barrel_pitch), 0, -1 * sin(cam_barrel_pitch)},
-        {0, 1, 0},
-        { -1 * sin(cam_barrel_roll), 0, cos(cam_barrel_roll)}
-    };
+    Eigen::Matrix<double, 3, 3> r_roll;
+    r_roll << 1, 0, 0,
+          0, cos(cam_barrel_roll), -sin(cam_barrel_roll),
+          0, sin(cam_barrel_roll), cos(cam_barrel_roll);
 
-    Eigen::Matrix<double, 3, 3> r_yaw {
-        {cos(cam_barrel_yaw), sin(cam_barrel_yaw), 0},
-        {sin(cam_barrel_yaw), cos(cam_barrel_yaw), 0},
-        {0, 0, 1}
-    };
+    Eigen::Matrix<double, 3, 3> r_pitch;
+    r_pitch << cos(cam_barrel_pitch), 0, -sin(cam_barrel_pitch),
+           0, 1, 0,
+           sin(cam_barrel_pitch), 0, cos(cam_barrel_pitch);
+
+    Eigen::Matrix<double, 3, 3> r_yaw;
+    r_yaw << cos(cam_barrel_yaw), sin(cam_barrel_yaw), 0,
+         -sin(cam_barrel_yaw), cos(cam_barrel_yaw), 0,
+         0, 0, 1;
 
     Eigen::Matrix<double, 3, 3> r_mat = r_roll * r_pitch * r_yaw;
 
