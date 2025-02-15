@@ -113,12 +113,12 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
     // Transform camera coordinates to barrel coordinates
     
     // Get ros2 parameters
-    rclpp:Parameter cam_barrel_roll_param = this -> get_parameter("cam_barrel_roll");
-    rclpp:Parameter cam_barrel_pitch_param = this -> get_parameter("cam_barrel_pitch");
-    rclpp:Parameter cam_barrel_yaw_param = this -> get_parameter("cam_barrel_yaw");
-    rclpp:Parameter cam_barrel_x_param = this -> get_parameter("cam_barrel_x");
-    rclpp:Parameter cam_barrel_y_param = this -> get_parameter("cam_barrel_y");
-    rclpp:Parameter cam_barrel_z_param = this -> get_parameter("cam_barrel_z");
+    rclcpp::Parameter cam_barrel_roll_param = this -> get_parameter("cam_barrel_roll");
+    rclcpp::Parameter cam_barrel_pitch_param = this -> get_parameter("cam_barrel_pitch");
+    rclcpp::Parameter cam_barrel_yaw_param = this -> get_parameter("cam_barrel_yaw");
+    rclcpp::Parameter cam_barrel_x_param = this -> get_parameter("cam_barrel_x");
+    rclcpp::Parameter cam_barrel_y_param = this -> get_parameter("cam_barrel_y");
+    rclcpp::Parameter cam_barrel_z_param = this -> get_parameter("cam_barrel_z");
 
     double cam_barrel_roll = cam_barrel_roll_param.as_double();
     double cam_barrel_pitch = cam_barrel_pitch_param.as_double();
@@ -128,36 +128,36 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
     double cam_barrel_z = cam_barrel_z_param.as_double();
 
     // Set up transformation matrices
-    Eigin::Matrix<double, 3, 3> r_roll = {
+    Eigen::Matrix<double, 3, 3> r_roll {
         {1, 0, 0},
         {0, cos(cam_barrel_roll), -sin(cam_barrel_roll)},
-        {0, sin(cam_barrel_roll, cos(cam_barrel_roll))}
+        {0, sin(cam_barrel_roll), cos(cam_barrel_roll)}
     };
     
-    Eigin::Matrix<double, 3, 3> r_pitch = {
+    Eigen::Matrix<double, 3, 3> r_pitch {
         {cos(cam_barrel_pitch), 0, -1 * sin(cam_barrel_pitch)},
         {0, 1, 0},
-        { -1 * sin(cam_barrel_roll, 0, cos(cam_barrel_roll))}
+        { -1 * sin(cam_barrel_roll), 0, cos(cam_barrel_roll)}
     };
 
-    Eigin::Matrix<double, 3, 3> r_yaw = {
+    Eigen::Matrix<double, 3, 3> r_yaw {
         {cos(cam_barrel_yaw), sin(cam_barrel_yaw), 0},
         {sin(cam_barrel_yaw), cos(cam_barrel_yaw), 0},
         {0, 0, 1}
     };
 
-    Eigin::Matrix<double, 3, 3> r_mat = r_roll * r_pitch * r_yaw;
+    Eigen::Matrix<double, 3, 3> r_mat = r_roll * r_pitch * r_yaw;
 
-    Eigin::Matrix<double, 4, 4> transform_mat = {
+    Eigen::Matrix<double, 4, 4> transform_mat {
       {r_mat(0, 0), r_mat(0, 1), r_mat(0, 2), cam_barrel_x},
-      {r_mat(1, 0), r_mat(1, 1), r_mat(1, 2), cam_barrel_y}
-      {r_mat(2, 0), r_mat(2, 1), r_mat(2, 2), cam_barrel_z}
+      {r_mat(1, 0), r_mat(1, 1), r_mat(1, 2), cam_barrel_y},
+      {r_mat(2, 0), r_mat(2, 1), r_mat(2, 2), cam_barrel_z},
       {0, 0, 0, 1}
-    }
+    };
 
     // Multiply cam -> target vector by transformation matrix to get barrel -> target vector
-    Eigin::Vector3d cam_to_target = {tvec.at<double>(0), tvec.at<double>(1), tvec.at<double>(2)};
-    Eigin::Vector3d barrel_to_target = transform_mat * cam_to_target;
+    Eigen::Vector4d cam_to_target = {tvec.at<double>(0), tvec.at<double>(1), tvec.at<double>(2), 1};
+    Eigen::Vector4d barrel_to_target = transform_mat * cam_to_target;
 
     // Set tvec to contain the transformed xyz coordinates
     tvec.at<double>(0) = barrel_to_target(0);
