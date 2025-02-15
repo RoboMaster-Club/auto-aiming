@@ -119,15 +119,6 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPointGroups
         image_points.push_back(cv::Point2f(armors[index].points[4], armors[index].points[5]));
         image_points.push_back(cv::Point2f(armors[index].points[6], armors[index].points[7]));
 
-        RCLCPP_INFO(get_logger(), "%f %f %f %f %f %f %f %f",
-        armors[index].points[0],
-        armors[index].points[1],
-        armors[index].points[2],
-        armors[index].points[3],
-        armors[index].points[4],
-        armors[index].points[5],
-        armors[index].points[6],
-        armors[index].points[7]);
         // pose_estimator->estimateTranslation(image_points, keypoint_group_msg->groups[index].is_large_armor, tvec, rvec);
         
         // short yaw_estimate_idx = spin_direction == 1 ? keypoint_group_msg->num_armors - 1 - index : index;
@@ -142,9 +133,9 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPointGroups
     bool reset_kalman = false;
     std::string new_auto_aim_status;
 
-    // TODO: fix segv
-    anti_spintop->calculate_aim_point(tvecs, last_yaw_estimates, keypoint_group_msg->num_armors, &aim_tvec, &aim_yaw);
+    anti_spintop->calculate_aim_point(tvecs, last_yaw_estimates, keypoint_group_msg->num_armors, aim_tvec, aim_yaw);
 
+    // TODO: fix segv
     // bool valid_pose_estimate = pose_estimator->isValid(aim_tvec.at<double>(0), aim_tvec.at<double>(1), aim_tvec.at<double>(2), new_auto_aim_status, reset_kalman);
 
     // // Publish the predicted armor if the pose is valid (we are tracking or firing)

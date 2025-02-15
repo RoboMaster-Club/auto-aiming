@@ -39,7 +39,7 @@ class AntiSpintop {
         double get_yaw();
         int get_direction();
 
-        void calculate_aim_point(cv::Mat* tvecs, double* yaws, int armor_found, cv::Mat* aim_tvec, double* aim_yaw, int delta_time = -1);
+        void calculate_aim_point(cv::Mat* tvecs, double* yaws, int armor_found, cv::Mat& aim_tvec, double& aim_yaw, int delta_time = -1);
         
     private:
         int delta_time;

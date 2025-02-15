@@ -179,7 +179,7 @@ double AntiSpintop::get_radius() {
  * @param delta_time overriding delta time (default is -1, which means 
  * the instance would automatically calculate the delta time)
 */
-void AntiSpintop::calculate_aim_point(cv::Mat* tvecs, double* yaws, int armor_found, cv::Mat* aim_tvec, double* aim_yaw, int delta_time) {
+void AntiSpintop::calculate_aim_point(cv::Mat* tvecs, double* yaws, int armor_found, cv::Mat& aim_tvec, double& aim_yaw, int delta_time) {
     if (delta_time == -1) {
         this->delta_time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - this->last_update_time).count();
     } else {
@@ -198,10 +198,8 @@ void AntiSpintop::calculate_aim_point(cv::Mat* tvecs, double* yaws, int armor_fo
 
     // return the targeting armor position if the robot is not spintopping
     if (this->spin_direction == 0) {
-        aim_tvec->at<double>(0) = tvecs[0].at<double>(0);
-        aim_tvec->at<double>(1) = tvecs[0].at<double>(1);
-        aim_tvec->at<double>(2) = tvecs[0].at<double>(2);
-        *aim_yaw = yaws[0];
+        aim_tvec = tvecs[0];
+        aim_yaw = yaws[0];
     } else {
         short targeted_armor = (this->spin_direction + 1) / 2;
         double optimal_times[2] = {
@@ -224,10 +222,11 @@ void AntiSpintop::calculate_aim_point(cv::Mat* tvecs, double* yaws, int armor_fo
                 if (abs(theta_array[targeted_armor] + delta_preceding * 180 / M_PI) > GIVEUP_ROTATION_ABS) {
 
                     // recover to the center
-                    aim_tvec->at<double>(0) = tvecs[targeted_armor].at<double>(0) - sin(theta_array[targeted_armor] * M_PI / 180) * this->target_radius;
-                    aim_tvec->at<double>(1) = tvecs[targeted_armor].at<double>(1);
-                    aim_tvec->at<double>(2) = tvecs[targeted_armor].at<double>(2) + cos(theta_array[targeted_armor] * M_PI / 180) * this->target_radius;
-                
+                    aim_tvec = (cv::Mat_<double>(3, 1) <<
+                        tvecs[targeted_armor].at<double>(0) - sin(theta_array[targeted_armor] * M_PI / 180) * this->target_radius,
+                        tvecs[targeted_armor].at<double>(1),
+                        tvecs[targeted_armor].at<double>(2) + cos(theta_array[targeted_armor] * M_PI / 180) * this->target_radius);
+
                     this->last_update_time = std::chrono::steady_clock::now();
                     return;
                 }
@@ -241,10 +240,12 @@ void AntiSpintop::calculate_aim_point(cv::Mat* tvecs, double* yaws, int armor_fo
             
             if (abs(theta_array[0] + angle_increment * 180 / M_PI) > GIVEUP_ROTATION_ABS) {
                 // recover to the center
-                aim_tvec->at<double>(0) = tvecs[targeted_armor].at<double>(0) - sin(theta_array[targeted_armor] * M_PI / 180) * this->target_radius;
-                aim_tvec->at<double>(1) = tvecs[targeted_armor].at<double>(1);
-                aim_tvec->at<double>(2) = tvecs[targeted_armor].at<double>(2) + cos(theta_array[targeted_armor] * M_PI / 180) * this->target_radius;
-            
+                aim_tvec = (cv::Mat_<double>(3, 1) <<
+                    tvecs[targeted_armor].at<double>(0) - sin(theta_array[targeted_armor] * M_PI / 180) * this->target_radius,
+                    tvecs[targeted_armor].at<double>(1),
+                    tvecs[targeted_armor].at<double>(2) + cos(theta_array[targeted_armor] * M_PI / 180) * this->target_radius);
+
+
                 this->last_update_time = std::chrono::steady_clock::now();
                 return;
             }       
@@ -258,15 +259,19 @@ void AntiSpintop::calculate_aim_point(cv::Mat* tvecs, double* yaws, int armor_fo
         center_tvec[2] = tvecs[targeted_armor].at<double>(2) + cos(theta_array[targeted_armor] * M_PI / 180) * this->target_radius;
 
         // calculates optimal future position to aim
-        aim_tvec->at<double>(0) = cos(angle_increment) * (tvecs[targeted_armor].at<double>(0) - center_tvec[0])
-        - sin(angle_increment) * (tvecs[targeted_armor].at<double>(2) - center_tvec[2]) + center_tvec[0];
-        aim_tvec->at<double>(1) = center_tvec[1];
-        aim_tvec->at<double>(2) = -sin(angle_increment) * (tvecs[targeted_armor].at<double>(0) - center_tvec[0]) 
-        + cos(angle_increment) * (tvecs[targeted_armor].at<double>(2) - center_tvec[2]) + center_tvec[2];
-        *aim_yaw = yaws[targeted_armor] + angle_increment;
+        aim_tvec = (cv::Mat_<double>(3, 1) << 
+            cos(angle_increment) * (tvecs[targeted_armor].at<double>(0) - center_tvec[0])
+            - sin(angle_increment) * (tvecs[targeted_armor].at<double>(2) - center_tvec[2]) + center_tvec[0],
+
+            center_tvec[1],
+
+            -sin(angle_increment) * (tvecs[targeted_armor].at<double>(0) - center_tvec[0]) 
+            + cos(angle_increment) * (tvecs[targeted_armor].at<double>(2) - center_tvec[2]) + center_tvec[2]);
+
+        aim_yaw = yaws[targeted_armor] + angle_increment;
     }
 
 
-    this->last_update_time = std::chrono::steady_clock::now();
+    // this->last_update_time = std::chrono::steady_clock::now();
     return;
 }

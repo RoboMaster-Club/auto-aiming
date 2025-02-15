@@ -105,15 +105,6 @@ void OpenCVArmorDetectorNode::imageCallback(
     vision_msgs::msg::KeyPoints keypoints_msg;
     std::array<float, 8> points_array;
     std::copy(points.begin(), points.end(), points_array.begin());
-    RCLCPP_INFO(get_logger(), "%f %f %f %f %f %f %f %f",
-    points_array[0],
-    points_array[1],
-    points_array[2],
-    points_array[3],
-    points_array[4],
-    points_array[5],
-    points_array[6],
-    points_array[7]);
     float h = std::min(cv::norm(points.at(1) - points.at(0)), cv::norm(points.at(3) - points.at(2)));
     float w = cv::norm((points.at(0) + points.at(1)) / 2 - (points.at(2) + points.at(3)) / 2);
 
