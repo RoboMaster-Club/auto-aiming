@@ -77,13 +77,10 @@ std::vector<std::vector<_Float32>> OpenCVArmorDetector::search(cv::Mat &frame)
             std::vector<_Float32> detected_keypoints(8, 0);
             for (int i = 0; i < 4; i++)
             {
-
                 detected_keypoints[i * 2] = points.at(i).x + _search_area[0];
                 detected_keypoints[i * 2 + 1] = points.at(i).y + _search_area[1];
-
-                detected_armors.push_back(detected_keypoints);
-
             }
+            detected_armors.push_back(detected_keypoints);
             armor_count++;
         }
 

@@ -119,12 +119,21 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPointGroups
         image_points.push_back(cv::Point2f(armors[index].points[4], armors[index].points[5]));
         image_points.push_back(cv::Point2f(armors[index].points[6], armors[index].points[7]));
 
-        pose_estimator->estimateTranslation(image_points, keypoint_group_msg->groups[index].is_large_armor, tvec, rvec);
+        RCLCPP_INFO(get_logger(), "%f %f %f %f %f %f %f %f",
+        armors[index].points[0],
+        armors[index].points[1],
+        armors[index].points[2],
+        armors[index].points[3],
+        armors[index].points[4],
+        armors[index].points[5],
+        armors[index].points[6],
+        armors[index].points[7]);
+        // pose_estimator->estimateTranslation(image_points, keypoint_group_msg->groups[index].is_large_armor, tvec, rvec);
         
-        short yaw_estimate_idx = spin_direction == 1 ? keypoint_group_msg->num_armors - 1 - index : index;
-        last_yaw_estimates[index] = pose_estimator->estimateYaw(last_yaw_estimates[yaw_estimate_idx], image_points, tvec);
+        // short yaw_estimate_idx = spin_direction == 1 ? keypoint_group_msg->num_armors - 1 - index : index;
+        // last_yaw_estimates[index] = pose_estimator->estimateYaw(last_yaw_estimates[yaw_estimate_idx], image_points, tvec);
 
-        tvecs[index] = tvec;
+        // tvecs[index] = tvec;
     }
 
 
@@ -133,32 +142,33 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPointGroups
     bool reset_kalman = false;
     std::string new_auto_aim_status;
 
+    // TODO: fix segv
     anti_spintop->calculate_aim_point(tvecs, last_yaw_estimates, keypoint_group_msg->num_armors, &aim_tvec, &aim_yaw);
 
-    bool valid_pose_estimate = pose_estimator->isValid(aim_tvec.at<double>(0), aim_tvec.at<double>(1), aim_tvec.at<double>(2), new_auto_aim_status, reset_kalman);
+    // bool valid_pose_estimate = pose_estimator->isValid(aim_tvec.at<double>(0), aim_tvec.at<double>(1), aim_tvec.at<double>(2), new_auto_aim_status, reset_kalman);
 
-    // Publish the predicted armor if the pose is valid (we are tracking or firing)
-    if (valid_pose_estimate)
-    {
-        vision_msgs::msg::PredictedArmor predicted_armor_msg;
-        predicted_armor_msg.header = keypoint_group_msg->groups[0].header;
-        predicted_armor_msg.x = aim_tvec.at<double>(0);
-        predicted_armor_msg.y = aim_tvec.at<double>(1);
-        predicted_armor_msg.z = aim_tvec.at<double>(2);
-        predicted_armor_msg.pitch = 15;                             // Pitch is always 15
-        predicted_armor_msg.yaw = 180 * aim_yaw / CV_PI;            // Convert to degrees
-        predicted_armor_msg.roll = 0;                               // Roll is always 0
-        predicted_armor_msg.x_vel = 0;
-        predicted_armor_msg.y_vel = 0; // TODO: compute yaw rate
-        predicted_armor_msg.z_vel = 0;
-        predicted_armor_msg.fire = (new_auto_aim_status == "FIRE");
-        predicted_armor_publisher->publish(predicted_armor_msg);
-    }
+    // // Publish the predicted armor if the pose is valid (we are tracking or firing)
+    // if (valid_pose_estimate)
+    // {
+    //     vision_msgs::msg::PredictedArmor predicted_armor_msg;
+    //     predicted_armor_msg.header = keypoint_group_msg->groups[0].header;
+    //     predicted_armor_msg.x = aim_tvec.at<double>(0);
+    //     predicted_armor_msg.y = aim_tvec.at<double>(1);
+    //     predicted_armor_msg.z = aim_tvec.at<double>(2);
+    //     predicted_armor_msg.pitch = 15;                             // Pitch is always 15
+    //     predicted_armor_msg.yaw = 180 * aim_yaw / CV_PI;            // Convert to degrees
+    //     predicted_armor_msg.roll = 0;                               // Roll is always 0
+    //     predicted_armor_msg.x_vel = 0;
+    //     predicted_armor_msg.y_vel = 0; // TODO: compute yaw rate
+    //     predicted_armor_msg.z_vel = 0;
+    //     predicted_armor_msg.fire = (new_auto_aim_status == "FIRE");
+    //     predicted_armor_publisher->publish(predicted_armor_msg);
+    // }
 
-    else if (new_auto_aim_status == "STOPPING")
-    {
-        publishZeroPredictedArmor(keypoint_group_msg->groups[0].header, new_auto_aim_status);
-    }
+    // else if (new_auto_aim_status == "STOPPING")
+    // {
+    //     publishZeroPredictedArmor(keypoint_group_msg->groups[0].header, new_auto_aim_status);
+    // }
 }
 
 void PoseEstimatorNode::publishZeroPredictedArmor(std_msgs::msg::Header header, std::string new_auto_aim_status)
