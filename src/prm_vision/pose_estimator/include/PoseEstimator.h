@@ -94,15 +94,13 @@ private:
     const cv::Mat DISTORTION_COEFFS = (cv::Mat_<double>(1, 4) << -0.1088, -0.0721, -0.000847, 0.0);
 
     /* 3D object points (measured armor dimensions)
-     * Coordinate system:
-     *
-     *  +y (yaw)
-     *       ^
-     *       |     +x (pitch)
-     *       +---->
-     *      /
-     *     v
-     *  +z (roll)
+     * Coordinate system (camera is facing us):
+     *        
+     *                      +x (pitch)
+     *               +---->
+     *             / |
+     * +z (roll)  L  v +y (yaw)
+     *  
      */
     const std::vector<cv::Point3f> SMALL_ARMOR_OBJECT_POINTS = {
         {-SMALL_ARMOR_HALF_WIDTH, -LIGHTBAR_HALF_HEIGHT, 0}, // Top Left
