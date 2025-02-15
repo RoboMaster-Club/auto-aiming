@@ -14,7 +14,7 @@ PoseEstimatorNode::PoseEstimatorNode(const rclcpp::NodeOptions &options) : Node(
     cam_barrel_pitch = this -> declare_parameter("cam_barrel_pitch", 0.0);
     cam_barrel_yaw = this -> declare_parameter("cam_barrel_yaw", 0.0);
     cam_barrel_x = this -> declare_parameter("cam_barrel_x", -88.0);
-    cam_barrel_y = this -> declare_parameter("cam_barrel_y", 73.0);
+    cam_barrel_y = this -> declare_parameter("cam_barrel_y", -73.0);
     cam_barrel_z = this -> declare_parameter("cam_barrel_z", 80.0);
     pose_estimator->setAllowedMissedFramesBeforeNoFire(this->declare_parameter("_allowed_missed_frames_before_no_fire", 15));
     pose_estimator->setNumFramesToFireAfter(this->declare_parameter("_num_frames_to_fire_after", 3));
@@ -68,7 +68,7 @@ rcl_interfaces::msg::SetParametersResult PoseEstimatorNode::parameters_callback(
             validity_filter_.setPrevLen(param.as_int());
             RCLCPP_INFO(this->get_logger(), "Parameter '_prev_len' updated to: %d", param.as_int());
         }
-        else if (param.get_name() == "_max_dt" && param.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE || param.get_type())
+        else if (param.get_name() == "_max_dt" && param.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE)
         {
             validity_filter_.setMaxDt(param.as_double());
             RCLCPP_INFO(this->get_logger(), "Parameter '_max_dt' updated to: %f", param.as_double());
@@ -77,6 +77,36 @@ rcl_interfaces::msg::SetParametersResult PoseEstimatorNode::parameters_callback(
         {
             pose_estimator->setAllowedMissedFramesBeforeNoFire(param.as_int());
             RCLCPP_INFO(this->get_logger(), "Parameter '_allowed_missed_frames_before_no_fire' updated to: %d", param.as_int());
+        }
+        else if (param.get_name() == "cam_barrel_roll" && param.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE)
+        {
+            cam_barrel_roll = param.as_double();
+            RCLCPP_INFO(this->get_logger(), "Parameter 'cam_barrel_roll' updated to: %f", param.as_double());
+        }
+        else if (param.get_name() == "cam_barrel_pitch" && param.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE)
+        {
+            cam_barrel_pitch = param.as_double();
+            RCLCPP_INFO(this->get_logger(), "Parameter 'cam_barrel_pitch' updated to: %f", param.as_double());
+        }
+        else if (param.get_name() == "cam_barrel_yaw" && param.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE)
+        {
+            cam_barrel_yaw = param.as_double();
+            RCLCPP_INFO(this->get_logger(), "Parameter 'cam_barrel_yaw' updated to: %f", param.as_double());
+        }
+        else if (param.get_name() == "cam_barrel_x" && param.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE)
+        {
+            cam_barrel_x = param.as_double();
+            RCLCPP_INFO(this->get_logger(), "Parameter 'cam_barrel_x' updated to: %f", param.as_double());
+        }
+        else if (param.get_name() == "cam_barrel_y" && param.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE)
+        {
+            cam_barrel_y = param.as_double();
+            RCLCPP_INFO(this->get_logger(), "Parameter 'cam_barrel_y' updated to: %f", param.as_double());
+        }
+        else if (param.get_name() == "cam_barrel_z" && param.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE)
+        {
+            cam_barrel_z = param.as_double();
+            RCLCPP_INFO(this->get_logger(), "Parameter 'cam_barrel_z' updated to: %f", param.as_double());
         }
         else
         {
