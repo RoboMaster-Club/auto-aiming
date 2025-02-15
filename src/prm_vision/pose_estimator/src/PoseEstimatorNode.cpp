@@ -69,7 +69,6 @@ rcl_interfaces::msg::SetParametersResult PoseEstimatorNode::parameters_callback(
             RCLCPP_INFO(this->get_logger(), "Parameter '_prev_len' updated to: %d", param.as_int());
         }
         else if (param.get_name() == "_max_dt" && param.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE)
-        else if (param.get_name() == "_max_dt" && param.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE)
         {
             validity_filter_.setMaxDt(param.as_double());
             RCLCPP_INFO(this->get_logger(), "Parameter '_max_dt' updated to: %f", param.as_double());

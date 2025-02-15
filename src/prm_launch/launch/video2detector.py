@@ -17,7 +17,6 @@ def generate_launch_description():
             parameters=[{'source': str(video_path),
                          'fps': 4,
                          'frame_id': 'video',
-                         'cam_barrel_angle': 1.0;
                          }]    
         ), 
         Node(
@@ -28,6 +27,4 @@ def generate_launch_description():
             package='pose_estimator',
             executable='PoseEstimatorNode',
         ),
-
-        # TODO:: get actual angle, potentially set up the parameter to change based on control
     ])
