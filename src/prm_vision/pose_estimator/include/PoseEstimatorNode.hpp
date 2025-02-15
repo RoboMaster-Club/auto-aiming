@@ -35,6 +35,7 @@ private:
     
     // Class methods
     void publishZeroPredictedArmor(std_msgs::msg::Header header, std::string new_auto_aim_status);
+    void drawTopDownViewGivenRotation(double yaw, double X, double Y, double Z);
 
     // dynamic parameters
     double cam_barrel_roll;

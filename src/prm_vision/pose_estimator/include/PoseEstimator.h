@@ -44,8 +44,8 @@ private:
     // Class variables
     int _consecutive_tracking_frames_ctr = 0;
     int _num_frames_to_fire_after = 3;
-    int _allowed_missed_frames_before_no_fire = 15;
-    int _remaining_missed_frames_before_no_fire = 0; // Gets set to 5 when we have a valid pose estimate
+    int _allowed_missed_frames_before_no_fire = 150;
+    int _remaining_missed_frames_before_no_fire = 0; // Gets reset when we have a valid pose estimate
     std::chrono::time_point<std::chrono::system_clock> _last_fire_time;
 
     // Validity filter parameters
@@ -94,15 +94,13 @@ private:
     const cv::Mat DISTORTION_COEFFS = (cv::Mat_<double>(1, 4) << -0.1088, -0.0721, -0.000847, 0.0);
 
     /* 3D object points (measured armor dimensions)
-     * Coordinate system:
-     *
-     *  +y (yaw)
-     *       ^
-     *       |     +x (pitch)
-     *       +---->
-     *      /
-     *     v
-     *  +z (roll)
+     * Coordinate system (camera is facing us):
+     *        
+     *                      +x (pitch)
+     *               +---->
+     *             / |
+     * +z (roll)  L  v +y (yaw)
+     *  
      */
     const std::vector<cv::Point3f> SMALL_ARMOR_OBJECT_POINTS = {
         {-SMALL_ARMOR_HALF_WIDTH, -LIGHTBAR_HALF_HEIGHT, 0}, // Top Left
