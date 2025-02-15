@@ -9,7 +9,7 @@ PoseEstimatorNode::PoseEstimatorNode(const rclcpp::NodeOptions &options) : Node(
     predicted_armor_publisher = this->create_publisher<vision_msgs::msg::PredictedArmor>("predicted_armor", 10);
 
     // Dynamic parameters
-    pose_estimator->setAllowedMissedFramesBeforeNoFire(this->declare_parameter("_allowed_missed_frames_before_no_fire", 15));
+    pose_estimator->setAllowedMissedFramesBeforeNoFire(this->declare_parameter("_allowed_missed_frames_before_no_fire", 150));
     pose_estimator->setNumFramesToFireAfter(this->declare_parameter("_num_frames_to_fire_after", 3));
     validity_filter_.setLockInAfter(this->declare_parameter("_lock_in_after", 3));
     validity_filter_.setMaxDistance(this->declare_parameter("_max_distance", 10000));
@@ -61,7 +61,7 @@ rcl_interfaces::msg::SetParametersResult PoseEstimatorNode::parameters_callback(
             validity_filter_.setPrevLen(param.as_int());
             RCLCPP_INFO(this->get_logger(), "Parameter '_prev_len' updated to: %d", param.as_int());
         }
-        else if (param.get_name() == "_max_dt" && param.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE || param.get_type())
+        else if (param.get_name() == "_max_dt" && param.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE)
         {
             validity_filter_.setMaxDt(param.as_double());
             RCLCPP_INFO(this->get_logger(), "Parameter '_max_dt' updated to: %f", param.as_double());
@@ -129,6 +129,26 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
     {
         publishZeroPredictedArmor(key_points_msg->header, new_auto_aim_status);
     }
+
+    // Draw top-down view
+#ifdef DEBUG
+    drawTopDownViewGivenRotation(_last_yaw_estimate, tvec.at<double>(0), tvec.at<double>(1), tvec.at<double>(2));
+#endif
+}
+
+void PoseEstimatorNode::drawTopDownViewGivenRotation(double yaw, double X, double Y, double Z)
+{
+    // Draw a line rotated from the x-axis by yaw.
+    cv::Mat top_down_view = cv::Mat::zeros(1280, 720, CV_8UC3);
+
+    // Draw the target offset from the center of the image
+    int target_x = Z;
+    int target_y = X;
+    cv::circle(top_down_view, cv::Point(target_x, target_y), 5, cv::Scalar(0, 255, 0), -1);
+
+    cv::resize(top_down_view, top_down_view, cv::Size(100, 100));
+    cv::imshow("Top Down View", top_down_view);
+    cv::waitKey(1);
 }
 
 void PoseEstimatorNode::publishZeroPredictedArmor(std_msgs::msg::Header header, std::string new_auto_aim_status)
