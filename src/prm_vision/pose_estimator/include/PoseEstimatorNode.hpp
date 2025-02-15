@@ -36,6 +36,14 @@ private:
     // Class methods
     void publishZeroPredictedArmor(std_msgs::msg::Header header, std::string new_auto_aim_status);
 
+    // dynamic parameters
+    double cam_barrel_roll;
+    double cam_barrel_pitch;
+    double cam_barrel_yaw;
+    double cam_barrel_x; 
+    double cam_barrel_y;
+    double cam_barrel_z;
+
     // Callbacks and publishers/subscribers
     rclcpp::Subscription<vision_msgs::msg::KeyPoints>::SharedPtr key_points_subscriber;
     std::shared_ptr<rclcpp::Publisher<vision_msgs::msg::PredictedArmor>> predicted_armor_publisher;

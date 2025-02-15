@@ -27,14 +27,7 @@ def generate_launch_description():
         Node(
             package='pose_estimator',
             executable='PoseEstimatorNode',
-            parameters[{'cam_barrel_roll': 0.0, # camera -> barrel rotations and translations. (radians and mm)
-                        'cam_barrel_pitch': 0.0, # angles are 0 bc camera is parallel at the moment
-                        'cam_barrel_yaw': 0.0,
-                        'cam_barrel_x': -88, # camera is 88 mm to left of barrel tip
-                        'cam_barrel_y': 73, # camera is 73 mm above barrel tip
-                        'cam_barrel_z': 80, # camera is 80 mm behind barrel tip
-                        }]
         ),
 
-        //TODO:: get actual angle, potentially set up the parameter to change based on control
+        # TODO:: get actual angle, potentially set up the parameter to change based on control
     ])
