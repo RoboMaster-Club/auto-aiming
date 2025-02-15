@@ -32,7 +32,7 @@ clean() {
 build() {
     print_green "[*] Building project with Release configuration and optimization flags."
 
-    build_args="-DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3"
+    build_args="-DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DPYTHON_EXECUTABLE=/usr/bin/python3.8"
 
     # Add the DEBUG flag if '--debug' or '-d' was provided
     if [[ "$debug" == "true" ]]; then
@@ -40,9 +40,9 @@ build() {
     fi
 
     if [[ "$quiet" == "true" ]]; then
-        colcon build --cmake-args $build_args --allow-overriding opencv_armor_detector >> "$LOG_FILE" 2>&1
+        colcon build --symlink-install --cmake-args $build_args --allow-overriding opencv_armor_detector >> "$LOG_FILE" 2>&1
     else
-        colcon build --cmake-args $build_args --allow-overriding opencv_armor_detector
+        colcon build --symlink-install --cmake-args $build_args --allow-overriding opencv_armor_detector
     fi
 
     if [ $? -eq 0 ]; then
