@@ -88,7 +88,7 @@ private:
 	rclcpp::TimerBase::SharedPtr uart_read_timer;
 	rclcpp::TimerBase::SharedPtr heart_beat_timer;
 
-	void start_uart(const char *port);
+	bool start_uart(const char *port);
 
 	void publish_static_tf(float, float, float, float, float, float, const char *, const char *);
 
