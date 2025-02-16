@@ -88,15 +88,13 @@ private:
 	rclcpp::TimerBase::SharedPtr uart_read_timer;
 	rclcpp::TimerBase::SharedPtr heart_beat_timer;
 
-	void start_uart(const char *port);
+	bool start_uart(const char *port);
 
 	void publish_static_tf(float, float, float, float, float, float, const char *, const char *);
 
 	void auto_aim_handler(const std::shared_ptr<vision_msgs::msg::PredictedArmor> msg);
 	void nav_handler(const std::shared_ptr<geometry_msgs::msg::Twist> msg);
 	void heart_beat_handler();
-
-	bool read_alignment();
 
 	void read_uart();
 };

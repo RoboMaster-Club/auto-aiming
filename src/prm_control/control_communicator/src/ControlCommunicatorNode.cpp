@@ -25,15 +25,6 @@ ControlCommunicatorNode::ControlCommunicatorNode(const char *port) : Node("contr
 
 	this->start_uart(port);
 
-	if (this->read_alignment())
-	{
-		RCLCPP_INFO(this->get_logger(), "Inital Read alignment success.");
-	}
-	else
-	{
-		RCLCPP_WARN(this->get_logger(), "Inital Read alignment failed.");
-	}
-
 	RCLCPP_INFO(this->get_logger(), "should have printed.");
 
 	this->tf_broadcaster = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
@@ -60,7 +51,7 @@ ControlCommunicatorNode::ControlCommunicatorNode(const char *port) : Node("contr
 	this->target_robot_color_publisher = this->create_publisher<std_msgs::msg::String>("color_set", rclcpp::QoS(rclcpp::KeepLast(1)).reliable());
 	this->match_status_publisher = this->create_publisher<std_msgs::msg::Bool>("match_start", rclcpp::QoS(rclcpp::KeepLast(1)).reliable());
 
-	// this->uart_read_timer = this->create_wall_timer(4ms, std::bind(&ControlCommunicatorNode::read_uart, this));
+	this->uart_read_timer = this->create_wall_timer(4ms, std::bind(&ControlCommunicatorNode::read_uart, this));
 
 	RCLCPP_INFO(this->get_logger(), "Control Communicator Node Started.");
 }
@@ -92,60 +83,69 @@ void ControlCommunicatorNode::publish_static_tf(float x, float y, float z, float
 	tf_static_broadcaster->sendTransform(t);
 }
 
-void ControlCommunicatorNode::start_uart(const char *port)
+bool ControlCommunicatorNode::start_uart(const char *port)
 {
+	// Open the serial port in read/write mode, no controlling terminal, and no delay
+    int baud_rate = B1152000;
 	this->is_connected = false;
-	this->port_fd = open(port, O_RDWR);
+	this->port_fd = open(port, O_RDWR | O_NOCTTY | O_NONBLOCK);
 
-	// Check for errors
-	if (this->port_fd < 0)
-	{
-		RCLCPP_ERROR(this->get_logger(), "Failed to open: %s, %s", port, strerror(errno));
-		return;
-	}
+    if (this->port_fd == -1)
+    {
+        RCLCPP_ERROR(this->get_logger(), "Error %i from open: %s", errno, strerror(errno));
+        return false;
+    }
+    else
+    {
+        tcflush(this->port_fd, TCIOFLUSH); // Flush both input and output buffers
+    }
 
-	struct termios tty;
+    // Configure serial port settings
+    struct termios tty;
+    if (tcgetattr(this->port_fd, &tty) != 0)
+    {
+        RCLCPP_ERROR(this->get_logger(), "Error %i from tcgetattr: %s", errno, strerror(errno));
+        close(this->port_fd);
+        return false;
+    }
 
-	// Set UART TTY to 8n1
-	tty.c_cflag &= ~PARENB;
-	tty.c_cflag &= ~CSTOPB;
-	tty.c_cflag &= ~CSIZE;
-	tty.c_cflag |= CS8;
+    // Set baud rate
+    if (cfsetispeed(&tty, baud_rate) != 0 || cfsetospeed(&tty, baud_rate) != 0)
+    {
+        RCLCPP_ERROR(this->get_logger(), "Error setting baud rate: %s", strerror(errno));
+        close(this->port_fd);
+        return false;
+    }
 
-	tty.c_cflag &= ~CRTSCTS;	   // No RTS/CTS flow control
-	tty.c_cflag |= CREAD | CLOCAL; // Turn on READ & ignore ctrl lines
-	tty.c_lflag &= ~ICANON;		   // Disable canonical mode
+    // Set 8N1 (8 data bits, no parity, 1 stop bit)
+    tty.c_cflag &= ~PARENB; // Disable parity
+    tty.c_cflag &= ~CSTOPB; // Use one stop bit
+    tty.c_cflag &= ~CSIZE;  // Clear current data size setting
+    tty.c_cflag |= CS8;     // 8 data bits
 
-	// Disable echo, erasure and newline echo
-	tty.c_lflag &= ~ECHO;
-	tty.c_lflag &= ~ECHOE;
-	tty.c_lflag &= ~ECHONL;
+    // Disable hardware flow control
+    tty.c_cflag &= ~CRTSCTS;
 
-	// Disable interpretation of INTR, QUIT and SUSP
-	tty.c_lflag &= ~ISIG;
+    // Enable reading and ignore modem control lines
+    tty.c_cflag |= CREAD | CLOCAL;
 
-	// Disable special handling, interpretation, S/W flow control, \n conv.
-	tty.c_iflag &= ~(IXON | IXOFF | IXANY);
-	tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL);
-	tty.c_oflag &= ~OPOST;
-	tty.c_oflag &= ~ONLCR;
+    // Set raw mode (disable canonical mode, echo, signals, etc.)
+    cfmakeraw(&tty);
 
-	tty.c_cc[VTIME] = 10;				 // Wait for up to 1s (10 deciseconds)
-	tty.c_cc[VMIN] = sizeof(PackageOut); // Block for sizeof(PackageOut) bits
+    // Set blocking mode with a 1-second read timeout
+    tty.c_cc[VMIN] = 1;   // Minimum 1 character to read
+    tty.c_cc[VTIME] = 10; // Timeout in deciseconds (1 second)
 
-	// Set the baud rate
-	cfsetispeed(&tty, B1152000);
-
-	// Save tty settings, also checking for error
+    // Apply the configuration to the serial port
 	if (tcsetattr(this->port_fd, TCSANOW, &tty) != 0)
 	{
 		RCLCPP_ERROR(this->get_logger(), "Error %i from tcsetattr: %s", errno, strerror(errno));
-		return;
+		return false;
 	}
 	this->is_connected = true;
 	RCLCPP_INFO(this->get_logger(), "UART Connected");
 
-	return;
+    return true;
 }
 
 void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs::msg::PredictedArmor> msg)
@@ -198,10 +198,7 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 	package.autoAimPackage.fire = 1;
 	write(this->port_fd, &package, sizeof(PackageOut));
 	fsync(this->port_fd);
-	if (auto_aim_frame_id % 1000 == 0)
-	{
-		RCLCPP_INFO(this->get_logger(), "Yaw, Pitch: %.3f, %.3f, FIRE=%i", package.autoAimPackage.yaw, package.autoAimPackage.pitch, package.autoAimPackage.fire);
-	}
+	RCLCPP_INFO(this->get_logger(), "Yaw, Pitch: %.3f, %.3f, FIRE=%i", package.autoAimPackage.yaw, package.autoAimPackage.pitch, package.autoAimPackage.fire);
 	// RCLCPP_INFO_ONCE(this->get_logger(), "First auto aim pkg sent, pkg is %i bytes", sizeof(PackageOut));
 }
 
@@ -259,38 +256,20 @@ void ControlCommunicatorNode::heart_beat_handler()
 	}
 }
 
-bool ControlCommunicatorNode::read_alignment()
-{
-	RCLCPP_INFO(this->get_logger(), "Attemp to alignment.");
-	uint8_t i = 0;
-	uint8_t buffer[33];
-	do
-	{
-		int success = read(this->port_fd, &(buffer[0]), sizeof(buffer[0]));
-		if (success)
-		{
-			i++;
-		}
-	} while (buffer[0] != 0xAA || i > sizeof(PackageIn) * 2);
-	read(this->port_fd, &buffer, sizeof(PackageIn) - 1);
-
-	return i <= sizeof(PackageIn) * 2;
-}
 
 void ControlCommunicatorNode::read_uart()
 {
-	RCLCPP_INFO(this->get_logger(), "reading uart");
 	PackageIn package;
 	int success = read(this->port_fd, &package, sizeof(PackageIn));
 
 	rclcpp::Time curr_time = this->now();
 	if (success == -1)
 	{
-		RCLCPP_ERROR(this->get_logger(), "Error %i from read: %s", errno, strerror(errno));
-		return;
+		RCLCPP_INFO(this->get_logger(), "DEBUG: Nothing in buffer, err %i from read: %s", errno, strerror(errno));
+		return; // No data to read, try again later
 	}
 
-	// // print each field of package
+	// print each field of package
 	// RCLCPP_INFO(this->get_logger(), "\n");
 	// RCLCPP_INFO(this->get_logger(), "head: %x", package.head);
 	// RCLCPP_INFO(this->get_logger(), "pitch: %f", package.pitch);
@@ -306,14 +285,6 @@ void ControlCommunicatorNode::read_uart()
 	if (package.head != 0xAA) // Package validation
 	{
 		RCLCPP_WARN(this->get_logger(), "Packet miss aligned.");
-		if (this->read_alignment())
-		{
-			RCLCPP_INFO(this->get_logger(), "Read alignment success.");
-		}
-		else
-		{
-			RCLCPP_WARN(this->get_logger(), "Read alignment failed.");
-		}
 		return;
 	}
 
@@ -414,7 +385,7 @@ void ControlCommunicatorNode::read_uart()
 int main(int argc, char **argv)
 {
 	rclcpp::init(argc, argv);
-	auto node = std::make_shared<ControlCommunicatorNode>("/dev/ttyTHS0");
+	auto node = std::make_shared<ControlCommunicatorNode>("/dev/ttyTHS1");
 
 	rclcpp::spin(node);
 	rclcpp::shutdown();
