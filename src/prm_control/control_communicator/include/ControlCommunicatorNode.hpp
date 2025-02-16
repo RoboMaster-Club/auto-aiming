@@ -96,8 +96,6 @@ private:
 	void nav_handler(const std::shared_ptr<geometry_msgs::msg::Twist> msg);
 	void heart_beat_handler();
 
-	bool read_alignment();
-
 	void read_uart();
 };
 
