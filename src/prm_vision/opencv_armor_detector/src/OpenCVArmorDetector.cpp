@@ -52,7 +52,7 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
                            std::to_string(_frame_count) + " (" +
                            std::to_string(_detected_frame * 100 / _frame_count) + "%) and missed: " + std::to_string(_missed_frames) + std::string(" frames"));
 
-    cv::waitKey(30);
+    cv::waitKey(1);
 #endif
 
     // If we didn't find an armor for a few frames (ROS2 param), reset the search area

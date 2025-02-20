@@ -136,17 +136,68 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
 
 void PoseEstimatorNode::drawTopDownViewGivenRotation(double yaw, double X, double Y, double Z)
 {
-    // Draw a line rotated from the x-axis by yaw.
-    cv::Mat top_down_view = cv::Mat::zeros(1280, 720, CV_8UC3);
+    // Define image dimensions
+    const int imageWidth = 800;   // Width of the top-down view image
+    const int imageHeight = 1000; // Height of the top-down view image
 
-    // Draw the target offset from the center of the image
-    int target_x = Z;
-    int target_y = X;
-    cv::circle(top_down_view, cv::Point(target_x, target_y), 5, cv::Scalar(0, 255, 0), -1);
+    // Create a blank image (white background)
+    cv::Mat topDownImage(imageHeight, imageWidth, CV_8UC3, cv::Scalar(255, 255, 255));
 
-    cv::resize(top_down_view, top_down_view, cv::Size(640, 360));
-    cv::imshow("Top Down View", top_down_view);
+    // Define scaling factor (pixels per millimeter)
+    // Since Z ranges from 500 mm to 4000 mm, we scale to fit within the image height
+    double scale = imageHeight / 4000.0; // Scale to fit 4000 mm (4 meters) in the image height
+
+    // Map real-world coordinates (X, Z) to image pixel coordinates
+    int centerX = static_cast<int>(imageWidth / 2 + X * scale); // Center X in image
+    int centerZ = static_cast<int>(imageHeight - Z * scale);    // Center Z in image (flip Y-axis for top-down view)
+
+    // Define line length (adjustable)
+    double lineLength = 20.0; // Length of the line in pixels
+    double robot_diameter = 150.0;
+
+    // Calculate line endpoints based on yaw angle
+    double angleRad = yaw; // Convert yaw to radians
+
+    // draw armor
+    drawLineWithAngle(topDownImage, cv::Point2f(centerX, centerZ), angleRad, lineLength, cv::Scalar(0, 0, 255));
+    drawLineWithAngle(topDownImage, cv::Point2f(centerX, centerZ), angleRad + CV_PI, lineLength, cv::Scalar(0, 0, 255));
+
+    // draw line of typical robot diameter
+    drawLineWithAngle(topDownImage, cv::Point2f(centerX, centerZ), angleRad - CV_PI / 2, robot_diameter, cv::Scalar(0, 255, 0));
+
+    // armor at other end of line
+    drawLineWithAngle(topDownImage, cv::Point2f(centerX + robot_diameter * cos(angleRad - CV_PI / 2), centerZ + robot_diameter * sin(angleRad - CV_PI / 2)), angleRad, lineLength, cv::Scalar(0, 0, 255));
+    drawLineWithAngle(topDownImage, cv::Point2f(centerX + robot_diameter * cos(angleRad - CV_PI / 2), centerZ + robot_diameter * sin(angleRad - CV_PI / 2)), angleRad + CV_PI, lineLength, cv::Scalar(0, 0, 255));
+
+    // more lines of typical robot diameter 90 degrees from the center line
+    cv::Point2f robot_center = cv::Point2f((centerX + robot_diameter / 2 * cos(angleRad - CV_PI / 2)), (centerZ + robot_diameter / 2 * sin(angleRad - CV_PI / 2)));
+    drawLineWithAngle(topDownImage, robot_center, angleRad - CV_PI, robot_diameter / 2, cv::Scalar(200, 255, 0));
+    drawLineWithAngle(topDownImage, robot_center, angleRad, robot_diameter / 2, cv::Scalar(200, 255, 0));
+
+    // armor at other end of these two lines, perpendicular to the center line
+    drawLineWithAngle(topDownImage, cv::Point2f(robot_center.x + robot_diameter / 2 * cos(angleRad), robot_center.y + robot_diameter / 2 * sin(angleRad)), angleRad - CV_PI / 2, lineLength, cv::Scalar(0, 0, 255));
+    drawLineWithAngle(topDownImage, cv::Point2f(robot_center.x + robot_diameter / 2 * cos(angleRad), robot_center.y + robot_diameter / 2 * sin(angleRad)), angleRad + CV_PI / 2, lineLength, cv::Scalar(0, 0, 255));
+
+    // same thing on the other side
+    drawLineWithAngle(topDownImage, cv::Point2f(robot_center.x - robot_diameter / 2 * cos(angleRad), robot_center.y - robot_diameter / 2 * sin(angleRad)), angleRad - CV_PI / 2, lineLength, cv::Scalar(0, 0, 255));
+    drawLineWithAngle(topDownImage, cv::Point2f(robot_center.x - robot_diameter / 2 * cos(angleRad), robot_center.y - robot_diameter / 2 * sin(angleRad)), angleRad + CV_PI / 2, lineLength, cv::Scalar(0, 0, 255));
+
+    RCLCPP_INFO(get_logger(), "Drawing top-down view with yaw = %.2f, X = %.2f, Y = %.2f, Z = %.2f", 180.0 * yaw / CV_PI, X, Y, Z);
+
+    // Display the image
+    cv::imshow("Top-Down View", topDownImage);
     cv::waitKey(1);
+}
+
+void PoseEstimatorNode::drawLineWithAngle(cv::Mat &image, cv::Point2f start_pt, double angle, double length, cv::Scalar color)
+{
+    // Calculate endpoint of the line
+    cv::Point2f end_pt;
+    end_pt.x = start_pt.x + length * cos(angle);
+    end_pt.y = start_pt.y + length * sin(angle);
+
+    // Draw the line
+    cv::line(image, start_pt, end_pt, color, 2);
 }
 
 void PoseEstimatorNode::publishZeroPredictedArmor(std_msgs::msg::Header header, std::string new_auto_aim_status)

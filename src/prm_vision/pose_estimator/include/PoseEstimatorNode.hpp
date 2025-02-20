@@ -33,6 +33,7 @@ private:
     // Class methods
     void publishZeroPredictedArmor(std_msgs::msg::Header header, std::string new_auto_aim_status);
     void drawTopDownViewGivenRotation(double yaw, double X, double Y, double Z);
+    void drawLineWithAngle(cv::Mat &image, cv::Point2f start_pt, double angle, double length, cv::Scalar color);
 
     // Callbacks and publishers/subscribers
     rclcpp::Subscription<vision_msgs::msg::KeyPoints>::SharedPtr key_points_subscriber;
