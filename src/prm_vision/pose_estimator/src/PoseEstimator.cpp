@@ -155,13 +155,20 @@ double PoseEstimator::gradientWrtYawFinitediff(double yaw, std::vector<cv::Point
  */
 double PoseEstimator::computeLoss(double yaw_guess, std::vector<cv::Point2f> image_points, cv::Mat tvec)
 {
-    // We assume 0 pitch and roll, so they do not contribute to the rotation matrix
-    cv::Mat R = (cv::Mat_<double>(3, 3) << cos(yaw_guess), 0, sin(yaw_guess),
-                 0, 1, 0,
-                 -sin(yaw_guess), 0, cos(yaw_guess));
+    // We assume -15 deg pitch and 0 roll
+    double pitch = -15 * (M_PI / 180);
+
+    cv::Mat Ry = (cv::Mat_<double>(3, 3) << cos(yaw_guess), 0, sin(yaw_guess),
+                  0, 1, 0,
+                  -sin(yaw_guess), 0, cos(yaw_guess));
+    cv::Mat Rx = (cv::Mat_<double>(3, 3) << 1, 0, 0,
+                  0, cos(pitch), -sin(pitch),
+                  0, sin(pitch), cos(pitch));
+    cv::Mat R = Ry * Rx;
 
     // Reproject the 3D object points using predicted yaw to the image plane
-    std::vector<cv::Point2f> projected_points;
+    std::vector<cv::Point2f>
+        projected_points;
     cv::projectPoints(SMALL_ARMOR_OBJECT_POINTS, R, tvec, CAMERA_MATRIX, DISTORTION_COEFFS, projected_points);
 
     // Loss = sqrt(0.25 * sum((x - x')^2 + (y - y')^2))

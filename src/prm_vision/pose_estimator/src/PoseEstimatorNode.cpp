@@ -9,7 +9,7 @@ PoseEstimatorNode::PoseEstimatorNode(const rclcpp::NodeOptions &options) : Node(
     predicted_armor_publisher = this->create_publisher<vision_msgs::msg::PredictedArmor>("predicted_armor", 10);
 
     // Dynamic parameters
-    pose_estimator->setAllowedMissedFramesBeforeNoFire(this->declare_parameter("_allowed_missed_frames_before_no_fire", 15));
+    pose_estimator->setAllowedMissedFramesBeforeNoFire(this->declare_parameter("_allowed_missed_frames_before_no_fire", 150));
     pose_estimator->setNumFramesToFireAfter(this->declare_parameter("_num_frames_to_fire_after", 3));
     validity_filter_.setLockInAfter(this->declare_parameter("_lock_in_after", 3));
     validity_filter_.setMaxDistance(this->declare_parameter("_max_distance", 10000));
@@ -61,7 +61,7 @@ rcl_interfaces::msg::SetParametersResult PoseEstimatorNode::parameters_callback(
             validity_filter_.setPrevLen(param.as_int());
             RCLCPP_INFO(this->get_logger(), "Parameter '_prev_len' updated to: %d", param.as_int());
         }
-        else if (param.get_name() == "_max_dt" && param.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE || param.get_type())
+        else if (param.get_name() == "_max_dt" && param.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE)
         {
             validity_filter_.setMaxDt(param.as_double());
             RCLCPP_INFO(this->get_logger(), "Parameter '_max_dt' updated to: %f", param.as_double());
@@ -131,7 +131,9 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
     }
 
     // Draw top-down view
+#ifdef DEBUG
     drawTopDownViewGivenRotation(_last_yaw_estimate, tvec.at<double>(0), tvec.at<double>(1), tvec.at<double>(2));
+#endif
 }
 
 void PoseEstimatorNode::drawTopDownViewGivenRotation(double yaw, double X, double Y, double Z)

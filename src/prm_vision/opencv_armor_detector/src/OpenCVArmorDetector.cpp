@@ -55,7 +55,7 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
     cv::waitKey(1);
 #endif
 
-    // If we didn't find an armor for a few frames (ROS2 param), reset the search area
+    // If we didn't find an armor for a few frames (ROS2 param), reset the search area 
     if (points.size() == 0)
     {
         _missed_frames++;

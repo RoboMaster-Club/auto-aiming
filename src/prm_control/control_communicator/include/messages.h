@@ -12,7 +12,7 @@ typedef struct  _AutoAimPackage
 {
 	float yaw;	 // yaw (deg)
 	float pitch; // pitch (deg)
-	bool fire;   // 0 = no fire, 1 = fire
+	uint8_t fire;   // 0 = no fire, 1 = fire
 } AutoAimPackage;
 
 typedef struct  _NavPackage

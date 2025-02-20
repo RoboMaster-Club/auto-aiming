@@ -52,7 +52,6 @@ ControlCommunicatorNode::ControlCommunicatorNode(const char *port) : Node("contr
 	this->auto_aim_subscriber = this->create_subscription<vision_msgs::msg::PredictedArmor>(
 		"predicted_armor", 1, std::bind(&ControlCommunicatorNode::auto_aim_handler, this, _1));
 
-
 	this->nav_subscriber = this->create_subscription<geometry_msgs::msg::Twist>( // should not be twiststamped
 		"cmd_vel", 1, std::bind(&ControlCommunicatorNode::nav_handler, this, _1));
 
@@ -61,7 +60,7 @@ ControlCommunicatorNode::ControlCommunicatorNode(const char *port) : Node("contr
 	this->target_robot_color_publisher = this->create_publisher<std_msgs::msg::String>("color_set", rclcpp::QoS(rclcpp::KeepLast(1)).reliable());
 	this->match_status_publisher = this->create_publisher<std_msgs::msg::Bool>("match_start", rclcpp::QoS(rclcpp::KeepLast(1)).reliable());
 
-	this->uart_read_timer = this->create_wall_timer(4ms, std::bind(&ControlCommunicatorNode::read_uart, this));
+	// this->uart_read_timer = this->create_wall_timer(4ms, std::bind(&ControlCommunicatorNode::read_uart, this));
 
 	RCLCPP_INFO(this->get_logger(), "Control Communicator Node Started.");
 }
@@ -131,8 +130,8 @@ void ControlCommunicatorNode::start_uart(const char *port)
 	tty.c_oflag &= ~OPOST;
 	tty.c_oflag &= ~ONLCR;
 
-	tty.c_cc[VTIME] = 10;				// Wait for up to 1s (10 deciseconds)
-	tty.c_cc[VMIN] = sizeof(PackageIn); // Block for sizeof(PackageOut) bits
+	tty.c_cc[VTIME] = 10;				 // Wait for up to 1s (10 deciseconds)
+	tty.c_cc[VMIN] = sizeof(PackageOut); // Block for sizeof(PackageOut) bits
 
 	// Set the baud rate
 	cfsetispeed(&tty, B1152000);
@@ -160,24 +159,28 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 	float dt = (curr_time.seconds() - this->now().seconds()) * 1000; // in ms
 
 	// yaw/pitch and XYZ
-	vec3 P(msg->x/1000, msg->y/1000, msg->z/1000), V(0,0, 0), grav(0, 0, 9.81);
-    	double p = 0, y = 0; bool im = 0;
-	
+	vec3 P(msg->x / 1000, msg->y / 1000, msg->z / 1000), V(0, 0, 0), grav(0, 0, 9.81);
+	double p = 0, y = 0;
+	bool im = 0;
+
 	float yaw;
 	float pitch;
 	float dst;
+	float dst_horiz;
 
 	if (msg->x != 0 && msg->z != 0)
 	{
 		dst = sqrt(pow(msg->x, 2) + pow(msg->y, 2) + pow(msg->z, 2));
+		dst_horiz = sqrt(pow(msg->x, 2) + pow(msg->z, 2));
 		dt = 0;
 		float pred_x = msg->x;
 		float pred_y = msg->y;
 		float pred_z = msg->z;
-		yaw = -atan(pred_y / pred_x) * 180 / PI;
-		pitch = atan(pred_z / pred_x) * 180 / PI;
+		yaw = -atan(pred_x / pred_z) * 180 / PI;
+		pitch = atan(pred_y / dst_horiz) * 180 / PI;
 
-    		pitch_yaw_gravity_model_movingtarget_const_v(P, V, grav, 0, &p, &y, &im); y = y * (msg->y > 0 ? -1 : 1);  //currently a bug where yaw is never negative, so we just multiply by the sign of "y" of the target
+		// pitch_yaw_gravity_model_movingtarget_const_v(P, V, grav, 0, &p, &y, &im);
+		// y = y * (msg->y > 0 ? -1 : 1); // currently a bug where yaw is never negative, so we just multiply by the sign of "y" of the target
 	}
 	else
 	{
@@ -190,13 +193,16 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 	this->auto_aim_frame_id++;
 	package.frame_id = 0xAA;
 	package.frame_type = FRAME_TYPE_AUTO_AIM;
-	package.autoAimPackage.yaw = y;
-	package.autoAimPackage.pitch = p;
-	// for safety this is commented out unless on sentry    package.autoAimPackage.fire = msg->fire;
+	package.autoAimPackage.yaw = yaw;
+	package.autoAimPackage.pitch = pitch;
+	package.autoAimPackage.fire = 1;
 	write(this->port_fd, &package, sizeof(PackageOut));
 	fsync(this->port_fd);
-	RCLCPP_INFO(this->get_logger(), "Yaw, Pitch: %.3f, %.3f, FIRE=%.3f", yaw, pitch, msg->fire);
-	RCLCPP_INFO_ONCE(this->get_logger(), "First auto aim pkg sent.");
+	if (auto_aim_frame_id % 1000 == 0)
+	{
+		RCLCPP_INFO(this->get_logger(), "Yaw, Pitch: %.3f, %.3f, FIRE=%i", package.autoAimPackage.yaw, package.autoAimPackage.pitch, package.autoAimPackage.fire);
+	}
+	// RCLCPP_INFO_ONCE(this->get_logger(), "First auto aim pkg sent, pkg is %i bytes", sizeof(PackageOut));
 }
 
 void ControlCommunicatorNode::nav_handler(const std::shared_ptr<geometry_msgs::msg::Twist> msg)
@@ -220,7 +226,6 @@ void ControlCommunicatorNode::nav_handler(const std::shared_ptr<geometry_msgs::m
 
 	RCLCPP_INFO(this->get_logger(), "x_vel = %f, y_vel = %f, yaw = %f", package.navPackage.x_vel, package.navPackage.y_vel, package.navPackage.yaw_rad);
 }
-
 
 void ControlCommunicatorNode::heart_beat_handler()
 {
@@ -274,6 +279,7 @@ bool ControlCommunicatorNode::read_alignment()
 
 void ControlCommunicatorNode::read_uart()
 {
+	RCLCPP_INFO(this->get_logger(), "reading uart");
 	PackageIn package;
 	int success = read(this->port_fd, &package, sizeof(PackageIn));
 
@@ -312,20 +318,20 @@ void ControlCommunicatorNode::read_uart()
 	}
 
 	// Handle TF
-	this->pitch_vel = package.pitch_vel; // rad/s
-	this->pitch = package.pitch;			   // rad
-	this->yaw_vel = package.yaw_vel;	   // rad/s
-	this->is_red = package.ref_flags & 2;	// second lowest  denotes if enemy is red
-	this->is_match_running = package.ref_flags & 1;	// LSB denotes if match is started
+	this->pitch_vel = package.pitch_vel;			// rad/s
+	this->pitch = package.pitch;					// rad
+	this->yaw_vel = package.yaw_vel;				// rad/s
+	this->is_red = package.ref_flags & 2;			// second lowest  denotes if enemy is red
+	this->is_match_running = package.ref_flags & 1; // LSB denotes if match is started
 	this->valid_read = true;
 
 	// publishing color and match status
 	std_msgs::msg::String target_robot_color;
-        target_robot_color.data = this->is_red ? "red" : "blue";
-        //target_robot_color_publisher->publish(target_robot_color);
+	target_robot_color.data = this->is_red ? "red" : "blue";
+	// target_robot_color_publisher->publish(target_robot_color);
 	std_msgs::msg::Bool match_status;
 	match_status.data = this->is_match_running;
-	//match_status_publisher->publish(match_status);
+	// match_status_publisher->publish(match_status);
 
 	geometry_msgs::msg::TransformStamped pitch_tf;
 	pitch_tf.header.stamp = curr_time;
