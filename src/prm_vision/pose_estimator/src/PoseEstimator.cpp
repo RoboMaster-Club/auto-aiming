@@ -39,8 +39,8 @@ double PoseEstimator::estimateYaw(const double yaw_guess, const std::vector<cv::
 
     // L-BFGS-B parameters (experimentally tuned)
     LBFGSBParam<double> param;
-    param.epsilon = 0.4;
-    param.max_iterations = 50;
+    param.epsilon = _epsilon;
+    param.max_iterations = _max_iterations;
 
     LBFGSBSolver<double> solver(param);
     LossAndGradient loss(*this, image_points, tvec);
@@ -156,7 +156,7 @@ double PoseEstimator::gradientWrtYawFinitediff(double yaw, std::vector<cv::Point
 double PoseEstimator::computeLoss(double yaw_guess, std::vector<cv::Point2f> image_points, cv::Mat tvec)
 {
     // We assume -15 deg pitch and 0 roll
-    double pitch = -15 * (M_PI / 180);
+    double pitch = _pitch * CV_PI / 180;
 
     cv::Mat Ry = (cv::Mat_<double>(3, 3) << cos(yaw_guess), 0, sin(yaw_guess),
                   0, 1, 0,
