@@ -11,6 +11,10 @@ PoseEstimatorNode::PoseEstimatorNode(const rclcpp::NodeOptions &options) : Node(
     // Dynamic parameters
     pose_estimator->setAllowedMissedFramesBeforeNoFire(this->declare_parameter("_allowed_missed_frames_before_no_fire", 150));
     pose_estimator->setNumFramesToFireAfter(this->declare_parameter("_num_frames_to_fire_after", 3));
+    pose_estimator->setEpsilon(this->declare_parameter("_epsilon", 0.4));
+    pose_estimator->setMaxIterations(this->declare_parameter("_max_iterations", 50));
+    pose_estimator->setPitch(this->declare_parameter("_pitch", 15.0));
+    
     validity_filter_.setLockInAfter(this->declare_parameter("_lock_in_after", 3));
     validity_filter_.setMaxDistance(this->declare_parameter("_max_distance", 10000));
     validity_filter_.setMinDistance(this->declare_parameter("_min_distance", 10));
@@ -71,6 +75,21 @@ rcl_interfaces::msg::SetParametersResult PoseEstimatorNode::parameters_callback(
             pose_estimator->setAllowedMissedFramesBeforeNoFire(param.as_int());
             RCLCPP_INFO(this->get_logger(), "Parameter '_allowed_missed_frames_before_no_fire' updated to: %d", param.as_int());
         }
+        else if (param.get_name() == "_epsilon" && param.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE)
+        {
+            pose_estimator->setEpsilon(param.as_double());
+            RCLCPP_INFO(this->get_logger(), "Parameter '_epsilon' updated to: %f", param.as_double());
+        }
+        else if (param.get_name() == "_max_iterations" && param.get_type() == rclcpp::ParameterType::PARAMETER_INTEGER)
+        {
+            pose_estimator->setMaxIterations(param.as_int());
+            RCLCPP_INFO(this->get_logger(), "Parameter '_max_iterations' updated to: %d", param.as_int());
+        }
+        else if (param.get_name() == "_pitch" && param.get_type() == rclcpp::ParameterType::PARAMETER_DOUBLE)
+        {
+            pose_estimator->setPitch(param.as_double());
+            RCLCPP_INFO(this->get_logger(), "Parameter '_pitch' updated to: %f", param.as_double());
+        }
         else
         {
             result.successful = false;
@@ -90,6 +109,9 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
         publishZeroPredictedArmor(key_points_msg->header, "NO_ARMOR");
         return;
     }
+
+    static int ctr = 0;
+    ctr++;
 
     cv::Mat tvec, rvec;
     bool reset_kalman = false;
@@ -132,7 +154,9 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
 
     // Draw top-down view
 #ifdef DEBUG
-    drawTopDownViewGivenRotation(_last_yaw_estimate, tvec.at<double>(0), tvec.at<double>(1), tvec.at<double>(2));
+    if (ctr % 100 == 0) {
+        drawTopDownViewGivenRotation(_last_yaw_estimate, tvec.at<double>(0), tvec.at<double>(1), tvec.at<double>(2));
+    }
 #endif
 }
 
@@ -158,7 +182,7 @@ void PoseEstimatorNode::drawTopDownViewGivenRotation(double yaw, double X, doubl
     double robot_diameter = 150.0;
 
     // Calculate line endpoints based on yaw angle
-    double angleRad = yaw; // Convert yaw to radians
+    double angleRad = -yaw; // Convert yaw to radians
 
     // draw armor
     drawLineWithAngle(topDownImage, cv::Point2f(centerX, centerZ), angleRad, lineLength, cv::Scalar(0, 0, 255));

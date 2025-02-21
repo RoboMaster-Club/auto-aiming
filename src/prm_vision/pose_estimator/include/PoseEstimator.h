@@ -35,6 +35,9 @@ public:
     // Setters
     void setNumFramesToFireAfter(int num_frames_to_fire_after) { _num_frames_to_fire_after = num_frames_to_fire_after; }
     void setAllowedMissedFramesBeforeNoFire(int allowed_missed_frames_before_no_fire) { _allowed_missed_frames_before_no_fire = allowed_missed_frames_before_no_fire; }
+    void setEpsilon(double epsilon) { _epsilon = epsilon; }
+    void setMaxIterations(int max_iterations) { _max_iterations = max_iterations; }
+    void setPitch(double pitch) { _pitch = pitch; }
 
 private:
     // Class methods
@@ -54,6 +57,11 @@ private:
     float _min_distance = 10;
     float _max_shift_distance = 150;
     int _prev_len = 5;
+
+    // Pose Estimator parameters (set dynamically)
+    double _epsilon = 0.4;
+    int _max_iterations = 50;
+    double _pitch = 15.0;
 
     /**
      * @brief Functor for the loss function and gradient computation.

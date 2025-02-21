@@ -40,19 +40,21 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
 
 // Display the cropped frame for debugging
 #ifdef DEBUG
-    cv::resize(croppedFrame, croppedFrame, cv::Size(WIDTH / 2, HEIGHT / 2));
+    if (_frame_count % 100 == 0) {
+        cv::resize(croppedFrame, croppedFrame, cv::Size(WIDTH / 2, HEIGHT / 2));
 
-    // Create a static window name
-    const std::string window_name = "Detection Results";
-    cv::imshow(window_name, croppedFrame);
+        // Create a static window name
+        const std::string window_name = "Detection Results";
+        cv::imshow(window_name, croppedFrame);
 
-    // Update the window title
-    cv::setWindowTitle(window_name,
-                       "detected: " + std::to_string(_detected_frame) + " / " +
-                           std::to_string(_frame_count) + " (" +
-                           std::to_string(_detected_frame * 100 / _frame_count) + "%) and missed: " + std::to_string(_missed_frames) + std::string(" frames"));
+        // Update the window title
+        cv::setWindowTitle(window_name,
+                        "detected: " + std::to_string(_detected_frame) + " / " +
+                            std::to_string(_frame_count) + " (" +
+                            std::to_string(_detected_frame * 100 / _frame_count) + "%) and missed: " + std::to_string(_missed_frames) + std::string(" frames"));
 
-    cv::waitKey(1);
+        cv::waitKey(1);
+    }
 #endif
 
     // If we didn't find an armor for a few frames (ROS2 param), reset the search area 
