@@ -18,6 +18,9 @@
 // Pose Estimator classes
 #include "PoseEstimator.h"
 
+// Standard cpp math
+#include <cmath>
+
 class PoseEstimatorNode : public rclcpp::Node
 {
 public:
@@ -29,10 +32,18 @@ public:
 
 private:
     double _last_yaw_estimate = 0.0;
-
+    
     // Class methods
     void publishZeroPredictedArmor(std_msgs::msg::Header header, std::string new_auto_aim_status);
     void drawTopDownViewGivenRotation(double yaw, double X, double Y, double Z);
+
+    // dynamic parameters
+    double cam_barrel_roll;
+    double cam_barrel_pitch;
+    double cam_barrel_yaw;
+    double cam_barrel_x; 
+    double cam_barrel_y;
+    double cam_barrel_z;
 
     // Callbacks and publishers/subscribers
     rclcpp::Subscription<vision_msgs::msg::KeyPoints>::SharedPtr key_points_subscriber;
