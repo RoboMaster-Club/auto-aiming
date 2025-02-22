@@ -198,8 +198,10 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 	package.autoAimPackage.fire = 1;
 	write(this->port_fd, &package, sizeof(PackageOut));
 	fsync(this->port_fd);
-	RCLCPP_INFO(this->get_logger(), "Yaw, Pitch: %.3f, %.3f, FIRE=%i", package.autoAimPackage.yaw, package.autoAimPackage.pitch, package.autoAimPackage.fire);
-	// RCLCPP_INFO_ONCE(this->get_logger(), "First auto aim pkg sent, pkg is %i bytes", sizeof(PackageOut));
+	if (this->auto_aim_frame_id % 1000 == 0)
+	{
+		RCLCPP_INFO(this->get_logger(), "Yaw, Pitch: %.3f, %.3f, FIRE=%i", package.autoAimPackage.yaw, package.autoAimPackage.pitch, package.autoAimPackage.fire);
+	}	// RCLCPP_INFO_ONCE(this->get_logger(), "First auto aim pkg sent, pkg is %i bytes", sizeof(PackageOut));
 }
 
 void ControlCommunicatorNode::nav_handler(const std::shared_ptr<geometry_msgs::msg::Twist> msg)
