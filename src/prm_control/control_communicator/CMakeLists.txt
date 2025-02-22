@@ -36,6 +36,9 @@ add_executable(ControlCommunicatorNode
 	src/ControlCommunicatorNode.cpp
 )
 
+add_library(ControlCommunicator STATIC 
+  src/ControlCommunicator.cpp
+)
 
 # include_directories(controlhandler_node
 #     PUBLIC
@@ -53,7 +56,10 @@ ament_target_dependencies(ControlCommunicatorNode
   nav_msgs
 )
 
-target_link_libraries(ControlCommunicatorNode Eigen3::Eigen)
+ament_add_gtest(test_ControlCommunicator test/test_ControlCommunicator.cpp)
+target_include_directories(test_ControlCommunicator PRIVATE include)
+target_link_libraries(test_ControlCommunicator ControlCommunicator)
+target_link_libraries(ControlCommunicatorNode Eigen3::Eigen ControlCommunicator)
 
 install(TARGETS
 ControlCommunicatorNode
