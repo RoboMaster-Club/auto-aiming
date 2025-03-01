@@ -1,0 +1,5 @@
+#ifndef CONTROL_COMMUNICATOR_HPP
+#define CONTROL_COMMUNICATOR_HPP
+
+
+#endif
