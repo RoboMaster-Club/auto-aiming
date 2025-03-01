@@ -40,12 +40,6 @@ add_library(ControlCommunicator STATIC
   src/ControlCommunicator.cpp
 )
 
-# include_directories(controlhandler_node
-#     PUBLIC
-#     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-#     $<INSTALL_INTERFACE:include>
-# )
-
 ament_target_dependencies(ControlCommunicatorNode 
 	rclcpp
 	std_msgs
@@ -56,6 +50,8 @@ ament_target_dependencies(ControlCommunicatorNode
   nav_msgs
 )
 
+# GTest setup
+find_package(ament_cmake_gtest REQUIRED)
 ament_add_gtest(test_ControlCommunicator test/test_ControlCommunicator.cpp)
 target_include_directories(test_ControlCommunicator PRIVATE include)
 target_link_libraries(test_ControlCommunicator ControlCommunicator)
