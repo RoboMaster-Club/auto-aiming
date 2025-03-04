@@ -25,5 +25,4 @@ jobs:
         run: |
           source /opt/ros/foxy/setup.sh  # Source ROS 2 Foxy
           chmod +x ./run  # Ensure the run script is executable
-          nvcc -V  # Check the CUDA version
           ./run test  # Run your test script
