@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <cstring>
 
-bool start_uart_connection(const char *port)
+bool ControlCommunicator::start_uart_connection(const char *port)
 {
     int port_fd = open(port, O_RDWR | O_NOCTTY | O_NONBLOCK);
     if (port_fd == -1)
@@ -43,7 +43,7 @@ bool start_uart_connection(const char *port)
     return true;
 }
 
-void compute_aim(float bullet_speed, float target_x, float target_y, float target_z, float &yaw, float &pitch)
+void ControlCommunicator::compute_aim(float bullet_speed, float target_x, float target_y, float target_z, float &yaw, float &pitch)
 {
     float g = 9.8f; // Gravity
     float v = bullet_speed;

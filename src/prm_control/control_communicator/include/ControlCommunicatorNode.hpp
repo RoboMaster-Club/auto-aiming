@@ -2,9 +2,13 @@
 #define CONTROL_COMMUNICATOR_NODE_HPP
 
 #include "rclcpp/rclcpp.hpp"
+
 #include "vision_msgs/msg/predicted_armor.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 #include "nav_msgs/msg/odometry.hpp"
+#include "vision_msgs/msg/yaw_pitch.hpp"
+#include "messages.h"
+
 #include "std_msgs/msg/string.hpp"
 #include "std_msgs/msg/bool.hpp"
 #include "tf2_ros/transform_broadcaster.h"
@@ -12,6 +16,7 @@
 #include "tf2/transform_datatypes.h"
 #include "tf2_ros/transform_listener.h"
 #include "tf2_ros/buffer.h"
+
 #include <memory>
 #include <functional>
 #include <string>
@@ -25,6 +30,8 @@ public:
 	ControlCommunicatorNode(const char *port);
 	~ControlCommunicatorNode();
 
+	ControlCommunicator *control_communicator = new ControlCommunicator();
+
 private:
 	void publish_static_tf(float x, float y, float z, float roll, float pitch, float yaw, const char *frame_id, const char *child_frame_id);
 	void auto_aim_handler(const std::shared_ptr<vision_msgs::msg::PredictedArmor> msg);
@@ -32,11 +39,25 @@ private:
 	void heart_beat_handler();
 	void read_uart();
 
+	uint32_t auto_aim_frame_id = 0;
+	uint32_t nav_frame_id = 0;
+	uint32_t heart_beat_frame_id = 0;
+
+	// Read UART results
+	float yaw_vel = 0;	 // rad/s (+ccw, -cw)
+	float pitch_vel = 0; // rad/s
+	float pitch = 0;	 // rad (+up, -down)?
+	bool is_red = 0;
+	bool is_match_running = 0;
+	bool valid_read = false;
+
 	int port_fd;
+	const char *port;
+
 	bool is_connected;
 	float aim_bullet_speed;
 	int aim_stop_null_frame_count;
-	std::string port;
+
 	rclcpp::TimerBase::SharedPtr heart_beat_timer;
 	rclcpp::Subscription<vision_msgs::msg::PredictedArmor>::SharedPtr auto_aim_subscriber;
 	rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr nav_subscriber;
