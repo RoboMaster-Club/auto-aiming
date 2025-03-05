@@ -94,7 +94,7 @@ void ControlCommunicatorNode::nav_handler(const std::shared_ptr<geometry_msgs::m
 
 	PackageOut package;
 
-	package.frame_id = 0xAA; //(uint8_t)this->nav_frame_id++; ANOTHER CHANGE
+	package.frame_id = 0xAA;
 	package.frame_type = FRAME_TYPE_NAV;
 	package.navPackage.x_vel = msg->linear.x;
 	package.navPackage.y_vel = msg->linear.y;
