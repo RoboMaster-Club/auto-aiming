@@ -167,12 +167,12 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
 
     Eigen::Matrix<double, 3, 3> r_mat = r_roll * r_pitch * r_yaw;
 
-    Eigen::Matrix<double, 4, 4> transform_mat {
-      {r_mat(0, 0), r_mat(0, 1), r_mat(0, 2), cam_barrel_x},
-      {r_mat(1, 0), r_mat(1, 1), r_mat(1, 2), cam_barrel_y},
-      {r_mat(2, 0), r_mat(2, 1), r_mat(2, 2), cam_barrel_z},
-      {0, 0, 0, 1}
-    };
+    Eigen::Matrix<double, 4, 4> transform_mat;
+    transform_mat << r_mat(0, 0), r_mat(0, 1), r_mat(0, 2), cam_barrel_x,
+                 r_mat(1, 0), r_mat(1, 1), r_mat(1, 2), cam_barrel_y,
+                 r_mat(2, 0), r_mat(2, 1), r_mat(2, 2), cam_barrel_z,
+                 0, 0, 0, 1;
+
 
     // Multiply cam -> target vector by transformation matrix to get barrel -> target vector
     Eigen::Vector4d cam_to_target = {tvec.at<double>(0), tvec.at<double>(1), tvec.at<double>(2), 1};

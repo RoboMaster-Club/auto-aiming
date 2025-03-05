@@ -1,32 +1,19 @@
 #include "ControlCommunicatorNode.hpp"
-
-#include "utils.cpp"
-
-#include <fcntl.h>	 // Contains file controls like O_RDWR
-#include <errno.h>	 // Error integer and strerror() function
-#include <termios.h> // Contains POSIX terminal control definitions
-#include <unistd.h>	 // write(), read(), close()
-
-#include "time_debug.h"
+#include <fcntl.h>
+#include <errno.h>
+#include <termios.h>
+#include <unistd.h>
+#include <cstring>
 
 #define PI 3.141592653589793238462643383 // It was 4 AM when I wrote this.
-
 using namespace std::chrono_literals;
 using namespace std::placeholders;
 
 ControlCommunicatorNode::ControlCommunicatorNode(const char *port) : Node("control_communicator_node")
 {
-
 	aim_stop_null_frame_count = this->declare_parameter("aim.stop_null_frame_count", 3);
-
 	aim_bullet_speed = this->declare_parameter("aim.bullet_speed", 16.0f);
-
 	this->port = port;
-
-	this->start_uart(port);
-
-	RCLCPP_INFO(this->get_logger(), "should have printed.");
-
 	this->tf_broadcaster = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
 	this->tf_static_broadcaster = std::make_shared<tf2_ros::StaticTransformBroadcaster>(this);
 
@@ -39,18 +26,13 @@ ControlCommunicatorNode::ControlCommunicatorNode(const char *port) : Node("contr
 	publish_static_tf(0, 0, 0.3, 0, 0, 0, "base_link", "laser");
 
 	this->heart_beat_timer = this->create_wall_timer(1000ms, std::bind(&ControlCommunicatorNode::heart_beat_handler, this));
-
 	this->auto_aim_subscriber = this->create_subscription<vision_msgs::msg::PredictedArmor>(
 		"predicted_armor", 1, std::bind(&ControlCommunicatorNode::auto_aim_handler, this, _1));
-
-	this->nav_subscriber = this->create_subscription<geometry_msgs::msg::Twist>( // should not be twiststamped
+	this->nav_subscriber = this->create_subscription<geometry_msgs::msg::Twist>(
 		"cmd_vel", 1, std::bind(&ControlCommunicatorNode::nav_handler, this, _1));
-
 	this->odometry_publisher = this->create_publisher<nav_msgs::msg::Odometry>("odom", 1);
-
 	this->target_robot_color_publisher = this->create_publisher<std_msgs::msg::String>("color_set", rclcpp::QoS(rclcpp::KeepLast(1)).reliable());
 	this->match_status_publisher = this->create_publisher<std_msgs::msg::Bool>("match_start", rclcpp::QoS(rclcpp::KeepLast(1)).reliable());
-
 	this->uart_read_timer = this->create_wall_timer(4ms, std::bind(&ControlCommunicatorNode::read_uart, this));
 
 	RCLCPP_INFO(this->get_logger(), "Control Communicator Node Started.");
@@ -64,11 +46,9 @@ ControlCommunicatorNode::~ControlCommunicatorNode()
 void ControlCommunicatorNode::publish_static_tf(float x, float y, float z, float roll, float pitch, float yaw, const char *frame_id, const char *child_frame_id)
 {
 	geometry_msgs::msg::TransformStamped t;
-
 	t.header.stamp = this->get_clock()->now();
 	t.header.frame_id = frame_id;
 	t.child_frame_id = child_frame_id;
-
 	t.transform.translation.x = x;
 	t.transform.translation.y = y;
 	t.transform.translation.z = z;
@@ -83,114 +63,18 @@ void ControlCommunicatorNode::publish_static_tf(float x, float y, float z, float
 	tf_static_broadcaster->sendTransform(t);
 }
 
-bool ControlCommunicatorNode::start_uart(const char *port)
-{
-	// Open the serial port in read/write mode, no controlling terminal, and no delay
-    int baud_rate = B1152000;
-	this->is_connected = false;
-	this->port_fd = open(port, O_RDWR | O_NOCTTY | O_NONBLOCK);
-
-    if (this->port_fd == -1)
-    {
-        RCLCPP_ERROR(this->get_logger(), "Error %i from open: %s", errno, strerror(errno));
-        return false;
-    }
-    else
-    {
-        tcflush(this->port_fd, TCIOFLUSH); // Flush both input and output buffers
-    }
-
-    // Configure serial port settings
-    struct termios tty;
-    if (tcgetattr(this->port_fd, &tty) != 0)
-    {
-        RCLCPP_ERROR(this->get_logger(), "Error %i from tcgetattr: %s", errno, strerror(errno));
-        close(this->port_fd);
-        return false;
-    }
-
-    // Set baud rate
-    if (cfsetispeed(&tty, baud_rate) != 0 || cfsetospeed(&tty, baud_rate) != 0)
-    {
-        RCLCPP_ERROR(this->get_logger(), "Error setting baud rate: %s", strerror(errno));
-        close(this->port_fd);
-        return false;
-    }
-
-    // Set 8N1 (8 data bits, no parity, 1 stop bit)
-    tty.c_cflag &= ~PARENB; // Disable parity
-    tty.c_cflag &= ~CSTOPB; // Use one stop bit
-    tty.c_cflag &= ~CSIZE;  // Clear current data size setting
-    tty.c_cflag |= CS8;     // 8 data bits
-
-    // Disable hardware flow control
-    tty.c_cflag &= ~CRTSCTS;
-
-    // Enable reading and ignore modem control lines
-    tty.c_cflag |= CREAD | CLOCAL;
-
-    // Set raw mode (disable canonical mode, echo, signals, etc.)
-    cfmakeraw(&tty);
-
-    // Set blocking mode with a 1-second read timeout
-    tty.c_cc[VMIN] = 1;   // Minimum 1 character to read
-    tty.c_cc[VTIME] = 10; // Timeout in deciseconds (1 second)
-
-    // Apply the configuration to the serial port
-	if (tcsetattr(this->port_fd, TCSANOW, &tty) != 0)
-	{
-		RCLCPP_ERROR(this->get_logger(), "Error %i from tcsetattr: %s", errno, strerror(errno));
-		return false;
-	}
-	this->is_connected = true;
-	RCLCPP_INFO(this->get_logger(), "UART Connected");
-
-    return true;
-}
-
 void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs::msg::PredictedArmor> msg)
 {
 	if (!is_connected || this->port_fd < 0)
 	{
-		RCLCPP_WARN(this->get_logger(), "UART Not connected, ignoring aim message %d.", this->auto_aim_frame_id++);
+		RCLCPP_WARN(this->get_logger(), "UART Not connected, ignoring aim message.");
 		return;
 	}
-	rclcpp::Time curr_time(msg->header.stamp.sec, msg->header.stamp.nanosec, RCL_ROS_TIME);
-	float dt = (curr_time.seconds() - this->now().seconds()) * 1000; // in ms
 
-	// yaw/pitch and XYZ
-	vec3 P(msg->x / 1000, msg->y / 1000, msg->z / 1000), V(0, 0, 0), grav(0, 0, 9.81);
-	double p = 0, y = 0;
-	bool im = 0;
-
-	float yaw;
-	float pitch;
-	float dst;
-	float dst_horiz;
-
-	if (msg->x != 0 && msg->z != 0)
-	{
-		dst = sqrt(pow(msg->x, 2) + pow(msg->y, 2) + pow(msg->z, 2));
-		dst_horiz = sqrt(pow(msg->x, 2) + pow(msg->z, 2));
-		dt = 0;
-		float pred_x = msg->x;
-		float pred_y = msg->y;
-		float pred_z = msg->z;
-		yaw = -atan(pred_x / pred_z) * 180 / PI;
-		pitch = atan(pred_y / dst_horiz) * 180 / PI;
-
-		// pitch_yaw_gravity_model_movingtarget_const_v(P, V, grav, 0, &p, &y, &im);
-		// y = y * (msg->y > 0 ? -1 : 1); // currently a bug where yaw is never negative, so we just multiply by the sign of "y" of the target
-	}
-	else
-	{
-		yaw = 0;
-		pitch = 0;
-		dst = 0;
-	}
+	float yaw, pitch;
+	control_communicator->compute_aim(aim_bullet_speed, msg->x, msg->y, msg->z, yaw, pitch);
 
 	PackageOut package;
-	this->auto_aim_frame_id++;
 	package.frame_id = 0xAA;
 	package.frame_type = FRAME_TYPE_AUTO_AIM;
 	package.autoAimPackage.yaw = yaw;
@@ -198,10 +82,6 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 	package.autoAimPackage.fire = 1;
 	write(this->port_fd, &package, sizeof(PackageOut));
 	fsync(this->port_fd);
-	if (this->auto_aim_frame_id % 1000 == 0)
-	{
-		RCLCPP_INFO(this->get_logger(), "Yaw, Pitch: %.3f, %.3f, FIRE=%i", package.autoAimPackage.yaw, package.autoAimPackage.pitch, package.autoAimPackage.fire);
-	}	// RCLCPP_INFO_ONCE(this->get_logger(), "First auto aim pkg sent, pkg is %i bytes", sizeof(PackageOut));
 }
 
 void ControlCommunicatorNode::nav_handler(const std::shared_ptr<geometry_msgs::msg::Twist> msg)
@@ -214,7 +94,7 @@ void ControlCommunicatorNode::nav_handler(const std::shared_ptr<geometry_msgs::m
 
 	PackageOut package;
 
-	package.frame_id = 0xAA; //(uint8_t)this->nav_frame_id++; ANOTHER CHANGE
+	package.frame_id = 0xAA;
 	package.frame_type = FRAME_TYPE_NAV;
 	package.navPackage.x_vel = msg->linear.x;
 	package.navPackage.y_vel = msg->linear.y;
@@ -231,7 +111,7 @@ void ControlCommunicatorNode::heart_beat_handler()
 	if (!this->is_connected || this->port_fd < -1)
 	{
 		RCLCPP_WARN(this->get_logger(), "UART Not connected, trying to reconnect.");
-		this->start_uart(this->port);
+		control_communicator->start_uart_connection(this->port);
 	}
 
 	// CHANGED FRAME ID TO 0xAA TO COMPLY WITH LEO
@@ -249,15 +129,14 @@ void ControlCommunicatorNode::heart_beat_handler()
 	if (success == -1)
 	{
 		this->is_connected = false;
-		RCLCPP_ERROR(this->get_logger(), "Erro	r %i from write: %s", errno, strerror(errno));
-		start_uart(this->port);
+		RCLCPP_ERROR(this->get_logger(), "Error %i from write: %s", errno, strerror(errno));
+		control_communicator->start_uart_connection(this->port);
 	}
 	if (this->heart_beat_frame_id % 10 == 0)
 	{
 		RCLCPP_INFO(this->get_logger(), "Heart Beat %d", this->heart_beat_frame_id);
 	}
 }
-
 
 void ControlCommunicatorNode::read_uart()
 {
@@ -270,19 +149,6 @@ void ControlCommunicatorNode::read_uart()
 		RCLCPP_INFO(this->get_logger(), "DEBUG: Nothing in buffer, err %i from read: %s", errno, strerror(errno));
 		return; // No data to read, try again later
 	}
-
-	// print each field of package
-	// RCLCPP_INFO(this->get_logger(), "\n");
-	// RCLCPP_INFO(this->get_logger(), "head: %x", package.head);
-	// RCLCPP_INFO(this->get_logger(), "pitch: %f", package.pitch);
-	// RCLCPP_INFO(this->get_logger(), "pitch_vel: %f", package.pitch_vel);
-	// RCLCPP_INFO(this->get_logger(), "yaw_vel: %f", package.yaw_vel);
-	// RCLCPP_INFO(this->get_logger(), "x: %f", package.x);
-	// RCLCPP_INFO(this->get_logger(), "y: %f", package.y);
-	// RCLCPP_INFO(this->get_logger(), "orientation: %f", package.orientation);
-	// RCLCPP_INFO(this->get_logger(), "x_vel: %f", package.x_vel);
-	// RCLCPP_INFO(this->get_logger(), "y_vel: %f", package.y_vel);
-	// RCLCPP_INFO(this->get_logger(), "\n");
 
 	if (package.head != 0xAA) // Package validation
 	{
@@ -378,8 +244,6 @@ void ControlCommunicatorNode::read_uart()
 	tf_broadcaster->sendTransform(odom_tf);
 
 	this->odometry_publisher->publish(odom);
-
-	recive_frame_id++;
 
 	return;
 }
