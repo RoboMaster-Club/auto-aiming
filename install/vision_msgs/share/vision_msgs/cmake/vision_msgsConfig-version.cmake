@@ -1,1 +1,0 @@
-/home/purduerm/ros2-ws/auto-aiming/build/vision_msgs/ament_cmake_core/vision_msgsConfig-version.cmake

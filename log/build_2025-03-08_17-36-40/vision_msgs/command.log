@@ -1,4 +1,0 @@
-Invoking command in '/home/purduerm/ros2-ws/auto-aiming/build/vision_msgs': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/purduerm/ros2-ws/auto-aiming/build/vision_msgs -- -j12 -l12
-Invoked command in '/home/purduerm/ros2-ws/auto-aiming/build/vision_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/purduerm/ros2-ws/auto-aiming/build/vision_msgs -- -j12 -l12
-Invoking command in '/home/purduerm/ros2-ws/auto-aiming/build/vision_msgs': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/purduerm/ros2-ws/auto-aiming/build/vision_msgs
-Invoked command in '/home/purduerm/ros2-ws/auto-aiming/build/vision_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/purduerm/ros2-ws/auto-aiming/build/vision_msgs

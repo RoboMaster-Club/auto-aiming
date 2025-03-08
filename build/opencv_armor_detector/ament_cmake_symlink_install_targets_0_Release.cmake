@@ -1,1 +1,0 @@
-ament_cmake_symlink_install_targets("TARGET_FILES" "/home/purduerm/ros2-ws/auto-aiming/build/opencv_armor_detector/OpenCVArmorDetectorNode" "TARGETS" "OpenCVArmorDetectorNode" "DESTINATION" "lib/opencv_armor_detector")

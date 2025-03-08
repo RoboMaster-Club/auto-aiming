@@ -1,2 +1,0 @@
-/usr/bin/ar qc libPoseEstimator.a  CMakeFiles/PoseEstimator.dir/src/PoseEstimator.cpp.o
-/usr/bin/ranlib libPoseEstimator.a

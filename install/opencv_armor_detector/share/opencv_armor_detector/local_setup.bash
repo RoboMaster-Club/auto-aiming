@@ -1,1 +1,0 @@
-/home/purduerm/ros2-ws/auto-aiming/build/opencv_armor_detector/ament_cmake_environment_hooks/local_setup.bash

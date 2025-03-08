@@ -1,1 +1,0 @@
-/home/purduerm/ros2-ws/auto-aiming/build/mv_publisher/ament_cmake_core/mv_publisherConfig.cmake

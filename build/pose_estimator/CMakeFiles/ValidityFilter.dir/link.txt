@@ -1,2 +1,0 @@
-/usr/bin/ar qc libValidityFilter.a  CMakeFiles/ValidityFilter.dir/src/ValidityFilter.cpp.o
-/usr/bin/ranlib libValidityFilter.a

@@ -1,1 +1,0 @@
-/home/purduerm/ros2-ws/auto-aiming/src/prm_launch/launch/mv2control.py

@@ -1,2 +1,0 @@
-/usr/bin/ar qc libOpenCVArmorDetector.a  CMakeFiles/OpenCVArmorDetector.dir/src/OpenCVArmorDetector.cpp.o
-/usr/bin/ranlib libOpenCVArmorDetector.a
