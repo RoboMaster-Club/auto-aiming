@@ -1,0 +1,8 @@
+source;share/opencv_armor_detector/hook/cmake_prefix_path.ps1
+source;share/opencv_armor_detector/hook/cmake_prefix_path.dsv
+source;share/opencv_armor_detector/hook/cmake_prefix_path.sh
+source;share/opencv_armor_detector/local_setup.bash
+source;share/opencv_armor_detector/local_setup.dsv
+source;share/opencv_armor_detector/local_setup.ps1
+source;share/opencv_armor_detector/local_setup.sh
+source;share/opencv_armor_detector/local_setup.zsh

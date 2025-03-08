@@ -1,0 +1,4 @@
+Invoking command in '/home/purduerm/ros2-ws/auto-aiming/build/webcam_publisher': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/purduerm/ros2-ws/auto-aiming/build/webcam_publisher -- -j12 -l12
+Invoked command in '/home/purduerm/ros2-ws/auto-aiming/build/webcam_publisher' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/purduerm/ros2-ws/auto-aiming/build/webcam_publisher -- -j12 -l12
+Invoking command in '/home/purduerm/ros2-ws/auto-aiming/build/webcam_publisher': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/purduerm/ros2-ws/auto-aiming/build/webcam_publisher
+Invoked command in '/home/purduerm/ros2-ws/auto-aiming/build/webcam_publisher' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/purduerm/ros2-ws/auto-aiming/build/webcam_publisher

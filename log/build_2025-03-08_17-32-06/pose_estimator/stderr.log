@@ -1,0 +1,81 @@
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/PoseEstimatorNode.cpp:[m[K In member function ‘[01m[Kvoid PoseEstimatorNode::keyPointsCallback(vision_msgs::msg::KeyPoints_<std::allocator<void> >::SharedPtr)[m[K’:
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/PoseEstimatorNode.cpp:175:5:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KEigen::Matrix<double, 4, 4>::Matrix(<brace-enclosed initializer list>)[m[K’
+  175 |     [01;31m[K}[m[K;
+      |     [01;31m[K^[m[K
+In file included from [01m[K/usr/include/eigen3/Eigen/Core:458[m[K,
+                 from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/include/PoseEstimator.h:8[m[K,
+                 from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/include/PoseEstimatorNode.hpp:19[m[K,
+                 from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/PoseEstimatorNode.cpp:1[m[K:
+[01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:387:14:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class OtherDerived> Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix(const Eigen::RotationBase<OtherDerived, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::ColsAtCompileTime>&)[m[K’
+  387 |     explicit [01;36m[KMatrix[m[K(const RotationBase<OtherDerived,ColsAtCompileTime>& r);
+      |              [01;36m[K^~~~~~[m[K
+[01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:387:14:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/PoseEstimatorNode.cpp:175:5:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 4 provided
+  175 |     [01;36m[K}[m[K;
+      |     [01;36m[K^[m[K
+In file included from [01m[K/usr/include/eigen3/Eigen/Core:458[m[K,
+                 from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/include/PoseEstimator.h:8[m[K,
+                 from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/include/PoseEstimatorNode.hpp:19[m[K,
+                 from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/PoseEstimatorNode.cpp:1[m[K:
+[01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:376:25:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class OtherDerived> Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix(const Eigen::EigenBase<OtherDerived>&)[m[K’
+  376 |     EIGEN_STRONG_INLINE [01;36m[KMatrix[m[K(const EigenBase<OtherDerived> &other)
+      |                         [01;36m[K^~~~~~[m[K
+[01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:376:25:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/PoseEstimatorNode.cpp:175:5:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 4 provided
+  175 |     [01;36m[K}[m[K;
+      |     [01;36m[K^[m[K
+In file included from [01m[K/usr/include/eigen3/Eigen/Core:458[m[K,
+                 from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/include/PoseEstimator.h:8[m[K,
+                 from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/include/PoseEstimatorNode.hpp:19[m[K,
+                 from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/PoseEstimatorNode.cpp:1[m[K:
+[01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:368:25:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KEigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix(const Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>&) [with _Scalar = double; int _Rows = 4; int _Cols = 4; int _Options = 0; int _MaxRows = 4; int _MaxCols = 4][m[K’
+  368 |     EIGEN_STRONG_INLINE [01;36m[KMatrix[m[K(const Matrix& other) : Base(other)
+      |                         [01;36m[K^~~~~~[m[K
+[01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:368:25:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 4 provided
+[01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:355:25:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KEigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix(const Scalar&, const Scalar&, const Scalar&, const Scalar&) [with _Scalar = double; int _Rows = 4; int _Cols = 4; int _Options = 0; int _MaxRows = 4; int _MaxCols = 4; Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Scalar = double][m[K’
+  355 |     EIGEN_STRONG_INLINE [01;36m[KMatrix[m[K(const Scalar& x, const Scalar& y, const Scalar& z, const Scalar& w)
+      |                         [01;36m[K^~~~~~[m[K
+[01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:355:46:[m[K [01;36m[Knote: [m[K  no known conversion for argument 1 from ‘[01m[K<brace-enclosed initializer list>[m[K’ to ‘[01m[Kconst Scalar&[m[K’ {aka ‘[01m[Kconst double&[m[K’}
+  355 |     EIGEN_STRONG_INLINE Matrix([01;36m[Kconst Scalar& x[m[K, const Scalar& y, const Scalar& z, const Scalar& w)
+      |                                [01;36m[K~~~~~~~~~~~~~~^[m[K
+[01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:345:25:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KEigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix(const Scalar&, const Scalar&, const Scalar&) [with _Scalar = double; int _Rows = 4; int _Cols = 4; int _Options = 0; int _MaxRows = 4; int _MaxCols = 4; Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Scalar = double][m[K’
+  345 |     EIGEN_STRONG_INLINE [01;36m[KMatrix[m[K(const Scalar& x, const Scalar& y, const Scalar& z)
+      |                         [01;36m[K^~~~~~[m[K
+[01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:345:25:[m[K [01;36m[Knote: [m[K  candidate expects 3 arguments, 4 provided
+[01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:299:25:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class T0, class T1> Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix(const T0&, const T1&)[m[K’
+  299 |     EIGEN_STRONG_INLINE [01;36m[KMatrix[m[K(const T0& x, const T1& y)
+      |                         [01;36m[K^~~~~~[m[K
+[01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:299:25:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/PoseEstimatorNode.cpp:175:5:[m[K [01;36m[Knote: [m[K  candidate expects 2 arguments, 4 provided
+  175 |     [01;36m[K}[m[K;
+      |     [01;36m[K^[m[K
+In file included from [01m[K/usr/include/eigen3/Eigen/Core:458[m[K,
+                 from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/include/PoseEstimator.h:8[m[K,
+                 from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/include/PoseEstimatorNode.hpp:19[m[K,
+                 from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/PoseEstimatorNode.cpp:1[m[K:
+[01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:291:34:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class T> Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix(const T&)[m[K’
+  291 |     EIGEN_STRONG_INLINE explicit [01;36m[KMatrix[m[K(const T& x)
+      |                                  [01;36m[K^~~~~~[m[K
+[01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:291:34:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/PoseEstimatorNode.cpp:175:5:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 4 provided
+  175 |     [01;36m[K}[m[K;
+      |     [01;36m[K^[m[K
+In file included from [01m[K/usr/include/eigen3/Eigen/Core:458[m[K,
+                 from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/include/PoseEstimator.h:8[m[K,
+                 from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/include/PoseEstimatorNode.hpp:19[m[K,
+                 from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/PoseEstimatorNode.cpp:1[m[K:
+[01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:273:5:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KEigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix(Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>&&) [with _Scalar = double; int _Rows = 4; int _Cols = 4; int _Options = 0; int _MaxRows = 4; int _MaxCols = 4][m[K’
+  273 |     [01;36m[KMatrix[m[K(Matrix&& other) EIGEN_NOEXCEPT_IF(std::is_nothrow_move_constructible<Scalar>::value)
+      |     [01;36m[K^~~~~~[m[K
+[01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:273:5:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 4 provided
+[01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:267:14:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KEigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix(Eigen::internal::constructor_without_unaligned_array_assert) [with _Scalar = double; int _Rows = 4; int _Cols = 4; int _Options = 0; int _MaxRows = 4; int _MaxCols = 4][m[K’
+  267 |     explicit [01;36m[KMatrix[m[K(internal::constructor_without_unaligned_array_assert)
+      |              [01;36m[K^~~~~~[m[K
+[01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:267:14:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 4 provided
+[01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:259:25:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KEigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix() [with _Scalar = double; int _Rows = 4; int _Cols = 4; int _Options = 0; int _MaxRows = 4; int _MaxCols = 4][m[K’
+  259 |     EIGEN_STRONG_INLINE [01;36m[KMatrix[m[K() : Base()
+      |                         [01;36m[K^~~~~~[m[K
+[01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:259:25:[m[K [01;36m[Knote: [m[K  candidate expects 0 arguments, 4 provided
+make[2]: *** [CMakeFiles/PoseEstimatorNode.dir/build.make:63: CMakeFiles/PoseEstimatorNode.dir/src/PoseEstimatorNode.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:189: CMakeFiles/PoseEstimatorNode.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

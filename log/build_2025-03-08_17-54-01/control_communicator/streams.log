@@ -1,0 +1,78 @@
+[0.016s] Invoking command in '/home/purduerm/ros2-ws/auto-aiming/build/control_communicator': AMENT_PREFIX_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/purduerm/ros2-ws/auto-aiming/build/control_communicator -- -j12 -l12
+[0.055s] [35m[1mScanning dependencies of target ControlCommunicatorNode[0m
+[0.092s] [ 33%] [32mBuilding CXX object CMakeFiles/ControlCommunicatorNode.dir/src/ControlCommunicatorNode.cpp.o[0m
+[0.281s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:12:[m[K [01;35m[Kwarning: [m[K"PI" redefined
+[0.282s]    12 | #define PI 3.141592653589793238462643383 // It was 4 AM when I wrote this.
+[0.282s]       | 
+[0.282s] In file included from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/include/ControlCommunicatorNode.hpp:30[m[K,
+[0.282s]                  from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:1[m[K:
+[0.282s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/include/projectile_angle_convel.h:9:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+[0.282s]     9 | #define PI 3.14159
+[0.282s]       | 
+[1.887s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:[m[K In constructor ‘[01m[KControlCommunicatorNode::ControlCommunicatorNode(const char*)[m[K’:
+[1.887s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:59:82:[m[K [01;31m[Kerror: [m[Kcapture of non-variable ‘[01m[KControlCommunicatorNode::lookup_table_path[m[K’
+[1.887s]    59 |  this->read_lookup_table_time = this->create_wall_timer(5000ms, std::bind([this, [01;31m[Klookup_table_path[m[K]() {
+[1.887s]       |                                                                                  [01;31m[K^~~~~~~~~~~~~~~~~[m[K
+[1.887s] In file included from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:1[m[K:
+[1.887s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/include/ControlCommunicatorNode.hpp:75:14:[m[K [01;36m[Knote: [m[K‘[01m[Kstd::string ControlCommunicatorNode::lookup_table_path[m[K’ declared here
+[1.887s]    75 |  std::string [01;36m[Klookup_table_path[m[K;
+[1.887s]       |              [01;36m[K^~~~~~~~~~~~~~~~~[m[K
+[1.888s] In file included from [01m[K/opt/ros/foxy/include/rclcpp/client.hpp:32[m[K,
+[1.888s]                  from [01m[K/opt/ros/foxy/include/rclcpp/callback_group.hpp:23[m[K,
+[1.888s]                  from [01m[K/opt/ros/foxy/include/rclcpp/any_executable.hpp:20[m[K,
+[1.888s]                  from [01m[K/opt/ros/foxy/include/rclcpp/memory_strategy.hpp:24[m[K,
+[1.888s]                  from [01m[K/opt/ros/foxy/include/rclcpp/memory_strategies.hpp:18[m[K,
+[1.888s]                  from [01m[K/opt/ros/foxy/include/rclcpp/executor_options.hpp:20[m[K,
+[1.888s]                  from [01m[K/opt/ros/foxy/include/rclcpp/executor.hpp:33[m[K,
+[1.888s]                  from [01m[K/opt/ros/foxy/include/rclcpp/executors/multi_threaded_executor.hpp:26[m[K,
+[1.888s]                  from [01m[K/opt/ros/foxy/include/rclcpp/executors.hpp:21[m[K,
+[1.888s]                  from [01m[K/opt/ros/foxy/include/rclcpp/rclcpp.hpp:146[m[K,
+[1.888s]                  from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/include/ControlCommunicatorNode.hpp:13[m[K,
+[1.888s]                  from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:1[m[K:
+[1.888s] /opt/ros/foxy/include/rclcpp/function_traits.hpp: In instantiation of ‘[01m[Kstruct rclcpp::function_traits::function_traits<std::_Bind<ControlCommunicatorNode::ControlCommunicatorNode(const char*)::<lambda()>()> >[m[K’:
+[1.888s] [01m[K/opt/ros/foxy/include/rclcpp/function_traits.hpp:159:8:[m[K   required from ‘[01m[Kstruct rclcpp::function_traits::same_arguments<std::_Bind<ControlCommunicatorNode::ControlCommunicatorNode(const char*)::<lambda()>()>, std::function<void()> >[m[K’
+[1.889s] [01m[K/opt/ros/foxy/include/rclcpp/timer.hpp:155:80:[m[K   required by substitution of ‘[01m[Ktemplate<class DurationRepT, class DurationT, class CallbackT> typename rclcpp::WallTimer<CallbackT>::SharedPtr rclcpp::Node::create_wall_timer(std::chrono::duration<_Rep1, _Period1>, CallbackT, rclcpp::CallbackGroup::SharedPtr) [with DurationRepT = long int; DurationT = std::ratio<1, 1000>; CallbackT = std::_Bind<ControlCommunicatorNode::ControlCommunicatorNode(const char*)::<lambda()>()>][m[K’
+[1.889s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:61:4:[m[K   required from here
+[1.889s] [01m[K/opt/ros/foxy/include/rclcpp/function_traits.hpp:51:9:[m[K [01;31m[Kerror: [m[Kdecltype cannot resolve address of overloaded function
+[1.889s]    51 |   using [01;31m[Karguments[m[K = typename tuple_tail<
+[1.889s]       |         [01;31m[K^~~~~~~~~[m[K
+[1.889s] [01m[K/opt/ros/foxy/include/rclcpp/function_traits.hpp:57:9:[m[K [01;31m[Kerror: [m[Kdecltype cannot resolve address of overloaded function
+[1.889s]    57 |   using [01;31m[Kargument_type[m[K = typename std::tuple_element<N, arguments>::type;
+[1.889s]       |         [01;31m[K^~~~~~~~~~~~~[m[K
+[1.889s] [01m[K/opt/ros/foxy/include/rclcpp/function_traits.hpp:59:9:[m[K [01;31m[Kerror: [m[Kdecltype cannot resolve address of overloaded function
+[1.889s]    59 |   using [01;31m[Kreturn_type[m[K = typename function_traits<decltype( &FunctionT::operator())>::return_type;
+[1.889s]       |         [01;31m[K^~~~~~~~~~~[m[K
+[1.889s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:61:4:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KControlCommunicatorNode::create_wall_timer(std::chrono::milliseconds, std::_Bind_helper<false, ControlCommunicatorNode::ControlCommunicatorNode(const char*)::<lambda()> >::type)[m[K’
+[1.889s]    61 |  })[01;31m[K)[m[K;
+[1.889s]       |    [01;31m[K^[m[K
+[1.889s] In file included from [01m[K/opt/ros/foxy/include/rclcpp/node.hpp:1224[m[K,
+[1.889s]                  from [01m[K/opt/ros/foxy/include/rclcpp/executors/single_threaded_executor.hpp:28[m[K,
+[1.889s]                  from [01m[K/opt/ros/foxy/include/rclcpp/executors.hpp:22[m[K,
+[1.889s]                  from [01m[K/opt/ros/foxy/include/rclcpp/rclcpp.hpp:146[m[K,
+[1.889s]                  from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/include/ControlCommunicatorNode.hpp:13[m[K,
+[1.889s]                  from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:1[m[K:
+[1.889s] [01m[K/opt/ros/foxy/include/rclcpp/node_impl.hpp:109:1:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class DurationRepT, class DurationT, class CallbackT> typename rclcpp::WallTimer<CallbackT>::SharedPtr rclcpp::Node::create_wall_timer(std::chrono::duration<_Rep1, _Period1>, CallbackT, rclcpp::CallbackGroup::SharedPtr)[m[K’
+[1.890s]   109 | [01;36m[KNode[m[K::create_wall_timer(
+[1.890s]       | [01;36m[K^~~~[m[K
+[1.890s] [01m[K/opt/ros/foxy/include/rclcpp/node_impl.hpp:109:1:[m[K [01;36m[Knote: [m[K  substitution of deduced template arguments resulted in errors seen above
+[1.896s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:[m[K In member function ‘[01m[Kvoid ControlCommunicatorNode::auto_aim_handler(std::shared_ptr<vision_msgs::msg::PredictedArmor_<std::allocator<void> > >)[m[K’:
+[1.896s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:170:9:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kp[m[K’ [[01;35m[K-Wunused-variable[m[K]
+[1.896s]   170 |  double [01;35m[Kp[m[K = 0, y = 0;
+[1.896s]       |         [01;35m[K^[m[K
+[1.896s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:170:16:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Ky[m[K’ [[01;35m[K-Wunused-variable[m[K]
+[1.896s]   170 |  double p = 0, [01;35m[Ky[m[K = 0;
+[1.896s]       |                [01;35m[K^[m[K
+[1.896s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:171:7:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kim[m[K’ [[01;35m[K-Wunused-variable[m[K]
+[1.896s]   171 |  bool [01;35m[Kim[m[K = 0;
+[1.896s]       |       [01;35m[K^~[m[K
+[3.808s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:209:7:[m[K [01;35m[Kwarning: [m[Kignoring return value of ‘[01m[Kssize_t write(int, const void*, size_t)[m[K’, declared with attribute warn_unused_result [[01;35m[K-Wunused-result[m[K]
+[3.808s]   209 |  [01;35m[Kwrite(this->port_fd, &package, sizeof(PackageOut))[m[K;
+[3.809s]       |  [01;35m[K~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[3.809s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:[m[K In member function ‘[01m[Kvoid ControlCommunicatorNode::nav_handler(std::shared_ptr<geometry_msgs::msg::Twist_<std::allocator<void> > >)[m[K’:
+[3.809s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:233:7:[m[K [01;35m[Kwarning: [m[Kignoring return value of ‘[01m[Kssize_t write(int, const void*, size_t)[m[K’, declared with attribute warn_unused_result [[01;35m[K-Wunused-result[m[K]
+[3.809s]   233 |  [01;35m[Kwrite(this->port_fd, &package, sizeof(PackageOut))[m[K;
+[3.809s]       |  [01;35m[K~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[3.837s] make[2]: *** [CMakeFiles/ControlCommunicatorNode.dir/build.make:63: CMakeFiles/ControlCommunicatorNode.dir/src/ControlCommunicatorNode.cpp.o] Error 1
+[3.837s] make[1]: *** [CMakeFiles/Makefile2:78: CMakeFiles/ControlCommunicatorNode.dir/all] Error 2
+[3.837s] make: *** [Makefile:141: all] Error 2
+[3.838s] Invoked command in '/home/purduerm/ros2-ws/auto-aiming/build/control_communicator' returned '2': AMENT_PREFIX_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/purduerm/ros2-ws/auto-aiming/build/control_communicator -- -j12 -l12

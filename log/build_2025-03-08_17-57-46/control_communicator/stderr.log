@@ -1,0 +1,4 @@
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/PitchLookupModel.cpp:[m[K In member function ‘[01m[Kvoid PitchLookupModel::load_file()[m[K’:
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/PitchLookupModel.cpp:28:11:[m[K [01;35m[Kwarning: [m[Kignoring return value of ‘[01m[Kint fscanf(FILE*, const char*, ...)[m[K’, declared with attribute warn_unused_result [[01;35m[K-Wunused-result[m[K]
+   28 |     [01;35m[Kfscanf(fp, "%d %d\n", &z_count, &y_count)[m[K;
+      |     [01;35m[K~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K

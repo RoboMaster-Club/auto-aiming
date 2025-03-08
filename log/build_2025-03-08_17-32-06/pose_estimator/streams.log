@@ -1,0 +1,158 @@
+[0.014s] Invoking command in '/home/purduerm/ros2-ws/auto-aiming/build/pose_estimator': AMENT_PREFIX_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake /home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/purduerm/ros2-ws/auto-aiming/install/pose_estimator
+[0.091s] -- The CXX compiler identification is GNU 9.4.0
+[0.095s] -- Check for working CXX compiler: /usr/bin/c++
+[0.155s] -- Check for working CXX compiler: /usr/bin/c++ -- works
+[0.156s] -- Detecting CXX compiler ABI info
+[0.211s] -- Detecting CXX compiler ABI info - done
+[0.220s] -- Detecting CXX compile features
+[0.221s] -- Detecting CXX compile features - done
+[0.222s] -- Found ament_cmake: 0.9.12 (/opt/ros/foxy/share/ament_cmake/cmake)
+[0.242s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3") 
+[0.242s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[0.472s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.490s] -- Found rclcpp: 2.4.3 (/opt/ros/foxy/share/rclcpp/cmake)
+[0.525s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.530s] -- Found rosidl_adapter: 1.3.1 (/opt/ros/foxy/share/rosidl_adapter/cmake)
+[0.595s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "1.1.1f")  
+[0.619s] -- Found FastRTPS: /opt/ros/foxy/include  
+[0.689s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.734s] -- Found rmw_implementation_cmake: 1.0.4 (/opt/ros/foxy/share/rmw_implementation_cmake/cmake)
+[0.735s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.749s] -- Looking for C++ include pthread.h
+[0.808s] -- Looking for C++ include pthread.h - found
+[0.809s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[0.870s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+[0.871s] -- Looking for pthread_create in pthreads
+[0.924s] -- Looking for pthread_create in pthreads - not found
+[0.924s] -- Looking for pthread_create in pthread
+[0.986s] -- Looking for pthread_create in pthread - found
+[0.987s] -- Found Threads: TRUE  
+[1.114s] -- Found vision_msgs: 0.0.0 (/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs/share/vision_msgs/cmake)
+[1.249s] -- Found CUDA: /usr/local/cuda (found suitable exact version "11.4") 
+[1.266s] -- Found OpenCV: /usr/local (found suitable version "4.6.0", minimum required is "4.6.0") 
+[1.267s] -- Found cv_bridge: 3.0.7 (/opt/ros/foxy/share/cv_bridge/cmake)
+[1.347s] -- Found tf2: 0.13.14 (/opt/ros/foxy/share/tf2/cmake)
+[1.361s] -- Found tf2_ros: 0.13.14 (/opt/ros/foxy/share/tf2_ros/cmake)
+[1.636s] -- Found ament_cmake_gtest: 0.9.12 (/opt/ros/foxy/share/ament_cmake_gtest/cmake)
+[1.647s] -- Found gtest sources under '/opt/ros/foxy/src/gtest_vendor': C++ tests using 'Google Test' will be built
+[1.677s] -- The C compiler identification is GNU 9.4.0
+[1.679s] -- Check for working C compiler: /usr/bin/cc
+[1.728s] -- Check for working C compiler: /usr/bin/cc -- works
+[1.729s] -- Detecting C compiler ABI info
+[1.780s] -- Detecting C compiler ABI info - done
+[1.789s] -- Detecting C compile features
+[1.789s] -- Detecting C compile features - done
+[1.791s] -- Check if compiler accepts -pthread
+[1.851s] -- Check if compiler accepts -pthread - yes
+[1.920s] -- Configuring done
+[1.988s] -- Generating done
+[2.018s] -- Build files have been written to: /home/purduerm/ros2-ws/auto-aiming/build/pose_estimator
+[2.026s] Invoked command in '/home/purduerm/ros2-ws/auto-aiming/build/pose_estimator' returned '0': AMENT_PREFIX_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake /home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/purduerm/ros2-ws/auto-aiming/install/pose_estimator
+[2.027s] Invoking command in '/home/purduerm/ros2-ws/auto-aiming/build/pose_estimator': AMENT_PREFIX_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/purduerm/ros2-ws/auto-aiming/build/pose_estimator -- -j12 -l12
+[2.059s] [35m[1mScanning dependencies of target gtest[0m
+[2.060s] [35m[1mScanning dependencies of target gtest_main[0m
+[2.060s] [35m[1mScanning dependencies of target ValidityFilter[0m
+[2.071s] [  7%] [32mBuilding CXX object gtest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o[0m
+[2.072s] [ 14%] [32mBuilding CXX object gtest/CMakeFiles/gtest.dir/src/gtest-all.cc.o[0m
+[2.080s] [ 21%] [32mBuilding CXX object CMakeFiles/ValidityFilter.dir/src/ValidityFilter.cpp.o[0m
+[2.530s] [ 28%] [32m[1mLinking CXX static library libValidityFilter.a[0m
+[2.590s] [ 28%] Built target ValidityFilter
+[2.598s] [35m[1mScanning dependencies of target PoseEstimator[0m
+[2.627s] [ 35%] [32mBuilding CXX object CMakeFiles/PoseEstimator.dir/src/PoseEstimator.cpp.o[0m
+[3.049s] [ 42%] [32m[1mLinking CXX static library libgtest_main.a[0m
+[3.073s] [ 42%] Built target gtest_main
+[8.624s] [ 50%] [32m[1mLinking CXX static library libgtest.a[0m
+[8.650s] [ 50%] Built target gtest
+[8.658s] [35m[1mScanning dependencies of target test_ValidityFilter[0m
+[8.670s] [ 57%] [32mBuilding CXX object CMakeFiles/test_ValidityFilter.dir/test/test_ValidityFilter.cpp.o[0m
+[9.504s] [ 64%] [32m[1mLinking CXX static library libPoseEstimator.a[0m
+[9.527s] [ 64%] Built target PoseEstimator
+[9.535s] [35m[1mScanning dependencies of target PoseEstimatorNode[0m
+[9.535s] [35m[1mScanning dependencies of target test_PoseEstimator[0m
+[9.564s] [ 71%] [32mBuilding CXX object CMakeFiles/test_PoseEstimator.dir/test/test_PoseEstimator.cpp.o[0m
+[9.599s] [ 78%] [32mBuilding CXX object CMakeFiles/PoseEstimatorNode.dir/src/PoseEstimatorNode.cpp.o[0m
+[10.547s] [ 85%] [32m[1mLinking CXX executable test_ValidityFilter[0m
+[10.626s] [ 85%] Built target test_ValidityFilter
+[11.886s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/PoseEstimatorNode.cpp:[m[K In member function ‘[01m[Kvoid PoseEstimatorNode::keyPointsCallback(vision_msgs::msg::KeyPoints_<std::allocator<void> >::SharedPtr)[m[K’:
+[11.886s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/PoseEstimatorNode.cpp:175:5:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KEigen::Matrix<double, 4, 4>::Matrix(<brace-enclosed initializer list>)[m[K’
+[11.886s]   175 |     [01;31m[K}[m[K;
+[11.886s]       |     [01;31m[K^[m[K
+[11.886s] In file included from [01m[K/usr/include/eigen3/Eigen/Core:458[m[K,
+[11.886s]                  from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/include/PoseEstimator.h:8[m[K,
+[11.887s]                  from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/include/PoseEstimatorNode.hpp:19[m[K,
+[11.887s]                  from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/PoseEstimatorNode.cpp:1[m[K:
+[11.887s] [01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:387:14:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class OtherDerived> Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix(const Eigen::RotationBase<OtherDerived, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::ColsAtCompileTime>&)[m[K’
+[11.887s]   387 |     explicit [01;36m[KMatrix[m[K(const RotationBase<OtherDerived,ColsAtCompileTime>& r);
+[11.887s]       |              [01;36m[K^~~~~~[m[K
+[11.887s] [01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:387:14:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[11.887s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/PoseEstimatorNode.cpp:175:5:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 4 provided
+[11.887s]   175 |     [01;36m[K}[m[K;
+[11.887s]       |     [01;36m[K^[m[K
+[11.887s] In file included from [01m[K/usr/include/eigen3/Eigen/Core:458[m[K,
+[11.887s]                  from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/include/PoseEstimator.h:8[m[K,
+[11.887s]                  from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/include/PoseEstimatorNode.hpp:19[m[K,
+[11.887s]                  from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/PoseEstimatorNode.cpp:1[m[K:
+[11.887s] [01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:376:25:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class OtherDerived> Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix(const Eigen::EigenBase<OtherDerived>&)[m[K’
+[11.887s]   376 |     EIGEN_STRONG_INLINE [01;36m[KMatrix[m[K(const EigenBase<OtherDerived> &other)
+[11.887s]       |                         [01;36m[K^~~~~~[m[K
+[11.887s] [01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:376:25:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[11.888s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/PoseEstimatorNode.cpp:175:5:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 4 provided
+[11.888s]   175 |     [01;36m[K}[m[K;
+[11.888s]       |     [01;36m[K^[m[K
+[11.888s] In file included from [01m[K/usr/include/eigen3/Eigen/Core:458[m[K,
+[11.888s]                  from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/include/PoseEstimator.h:8[m[K,
+[11.888s]                  from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/include/PoseEstimatorNode.hpp:19[m[K,
+[11.888s]                  from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/PoseEstimatorNode.cpp:1[m[K:
+[11.888s] [01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:368:25:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KEigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix(const Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>&) [with _Scalar = double; int _Rows = 4; int _Cols = 4; int _Options = 0; int _MaxRows = 4; int _MaxCols = 4][m[K’
+[11.888s]   368 |     EIGEN_STRONG_INLINE [01;36m[KMatrix[m[K(const Matrix& other) : Base(other)
+[11.888s]       |                         [01;36m[K^~~~~~[m[K
+[11.888s] [01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:368:25:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 4 provided
+[11.888s] [01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:355:25:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KEigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix(const Scalar&, const Scalar&, const Scalar&, const Scalar&) [with _Scalar = double; int _Rows = 4; int _Cols = 4; int _Options = 0; int _MaxRows = 4; int _MaxCols = 4; Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Scalar = double][m[K’
+[11.888s]   355 |     EIGEN_STRONG_INLINE [01;36m[KMatrix[m[K(const Scalar& x, const Scalar& y, const Scalar& z, const Scalar& w)
+[11.888s]       |                         [01;36m[K^~~~~~[m[K
+[11.888s] [01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:355:46:[m[K [01;36m[Knote: [m[K  no known conversion for argument 1 from ‘[01m[K<brace-enclosed initializer list>[m[K’ to ‘[01m[Kconst Scalar&[m[K’ {aka ‘[01m[Kconst double&[m[K’}
+[11.888s]   355 |     EIGEN_STRONG_INLINE Matrix([01;36m[Kconst Scalar& x[m[K, const Scalar& y, const Scalar& z, const Scalar& w)
+[11.888s]       |                                [01;36m[K~~~~~~~~~~~~~~^[m[K
+[11.888s] [01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:345:25:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KEigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix(const Scalar&, const Scalar&, const Scalar&) [with _Scalar = double; int _Rows = 4; int _Cols = 4; int _Options = 0; int _MaxRows = 4; int _MaxCols = 4; Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Scalar = double][m[K’
+[11.888s]   345 |     EIGEN_STRONG_INLINE [01;36m[KMatrix[m[K(const Scalar& x, const Scalar& y, const Scalar& z)
+[11.888s]       |                         [01;36m[K^~~~~~[m[K
+[11.889s] [01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:345:25:[m[K [01;36m[Knote: [m[K  candidate expects 3 arguments, 4 provided
+[11.889s] [01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:299:25:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class T0, class T1> Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix(const T0&, const T1&)[m[K’
+[11.889s]   299 |     EIGEN_STRONG_INLINE [01;36m[KMatrix[m[K(const T0& x, const T1& y)
+[11.889s]       |                         [01;36m[K^~~~~~[m[K
+[11.889s] [01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:299:25:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[11.889s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/PoseEstimatorNode.cpp:175:5:[m[K [01;36m[Knote: [m[K  candidate expects 2 arguments, 4 provided
+[11.889s]   175 |     [01;36m[K}[m[K;
+[11.889s]       |     [01;36m[K^[m[K
+[11.889s] In file included from [01m[K/usr/include/eigen3/Eigen/Core:458[m[K,
+[11.889s]                  from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/include/PoseEstimator.h:8[m[K,
+[11.889s]                  from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/include/PoseEstimatorNode.hpp:19[m[K,
+[11.889s]                  from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/PoseEstimatorNode.cpp:1[m[K:
+[11.889s] [01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:291:34:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class T> Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix(const T&)[m[K’
+[11.889s]   291 |     EIGEN_STRONG_INLINE explicit [01;36m[KMatrix[m[K(const T& x)
+[11.889s]       |                                  [01;36m[K^~~~~~[m[K
+[11.889s] [01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:291:34:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[11.889s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/PoseEstimatorNode.cpp:175:5:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 4 provided
+[11.889s]   175 |     [01;36m[K}[m[K;
+[11.889s]       |     [01;36m[K^[m[K
+[11.889s] In file included from [01m[K/usr/include/eigen3/Eigen/Core:458[m[K,
+[11.889s]                  from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/include/PoseEstimator.h:8[m[K,
+[11.889s]                  from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/include/PoseEstimatorNode.hpp:19[m[K,
+[11.890s]                  from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/PoseEstimatorNode.cpp:1[m[K:
+[11.890s] [01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:273:5:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KEigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix(Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>&&) [with _Scalar = double; int _Rows = 4; int _Cols = 4; int _Options = 0; int _MaxRows = 4; int _MaxCols = 4][m[K’
+[11.890s]   273 |     [01;36m[KMatrix[m[K(Matrix&& other) EIGEN_NOEXCEPT_IF(std::is_nothrow_move_constructible<Scalar>::value)
+[11.890s]       |     [01;36m[K^~~~~~[m[K
+[11.890s] [01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:273:5:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 4 provided
+[11.890s] [01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:267:14:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KEigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix(Eigen::internal::constructor_without_unaligned_array_assert) [with _Scalar = double; int _Rows = 4; int _Cols = 4; int _Options = 0; int _MaxRows = 4; int _MaxCols = 4][m[K’
+[11.890s]   267 |     explicit [01;36m[KMatrix[m[K(internal::constructor_without_unaligned_array_assert)
+[11.890s]       |              [01;36m[K^~~~~~[m[K
+[11.890s] [01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:267:14:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 4 provided
+[11.890s] [01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:259:25:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KEigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix() [with _Scalar = double; int _Rows = 4; int _Cols = 4; int _Options = 0; int _MaxRows = 4; int _MaxCols = 4][m[K’
+[11.890s]   259 |     EIGEN_STRONG_INLINE [01;36m[KMatrix[m[K() : Base()
+[11.890s]       |                         [01;36m[K^~~~~~[m[K
+[11.890s] [01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:259:25:[m[K [01;36m[Knote: [m[K  candidate expects 0 arguments, 4 provided
+[11.963s] [ 92%] [32m[1mLinking CXX executable test_PoseEstimator[0m
+[12.090s] [ 92%] Built target test_PoseEstimator
+[13.627s] make[2]: *** [CMakeFiles/PoseEstimatorNode.dir/build.make:63: CMakeFiles/PoseEstimatorNode.dir/src/PoseEstimatorNode.cpp.o] Error 1
+[13.627s] make[1]: *** [CMakeFiles/Makefile2:189: CMakeFiles/PoseEstimatorNode.dir/all] Error 2
+[13.627s] make: *** [Makefile:141: all] Error 2

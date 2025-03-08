@@ -1,0 +1,4 @@
+source;share/pose_estimator/local_setup.bash
+source;share/pose_estimator/local_setup.dsv
+source;share/pose_estimator/local_setup.sh
+source;share/pose_estimator/local_setup.zsh

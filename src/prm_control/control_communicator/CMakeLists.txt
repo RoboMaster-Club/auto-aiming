@@ -34,6 +34,7 @@ include_directories(include)
 
 add_executable(ControlCommunicatorNode 
 	src/ControlCommunicatorNode.cpp
+  src/PitchLookupModel.cpp
 )
 
 

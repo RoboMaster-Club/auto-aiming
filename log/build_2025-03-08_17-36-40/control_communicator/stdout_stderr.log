@@ -1,0 +1,69 @@
+-- Found ament_cmake: 0.9.12 (/opt/ros/foxy/share/ament_cmake/cmake)
+-- Using PYTHON_EXECUTABLE: /usr/bin/python3
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Found rclcpp: 2.4.3 (/opt/ros/foxy/share/rclcpp/cmake)
+-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+-- Found rosidl_adapter: 1.3.1 (/opt/ros/foxy/share/rosidl_adapter/cmake)
+-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+-- Found rmw_implementation_cmake: 1.0.4 (/opt/ros/foxy/share/rmw_implementation_cmake/cmake)
+-- Using RMW implementation 'rmw_fastrtps_cpp' as default
+-- Found geometry_msgs: 2.0.5 (/opt/ros/foxy/share/geometry_msgs/cmake)
+-- Found vision_msgs: 0.0.0 (/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs/share/vision_msgs/cmake)
+-- Found tf2: 0.13.14 (/opt/ros/foxy/share/tf2/cmake)
+-- Found tf2_ros: 0.13.14 (/opt/ros/foxy/share/tf2_ros/cmake)
+-- Found nav_msgs: 2.0.5 (/opt/ros/foxy/share/nav_msgs/cmake)
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/purduerm/ros2-ws/auto-aiming/build/control_communicator
+[35m[1mScanning dependencies of target ControlCommunicatorNode[0m
+[ 33%] [32mBuilding CXX object CMakeFiles/ControlCommunicatorNode.dir/src/PitchLookupModel.cpp.o[0m
+[ 66%] [32mBuilding CXX object CMakeFiles/ControlCommunicatorNode.dir/src/ControlCommunicatorNode.cpp.o[0m
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:12:[m[K [01;35m[Kwarning: [m[K"PI" redefined
+   12 | #define PI 3.141592653589793238462643383 // It was 4 AM when I wrote this.
+      | 
+In file included from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/include/ControlCommunicatorNode.hpp:30[m[K,
+                 from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:1[m[K:
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/include/projectile_angle_convel.h:9:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+    9 | #define PI 3.14159
+      | 
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/PitchLookupModel.cpp:[m[K In member function ‘[01m[Kvoid PitchLookupModel::load_file(std::string)[m[K’:
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/PitchLookupModel.cpp:32:11:[m[K [01;35m[Kwarning: [m[Kignoring return value of ‘[01m[Kint fscanf(FILE*, const char*, ...)[m[K’, declared with attribute warn_unused_result [[01;35m[K-Wunused-result[m[K]
+   32 |     [01;35m[Kfscanf(fp, "%d %d\n", &z_count, &y_count)[m[K;
+      |     [01;35m[K~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:[m[K In constructor ‘[01m[KControlCommunicatorNode::ControlCommunicatorNode(const char*)[m[K’:
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:23:1:[m[K [01;31m[Kerror: [m[K‘[01m[Kz[m[K’ was not declared in this scope
+   23 | [01;31m[Kz[m[K
+      | [01;31m[K^[m[K
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:57:8:[m[K [01;31m[Kerror: [m[K‘[01m[Kclass ControlCommunicatorNode[m[K’ has no member named ‘[01m[Kpitch_lookup_table[m[K’; did you mean ‘[01m[Kpitch_lookup_model[m[K’?
+   57 |  this->[01;31m[Kpitch_lookup_table[m[K = read_lookup_table()
+      |        [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+      |        [32m[Kpitch_lookup_model[m[K
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:57:29:[m[K [01;31m[Kerror: [m[K‘[01m[Kread_lookup_table[m[K’ was not declared in this scope
+   57 |  this->pitch_lookup_table = [01;31m[Kread_lookup_table[m[K()
+      |                             [01;31m[K^~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:60:8:[m[K [01;31m[Kerror: [m[K‘[01m[Kclass ControlCommunicatorNode[m[K’ has no member named ‘[01m[Kread_lookup_table_time[m[K’
+   60 |  this->[01;31m[Kread_lookup_table_time[m[K = this->create_wall_timer(5000ms, std::bind(&PitchLookupModel::load_file(this->lookup_table_path), this->pitch_lookup_model));
+      |        [01;31m[K^~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:60:127:[m[K [01;31m[Kerror: [m[Kcannot call member function ‘[01m[Kvoid PitchLookupModel::load_file(std::string)[m[K’ without object
+   60 |  this->read_lookup_table_time = this->create_wall_timer(5000ms, std::bind(&PitchLookupModel::load_file(this->lookup_table_path[01;31m[K)[m[K, this->pitch_lookup_model));
+      |                                                                                                                               [01;31m[K^[m[K
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:[m[K In member function ‘[01m[Kvoid ControlCommunicatorNode::auto_aim_handler(std::shared_ptr<vision_msgs::msg::PredictedArmor_<std::allocator<void> > >)[m[K’:
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:169:9:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kp[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  169 |  double [01;35m[Kp[m[K = 0, y = 0;
+      |         [01;35m[K^[m[K
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:169:16:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Ky[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  169 |  double p = 0, [01;35m[Ky[m[K = 0;
+      |                [01;35m[K^[m[K
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:170:7:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kim[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  170 |  bool [01;35m[Kim[m[K = 0;
+      |       [01;35m[K^~[m[K
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:208:7:[m[K [01;35m[Kwarning: [m[Kignoring return value of ‘[01m[Kssize_t write(int, const void*, size_t)[m[K’, declared with attribute warn_unused_result [[01;35m[K-Wunused-result[m[K]
+  208 |  [01;35m[Kwrite(this->port_fd, &package, sizeof(PackageOut))[m[K;
+      |  [01;35m[K~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:[m[K In member function ‘[01m[Kvoid ControlCommunicatorNode::nav_handler(std::shared_ptr<geometry_msgs::msg::Twist_<std::allocator<void> > >)[m[K’:
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:232:7:[m[K [01;35m[Kwarning: [m[Kignoring return value of ‘[01m[Kssize_t write(int, const void*, size_t)[m[K’, declared with attribute warn_unused_result [[01;35m[K-Wunused-result[m[K]
+  232 |  [01;35m[Kwrite(this->port_fd, &package, sizeof(PackageOut))[m[K;
+      |  [01;35m[K~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+make[2]: *** [CMakeFiles/ControlCommunicatorNode.dir/build.make:63: CMakeFiles/ControlCommunicatorNode.dir/src/ControlCommunicatorNode.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:78: CMakeFiles/ControlCommunicatorNode.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

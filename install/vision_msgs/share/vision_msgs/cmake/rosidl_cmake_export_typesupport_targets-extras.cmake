@@ -1,0 +1,1 @@
+/home/purduerm/ros2-ws/auto-aiming/build/vision_msgs/rosidl_cmake/rosidl_cmake_export_typesupport_targets-extras.cmake

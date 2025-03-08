@@ -1,0 +1,12 @@
+[ 14%] Built target ValidityFilter
+[ 28%] Built target gtest_main
+[ 42%] Built target gtest
+[ 57%] Built target PoseEstimator
+[ 71%] Built target test_ValidityFilter
+[35m[1mScanning dependencies of target PoseEstimatorNode[0m
+[ 85%] Built target test_PoseEstimator
+[ 92%] [32mBuilding CXX object CMakeFiles/PoseEstimatorNode.dir/src/PoseEstimatorNode.cpp.o[0m
+[100%] [32m[1mLinking CXX executable PoseEstimatorNode[0m
+/usr/bin/ld: warning: libopencv_imgproc.so.4.2, needed by /opt/ros/foxy/lib/libcv_bridge.so, may conflict with libopencv_imgproc.so.406
+/usr/bin/ld: warning: libopencv_core.so.4.2, needed by /opt/ros/foxy/lib/libcv_bridge.so, may conflict with libopencv_core.so.406
+[100%] Built target PoseEstimatorNode

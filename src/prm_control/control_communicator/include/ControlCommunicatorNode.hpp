@@ -1,4 +1,3 @@
-
 #ifndef _CONTROL_COMMUNICATOR_NODE_H
 #define _CONTROL_COMMUNICATOR_NODE_H
 
@@ -34,6 +33,7 @@
 #include "vision_msgs/msg/predicted_armor.hpp"
 #include "nav_msgs/msg/odometry.hpp"
 #include "messages.h"
+#include "PitchLookupModel.hpp"
 
 // using namespace std::chrono_literals;
 // using namespace std::placeholders;
@@ -72,6 +72,9 @@ private:
 	int8_t curr_pois = 0;
 	bool right = true;
 
+	std::string lookup_table_path;
+    PitchLookupModel pitch_lookup_model;
+
 	std::unique_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster;
 	std::shared_ptr<tf2_ros::StaticTransformBroadcaster> tf_static_broadcaster;
 	std::unique_ptr<tf2_ros::Buffer> tf_buffer;
@@ -86,6 +89,7 @@ private:
 
 
 	rclcpp::TimerBase::SharedPtr uart_read_timer;
+	rclcpp::TimerBase::SharedPtr read_lookup_table_time;
 	rclcpp::TimerBase::SharedPtr heart_beat_timer;
 
 	bool start_uart(const char *port);

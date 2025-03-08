@@ -1,0 +1,78 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Release",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "webcam_publisher",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "VideoCaptureNode::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-VideoCaptureNode-Release-b3e6c56a6080fcc19b76.json",
+					"name" : "VideoCaptureNode",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-Release-699b3b2de49e92f2bc6d.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "webcam_publisher_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-webcam_publisher_uninstall-Release-16fcbe21b06fc5f6cdfd.json",
+					"name" : "webcam_publisher_uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/purduerm/ros2-ws/auto-aiming/build/webcam_publisher",
+		"source" : "/home/purduerm/ros2-ws/auto-aiming/src/prm_camera/webcam_publisher"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 0
+	}
+}

@@ -1,0 +1,1 @@
+/home/purduerm/ros2-ws/auto-aiming/build/vision_msgs/rosidl_generator_cpp/vision_msgs/msg/detail/yaw_pitch__type_support.hpp

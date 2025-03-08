@@ -1,0 +1,725 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "test_OpenCVArmorDetector"
+		}
+	],
+	"backtrace" : 4,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_executable",
+			"_ament_add_gtest_executable",
+			"ament_add_gtest_executable",
+			"ament_add_gtest",
+			"link_directories",
+			"find_package",
+			"target_link_libraries",
+			"target_include_directories",
+			"include_directories"
+		],
+		"files" : 
+		[
+			"/opt/ros/foxy/share/ament_cmake_gtest/cmake/ament_add_gtest_executable.cmake",
+			"/opt/ros/foxy/share/ament_cmake_gtest/cmake/ament_add_gtest.cmake",
+			"CMakeLists.txt",
+			"/usr/local/lib/cmake/opencv4/OpenCVConfig.cmake"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 2
+			},
+			{
+				"command" : 3,
+				"file" : 2,
+				"line" : 46,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 68,
+				"parent" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 37,
+				"parent" : 2
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 50,
+				"parent" : 3
+			},
+			{
+				"command" : 5,
+				"file" : 2,
+				"line" : 12,
+				"parent" : 0
+			},
+			{
+				"file" : 3,
+				"parent" : 5
+			},
+			{
+				"command" : 4,
+				"file" : 3,
+				"line" : 151,
+				"parent" : 6
+			},
+			{
+				"command" : 6,
+				"file" : 0,
+				"line" : 53,
+				"parent" : 3
+			},
+			{
+				"command" : 6,
+				"file" : 0,
+				"line" : 55,
+				"parent" : 3
+			},
+			{
+				"command" : 6,
+				"file" : 2,
+				"line" : 48,
+				"parent" : 0
+			},
+			{
+				"command" : 7,
+				"file" : 0,
+				"line" : 51,
+				"parent" : 3
+			},
+			{
+				"command" : 8,
+				"file" : 2,
+				"line" : 21,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-O3  "
+				},
+				{
+					"fragment" : "-std=gnu++17"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 10,
+					"define" : "DEFAULT_RMW_IMPLEMENTATION=rmw_fastrtps_cpp"
+				},
+				{
+					"backtrace" : 10,
+					"define" : "RCUTILS_ENABLE_FAULT_INJECTION"
+				},
+				{
+					"backtrace" : 10,
+					"define" : "SPDLOG_COMPILED_LIB"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 11,
+					"path" : "/opt/ros/foxy/src/gtest_vendor/include"
+				},
+				{
+					"backtrace" : 12,
+					"path" : "/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/opencv_armor_detector/include"
+				},
+				{
+					"backtrace" : 10,
+					"isSystem" : true,
+					"path" : "/usr/local/include/opencv4"
+				},
+				{
+					"backtrace" : 10,
+					"isSystem" : true,
+					"path" : "/usr/include/eigen3"
+				},
+				{
+					"backtrace" : 10,
+					"isSystem" : true,
+					"path" : "/opt/ros/foxy/include"
+				}
+			],
+			"language" : "CXX",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 10,
+			"id" : "OpenCVArmorDetector::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 8,
+			"id" : "gtest_main::@0af4add9fe94340e763e"
+		},
+		{
+			"backtrace" : 9,
+			"id" : "gtest::@0af4add9fe94340e763e"
+		}
+	],
+	"id" : "test_OpenCVArmorDetector::@6890427a1f51a3e7e1df",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "-O3",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 7,
+				"fragment" : "-L/usr/local/cuda/lib64",
+				"role" : "libraryPath"
+			},
+			{
+				"fragment" : "-Wl,-rpath,/usr/local/cuda/lib64:/usr/local/lib:/opt/ros/foxy/lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 8,
+				"fragment" : "gtest/libgtest_main.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 9,
+				"fragment" : "gtest/libgtest.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 10,
+				"fragment" : "libOpenCVArmorDetector.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-pthread",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_gapi.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_stitching.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_alphamat.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_aruco.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_barcode.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_bgsegm.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_bioinspired.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_ccalib.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_cudabgsegm.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_cudafeatures2d.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_cudaobjdetect.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_cudastereo.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_dnn_objdetect.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_dnn_superres.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_dpm.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_face.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_freetype.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_fuzzy.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_hdf.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_hfs.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_img_hash.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_intensity_transform.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_line_descriptor.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_mcc.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_quality.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_rapid.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_reg.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_rgbd.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_saliency.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_stereo.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_structured_light.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_phase_unwrapping.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_superres.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_cudacodec.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_surface_matching.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_tracking.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_highgui.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_datasets.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_plot.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_text.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_videostab.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_videoio.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_cudaoptflow.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_cudalegacy.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_cudawarping.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_optflow.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_viz.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_wechat_qrcode.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_xfeatures2d.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_ml.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_shape.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_ximgproc.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_video.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_xobjdetect.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_imgcodecs.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_objdetect.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_calib3d.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_dnn.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_features2d.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_flann.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_xphoto.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_photo.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_cudaimgproc.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_cudafilters.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_imgproc.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_cudaarithm.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_core.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/local/lib/libopencv_cudev.so.4.6.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/librclcpp.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/liblibstatistics_collector.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/liblibstatistics_collector_test_msgs__rosidl_typesupport_introspection_c.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/liblibstatistics_collector_test_msgs__rosidl_generator_c.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/liblibstatistics_collector_test_msgs__rosidl_typesupport_c.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/liblibstatistics_collector_test_msgs__rosidl_typesupport_introspection_cpp.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/liblibstatistics_collector_test_msgs__rosidl_typesupport_cpp.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/libstd_msgs__rosidl_typesupport_introspection_c.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/libstd_msgs__rosidl_generator_c.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/libstd_msgs__rosidl_typesupport_c.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/libstd_msgs__rosidl_typesupport_introspection_cpp.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/libstd_msgs__rosidl_typesupport_cpp.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/librcl.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/librcl_interfaces__rosidl_typesupport_introspection_c.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/librcl_interfaces__rosidl_generator_c.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/librcl_interfaces__rosidl_typesupport_c.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/librcl_interfaces__rosidl_typesupport_introspection_cpp.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/librcl_interfaces__rosidl_typesupport_cpp.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/librmw_implementation.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/librmw.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/librcl_logging_spdlog.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libspdlog.so.1.5.0",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lpthread",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/librcl_yaml_param_parser.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/libyaml.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/librosgraph_msgs__rosidl_typesupport_introspection_c.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/librosgraph_msgs__rosidl_generator_c.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/librosgraph_msgs__rosidl_typesupport_c.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/librosgraph_msgs__rosidl_typesupport_introspection_cpp.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/librosgraph_msgs__rosidl_typesupport_cpp.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/libstatistics_msgs__rosidl_typesupport_introspection_c.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/libstatistics_msgs__rosidl_generator_c.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/libstatistics_msgs__rosidl_typesupport_c.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/libstatistics_msgs__rosidl_typesupport_introspection_cpp.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/libstatistics_msgs__rosidl_typesupport_cpp.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/libbuiltin_interfaces__rosidl_typesupport_introspection_c.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/libbuiltin_interfaces__rosidl_generator_c.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/libbuiltin_interfaces__rosidl_typesupport_c.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/libbuiltin_interfaces__rosidl_typesupport_introspection_cpp.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/librosidl_typesupport_introspection_cpp.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/librosidl_typesupport_introspection_c.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/libbuiltin_interfaces__rosidl_typesupport_cpp.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/librosidl_typesupport_cpp.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/librosidl_typesupport_c.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/librcpputils.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/librosidl_runtime_c.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/librcutils.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-ldl",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/libtracetools.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/opt/ros/foxy/lib/libament_index_cpp.so",
+				"role" : "libraries"
+			}
+		],
+		"language" : "CXX"
+	},
+	"name" : "test_OpenCVArmorDetector",
+	"nameOnDisk" : "test_OpenCVArmorDetector",
+	"paths" : 
+	{
+		"build" : ".",
+		"source" : "."
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 4,
+			"compileGroupIndex" : 0,
+			"path" : "test/test_OpenCVArmorDetector.cpp",
+			"sourceGroupIndex" : 0
+		}
+	],
+	"type" : "EXECUTABLE"
+}

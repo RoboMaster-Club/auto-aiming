@@ -1,0 +1,1 @@
+/home/purduerm/ros2-ws/auto-aiming/build/vision_msgs/rosidl_typesupport_introspection_cpp/vision_msgs/msg/detail/predicted_armor__rosidl_typesupport_introspection_cpp.hpp

@@ -6,7 +6,7 @@
 #include <errno.h>	 // Error integer and strerror() function
 #include <termios.h> // Contains POSIX terminal control definitions
 #include <unistd.h>	 // write(), read(), close()
-
+#include <bits/stdc++.h>
 #include "time_debug.h"
 
 #define PI 3.141592653589793238462643383 // It was 4 AM when I wrote this.
@@ -16,6 +16,10 @@ using namespace std::placeholders;
 
 ControlCommunicatorNode::ControlCommunicatorNode(const char *port) : Node("control_communicator_node")
 {
+
+	this->lookup_table_path = this->declare_parameter("aim.lookup_table_path", "./src/prm_control/include/lookup_tables/pitch_lookup_table.txt");
+    
+    this->pitch_lookup_model = PitchLookupModel(this->lookup_table_path);
 
 	aim_stop_null_frame_count = this->declare_parameter("aim.stop_null_frame_count", 3);
 
@@ -52,6 +56,7 @@ ControlCommunicatorNode::ControlCommunicatorNode(const char *port) : Node("contr
 	this->match_status_publisher = this->create_publisher<std_msgs::msg::Bool>("match_start", rclcpp::QoS(rclcpp::KeepLast(1)).reliable());
 
 	this->uart_read_timer = this->create_wall_timer(4ms, std::bind(&ControlCommunicatorNode::read_uart, this));
+	this->read_lookup_table_time = this->create_wall_timer(5000ms, std::bind(&PitchLookupModel::load_file, &this->pitch_lookup_model));
 
 	RCLCPP_INFO(this->get_logger(), "Control Communicator Node Started.");
 }
@@ -188,6 +193,11 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 		pitch = 0;
 		dst = 0;
 	}
+
+	// Get pitch from lookup table
+	float old_pitch = pitch;
+	pitch = this->pitch_lookup_model.get_pitch(dst, msg->y);
+	RCLCPP_INFO(this->get_logger(), "Old Pitch, Pitch: %.3f, %.3f", old_pitch, pitch);
 
 	PackageOut package;
 	this->auto_aim_frame_id++;

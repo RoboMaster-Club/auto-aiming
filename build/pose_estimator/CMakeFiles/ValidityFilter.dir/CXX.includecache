@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/include/ValidityFilter.hpp
+algorithm
+-
+chrono
+-
+limits
+-
+cmath
+-
+stdio.h
+-
+
+/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/ValidityFilter.cpp
+ValidityFilter.hpp
+/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator/src/ValidityFilter.hpp
+

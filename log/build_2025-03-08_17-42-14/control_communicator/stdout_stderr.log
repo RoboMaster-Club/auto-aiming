@@ -1,0 +1,60 @@
+[35m[1mScanning dependencies of target ControlCommunicatorNode[0m
+[ 33%] [32mBuilding CXX object CMakeFiles/ControlCommunicatorNode.dir/src/ControlCommunicatorNode.cpp.o[0m
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:12:[m[K [01;35m[Kwarning: [m[K"PI" redefined
+   12 | #define PI 3.141592653589793238462643383 // It was 4 AM when I wrote this.
+      | 
+In file included from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/include/ControlCommunicatorNode.hpp:30[m[K,
+                 from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:1[m[K:
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/include/projectile_angle_convel.h:9:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+    9 | #define PI 3.14159
+      | 
+In file included from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/include/ControlCommunicatorNode.hpp:5[m[K,
+                 from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:1[m[K:
+/usr/include/c++/9/functional: In instantiation of ‘[01m[Kstruct std::_Bind_check_arity<void (PitchLookupModel::*)(std::__cxx11::basic_string<char>), PitchLookupModel&>[m[K’:
+[01m[K/usr/include/c++/9/functional:787:12:[m[K   required from ‘[01m[Kstruct std::_Bind_helper<false, void (PitchLookupModel::*)(std::__cxx11::basic_string<char>), PitchLookupModel&>[m[K’
+[01m[K/usr/include/c++/9/functional:808:5:[m[K   required by substitution of ‘[01m[Ktemplate<class _Func, class ... _BoundArgs> typename std::_Bind_helper<std::__is_socketlike<_Func>::value, _Func, _BoundArgs ...>::type std::bind(_Func&&, _BoundArgs&& ...) [with _Func = void (PitchLookupModel::*)(std::__cxx11::basic_string<char>); _BoundArgs = {PitchLookupModel&}][m[K’
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:59:129:[m[K   required from here
+[01m[K/usr/include/c++/9/functional:775:7:[m[K [01;31m[Kerror: [m[Kstatic assertion failed: Wrong number of arguments for pointer-to-member
+  774 |       static_assert(_Varargs::[01;31m[Kvalue[m[K
+      |                               [01;31m[K~~~~~[m[K
+  775 | [01;31m[K      ? sizeof...(_BoundArgs) >= _Arity::value + 1[m[K
+      |       [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+  776 | [01;31m[K      : sizeof...(_BoundArgs) == _Arity::value + 1[m[K,
+      |       [01;31m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:[m[K In constructor ‘[01m[KControlCommunicatorNode::ControlCommunicatorNode(const char*)[m[K’:
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:59:156:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KControlCommunicatorNode::create_wall_timer(std::chrono::milliseconds, std::_Bind_helper<false, void (PitchLookupModel::*)(std::__cxx11::basic_string<char>), PitchLookupModel&>::type, std::string&)[m[K’
+   59 |  this->read_lookup_table_time = this->create_wall_timer(5000ms, std::bind(&PitchLookupModel::load_file, this->pitch_lookup_model), this-> lookup_table_path[01;31m[K)[m[K;
+      |                                                                                                                                                            [01;31m[K^[m[K
+In file included from [01m[K/opt/ros/foxy/include/rclcpp/node.hpp:1224[m[K,
+                 from [01m[K/opt/ros/foxy/include/rclcpp/executors/single_threaded_executor.hpp:28[m[K,
+                 from [01m[K/opt/ros/foxy/include/rclcpp/executors.hpp:22[m[K,
+                 from [01m[K/opt/ros/foxy/include/rclcpp/rclcpp.hpp:146[m[K,
+                 from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/include/ControlCommunicatorNode.hpp:13[m[K,
+                 from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:1[m[K:
+[01m[K/opt/ros/foxy/include/rclcpp/node_impl.hpp:109:1:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class DurationRepT, class DurationT, class CallbackT> typename rclcpp::WallTimer<CallbackT>::SharedPtr rclcpp::Node::create_wall_timer(std::chrono::duration<_Rep1, _Period1>, CallbackT, rclcpp::CallbackGroup::SharedPtr)[m[K’
+  109 | [01;36m[KNode[m[K::create_wall_timer(
+      | [01;36m[K^~~~[m[K
+[01m[K/opt/ros/foxy/include/rclcpp/node_impl.hpp:109:1:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:59:139:[m[K [01;36m[Knote: [m[K  cannot convert ‘[01m[K((ControlCommunicatorNode*)this)->ControlCommunicatorNode::lookup_table_path[m[K’ (type ‘[01m[Kstd::string[m[K’ {aka ‘[01m[Kstd::__cxx11::basic_string<char>[m[K’}) to type ‘[01m[Krclcpp::CallbackGroup::SharedPtr[m[K’ {aka ‘[01m[Kstd::shared_ptr<rclcpp::CallbackGroup>[m[K’}
+   59 |  this->read_lookup_table_time = this->create_wall_timer(5000ms, std::bind(&PitchLookupModel::load_file, this->pitch_lookup_model), [01;36m[Kthis-> lookup_table_path[m[K);
+      |                                                                                                                                    [01;36m[K~~~~~~~^~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:[m[K In member function ‘[01m[Kvoid ControlCommunicatorNode::auto_aim_handler(std::shared_ptr<vision_msgs::msg::PredictedArmor_<std::allocator<void> > >)[m[K’:
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:168:9:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kp[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  168 |  double [01;35m[Kp[m[K = 0, y = 0;
+      |         [01;35m[K^[m[K
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:168:16:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Ky[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  168 |  double p = 0, [01;35m[Ky[m[K = 0;
+      |                [01;35m[K^[m[K
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:169:7:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kim[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  169 |  bool [01;35m[Kim[m[K = 0;
+      |       [01;35m[K^~[m[K
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:207:7:[m[K [01;35m[Kwarning: [m[Kignoring return value of ‘[01m[Kssize_t write(int, const void*, size_t)[m[K’, declared with attribute warn_unused_result [[01;35m[K-Wunused-result[m[K]
+  207 |  [01;35m[Kwrite(this->port_fd, &package, sizeof(PackageOut))[m[K;
+      |  [01;35m[K~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:[m[K In member function ‘[01m[Kvoid ControlCommunicatorNode::nav_handler(std::shared_ptr<geometry_msgs::msg::Twist_<std::allocator<void> > >)[m[K’:
+[01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:231:7:[m[K [01;35m[Kwarning: [m[Kignoring return value of ‘[01m[Kssize_t write(int, const void*, size_t)[m[K’, declared with attribute warn_unused_result [[01;35m[K-Wunused-result[m[K]
+  231 |  [01;35m[Kwrite(this->port_fd, &package, sizeof(PackageOut))[m[K;
+      |  [01;35m[K~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+make[2]: *** [CMakeFiles/ControlCommunicatorNode.dir/build.make:63: CMakeFiles/ControlCommunicatorNode.dir/src/ControlCommunicatorNode.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:78: CMakeFiles/ControlCommunicatorNode.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

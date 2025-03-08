@@ -1,0 +1,164 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						5,
+						6,
+						7,
+						8
+					]
+				},
+				{
+					"build" : "gtest",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "2.8.12"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "/opt/ros/foxy/src/gtest_vendor",
+					"targetIndexes" : 
+					[
+						3,
+						4
+					]
+				}
+			],
+			"name" : "Release",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "pose_estimator",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						5,
+						6,
+						7,
+						8
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						1
+					],
+					"name" : "gtest",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						3,
+						4
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "PoseEstimator::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-PoseEstimator-Release-67e4570deed8319588f1.json",
+					"name" : "PoseEstimator",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "PoseEstimatorNode::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-PoseEstimatorNode-Release-ecdf96a2ba39ce2b0269.json",
+					"name" : "PoseEstimatorNode",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ValidityFilter::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ValidityFilter-Release-7777813e8d4aabaad17d.json",
+					"name" : "ValidityFilter",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "gtest::@0af4add9fe94340e763e",
+					"jsonFile" : "target-gtest-Release-3f7bfa78394c943669d8.json",
+					"name" : "gtest",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "gtest_main::@0af4add9fe94340e763e",
+					"jsonFile" : "target-gtest_main-Release-ff4266968978d3a5dae7.json",
+					"name" : "gtest_main",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "pose_estimator_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-pose_estimator_uninstall-Release-6e8158142606d468b433.json",
+					"name" : "pose_estimator_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_PoseEstimator::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_PoseEstimator-Release-f872a7547a376a09b0ad.json",
+					"name" : "test_PoseEstimator",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_ValidityFilter::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_ValidityFilter-Release-a7762a095515bd2285c7.json",
+					"name" : "test_ValidityFilter",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-Release-722a8c4fd3e8f6cd8148.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/purduerm/ros2-ws/auto-aiming/build/pose_estimator",
+		"source" : "/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/pose_estimator"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 0
+	}
+}

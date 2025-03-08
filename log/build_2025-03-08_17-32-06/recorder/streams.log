@@ -1,0 +1,79 @@
+[0.019s] Invoking command in '/home/purduerm/ros2-ws/auto-aiming/build/recorder': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake /home/purduerm/ros2-ws/auto-aiming/src/prm_camera/recorder_cv -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/purduerm/ros2-ws/auto-aiming/install/recorder
+[0.364s] -- The C compiler identification is GNU 9.4.0
+[0.424s] -- The CXX compiler identification is GNU 9.4.0
+[0.429s] -- Check for working C compiler: /usr/bin/cc
+[0.476s] -- Check for working C compiler: /usr/bin/cc -- works
+[0.477s] -- Detecting C compiler ABI info
+[0.528s] -- Detecting C compiler ABI info - done
+[0.543s] -- Detecting C compile features
+[0.552s] -- Detecting C compile features - done
+[0.555s] -- Check for working CXX compiler: /usr/bin/c++
+[0.610s] -- Check for working CXX compiler: /usr/bin/c++ -- works
+[0.612s] -- Detecting CXX compiler ABI info
+[0.667s] -- Detecting CXX compiler ABI info - done
+[0.676s] -- Detecting CXX compile features
+[0.677s] -- Detecting CXX compile features - done
+[0.726s] -- Found ament_cmake: 0.9.12 (/opt/ros/foxy/share/ament_cmake/cmake)
+[0.751s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3") 
+[0.751s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[0.957s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[1.013s] -- Found rclcpp: 2.4.3 (/opt/ros/foxy/share/rclcpp/cmake)
+[1.087s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[1.092s] -- Found rosidl_adapter: 1.3.1 (/opt/ros/foxy/share/rosidl_adapter/cmake)
+[1.321s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "1.1.1f")  
+[1.351s] -- Found FastRTPS: /opt/ros/foxy/include  
+[1.431s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[1.487s] -- Found rmw_implementation_cmake: 1.0.4 (/opt/ros/foxy/share/rmw_implementation_cmake/cmake)
+[1.488s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[1.489s] -- Looking for pthread.h
+[1.540s] -- Looking for pthread.h - found
+[1.540s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[1.593s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+[1.593s] -- Looking for pthread_create in pthreads
+[1.636s] -- Looking for pthread_create in pthreads - not found
+[1.637s] -- Looking for pthread_create in pthread
+[1.685s] -- Looking for pthread_create in pthread - found
+[1.685s] -- Found Threads: TRUE  
+[1.825s] -- Found sensor_msgs: 2.0.5 (/opt/ros/foxy/share/sensor_msgs/cmake)
+[1.936s] -- Found cv_bridge: 3.0.7 (/opt/ros/foxy/share/cv_bridge/cmake)
+[1.964s] -- Found CUDA: /usr/local/cuda (found suitable exact version "11.4") 
+[1.994s] -- Found image_transport: 2.4.0 (/opt/ros/foxy/share/image_transport/cmake)
+[2.047s] -- Found OpenCV: /usr/local (found suitable version "4.6.0", minimum required is "4.6.0") 
+[2.148s] -- Configuring done
+[2.318s] -- Generating done
+[2.328s] -- Build files have been written to: /home/purduerm/ros2-ws/auto-aiming/build/recorder
+[2.340s] Invoked command in '/home/purduerm/ros2-ws/auto-aiming/build/recorder' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake /home/purduerm/ros2-ws/auto-aiming/src/prm_camera/recorder_cv -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/purduerm/ros2-ws/auto-aiming/install/recorder
+[2.344s] Invoking command in '/home/purduerm/ros2-ws/auto-aiming/build/recorder': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/purduerm/ros2-ws/auto-aiming/build/recorder -- -j12 -l12
+[2.373s] [35m[1mScanning dependencies of target VideoRecorderNode[0m
+[2.752s] [ 50%] [32mBuilding CXX object CMakeFiles/VideoRecorderNode.dir/src/VideoRecorderNode.cpp.o[0m
+[6.416s] [100%] [32m[1mLinking CXX executable VideoRecorderNode[0m
+[12.045s] /usr/bin/ld: warning: libopencv_imgcodecs.so.4.2, needed by /opt/ros/foxy/lib/libcv_bridge.so, may conflict with libopencv_imgcodecs.so.406
+[12.045s] /usr/bin/ld: warning: libopencv_imgproc.so.4.2, needed by /opt/ros/foxy/lib/libcv_bridge.so, may conflict with libopencv_imgproc.so.406
+[12.045s] /usr/bin/ld: warning: libopencv_core.so.4.2, needed by /opt/ros/foxy/lib/libcv_bridge.so, may conflict with libopencv_core.so.406
+[12.052s] [100%] Built target VideoRecorderNode
+[12.061s] Invoked command in '/home/purduerm/ros2-ws/auto-aiming/build/recorder' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/purduerm/ros2-ws/auto-aiming/build/recorder -- -j12 -l12
+[12.063s] Invoking command in '/home/purduerm/ros2-ws/auto-aiming/build/recorder': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/purduerm/ros2-ws/auto-aiming/build/recorder
+[12.070s] -- Install configuration: "Release"
+[12.070s] -- Execute custom install script
+[12.071s] -- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/recorder/lib/recorder/VideoRecorderNode
+[12.078s] -- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/launch/mv2image.py
+[12.085s] -- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/launch/mv_recorder.py
+[12.091s] -- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/launch/old_mv2image.py
+[12.098s] -- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/launch/webcam_recorder.py
+[12.104s] -- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/ament_index/resource_index/package_run_dependencies/recorder
+[12.111s] -- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/ament_index/resource_index/parent_prefix_path/recorder
+[12.118s] -- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/environment/ament_prefix_path.sh
+[12.125s] -- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/environment/ament_prefix_path.dsv
+[12.131s] -- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/environment/path.sh
+[12.137s] -- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/environment/path.dsv
+[12.144s] -- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/local_setup.bash
+[12.150s] -- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/local_setup.sh
+[12.156s] -- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/local_setup.zsh
+[12.163s] -- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/local_setup.dsv
+[12.169s] -- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/package.dsv
+[12.175s] -- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/ament_index/resource_index/packages/recorder
+[12.181s] -- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/cmake/ament_cmake_export_dependencies-extras.cmake
+[12.187s] -- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/cmake/recorderConfig.cmake
+[12.193s] -- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/cmake/recorderConfig-version.cmake
+[12.199s] -- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/package.xml
+[12.208s] Invoked command in '/home/purduerm/ros2-ws/auto-aiming/build/recorder' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --install /home/purduerm/ros2-ws/auto-aiming/build/recorder

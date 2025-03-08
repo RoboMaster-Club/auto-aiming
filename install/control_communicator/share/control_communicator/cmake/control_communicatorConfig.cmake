@@ -1,0 +1,1 @@
+/home/purduerm/ros2-ws/auto-aiming/build/control_communicator/ament_cmake_core/control_communicatorConfig.cmake

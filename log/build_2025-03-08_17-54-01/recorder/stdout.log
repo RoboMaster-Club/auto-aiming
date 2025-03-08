@@ -1,0 +1,24 @@
+[100%] Built target VideoRecorderNode
+-- Install configuration: "Release"
+-- Execute custom install script
+-- Up-to-date symlink: /home/purduerm/ros2-ws/auto-aiming/install/recorder/lib/recorder/VideoRecorderNode
+-- Up-to-date symlink: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/launch/mv2image.py
+-- Up-to-date symlink: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/launch/mv_recorder.py
+-- Up-to-date symlink: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/launch/old_mv2image.py
+-- Up-to-date symlink: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/launch/webcam_recorder.py
+-- Up-to-date symlink: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/ament_index/resource_index/package_run_dependencies/recorder
+-- Up-to-date symlink: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/ament_index/resource_index/parent_prefix_path/recorder
+-- Up-to-date symlink: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/environment/ament_prefix_path.sh
+-- Up-to-date symlink: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/environment/ament_prefix_path.dsv
+-- Up-to-date symlink: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/environment/path.sh
+-- Up-to-date symlink: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/environment/path.dsv
+-- Up-to-date symlink: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/local_setup.bash
+-- Up-to-date symlink: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/local_setup.sh
+-- Up-to-date symlink: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/local_setup.zsh
+-- Up-to-date symlink: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/local_setup.dsv
+-- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/package.dsv
+-- Up-to-date symlink: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/ament_index/resource_index/packages/recorder
+-- Up-to-date symlink: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/cmake/ament_cmake_export_dependencies-extras.cmake
+-- Up-to-date symlink: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/cmake/recorderConfig.cmake
+-- Up-to-date symlink: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/cmake/recorderConfig-version.cmake
+-- Up-to-date symlink: /home/purduerm/ros2-ws/auto-aiming/install/recorder/share/recorder/package.xml

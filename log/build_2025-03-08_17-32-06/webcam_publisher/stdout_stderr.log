@@ -1,0 +1,69 @@
+-- The C compiler identification is GNU 9.4.0
+-- The CXX compiler identification is GNU 9.4.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake_auto: 0.9.12 (/opt/ros/foxy/share/ament_cmake_auto/cmake)
+-- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3") 
+-- Using PYTHON_EXECUTABLE: /usr/bin/python3
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Looking for pthread.h
+-- Looking for pthread.h - found
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Looking for pthread_create in pthreads
+-- Looking for pthread_create in pthreads - not found
+-- Looking for pthread_create in pthread
+-- Looking for pthread_create in pthread - found
+-- Found Threads: TRUE  
+-- Found CUDA: /usr/local/cuda (found suitable exact version "11.4") 
+-- Found OpenCV: /usr/local (found suitable version "4.6.0", minimum required is "4.6.0") 
+-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+-- Found rosidl_adapter: 1.3.1 (/opt/ros/foxy/share/rosidl_adapter/cmake)
+-- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "1.1.1f")  
+-- Found FastRTPS: /opt/ros/foxy/include  
+-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+-- Found rmw_implementation_cmake: 1.0.4 (/opt/ros/foxy/share/rmw_implementation_cmake/cmake)
+-- Using RMW implementation 'rmw_fastrtps_cpp' as default
+-- Setting yaml-cpp_DIR to: '/opt/ros/foxy/share/yaml_cpp_vendor/cmake/../../../opt/yaml_cpp_vendor/lib/cmake/yaml-cpp'
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/purduerm/ros2-ws/auto-aiming/build/webcam_publisher
+[35m[1mScanning dependencies of target VideoCaptureNode[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/VideoCaptureNode.dir/src/VideoCaptureNode.cpp.o[0m
+[100%] [32m[1mLinking CXX executable VideoCaptureNode[0m
+/usr/bin/ld: warning: libopencv_core.so.4.2, needed by /opt/ros/foxy/lib/libcv_bridge.so, may conflict with libopencv_core.so.406
+[100%] Built target VideoCaptureNode
+-- Install configuration: "Release"
+-- Execute custom install script
+-- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/webcam_publisher/lib/webcam_publisher/VideoCaptureNode
+-- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/webcam_publisher/share/webcam_publisher/launch/video.py
+-- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/webcam_publisher/share/webcam_publisher/launch/webcam.py
+-- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/webcam_publisher/share/webcam_publisher/resources/1.mp4
+-- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/webcam_publisher/share/webcam_publisher/config/webcam_info.yaml
+-- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/webcam_publisher/share/ament_index/resource_index/package_run_dependencies/webcam_publisher
+-- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/webcam_publisher/share/ament_index/resource_index/parent_prefix_path/webcam_publisher
+-- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/webcam_publisher/share/webcam_publisher/environment/ament_prefix_path.sh
+-- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/webcam_publisher/share/webcam_publisher/environment/ament_prefix_path.dsv
+-- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/webcam_publisher/share/webcam_publisher/environment/path.sh
+-- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/webcam_publisher/share/webcam_publisher/environment/path.dsv
+-- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/webcam_publisher/share/webcam_publisher/local_setup.bash
+-- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/webcam_publisher/share/webcam_publisher/local_setup.sh
+-- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/webcam_publisher/share/webcam_publisher/local_setup.zsh
+-- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/webcam_publisher/share/webcam_publisher/local_setup.dsv
+-- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/webcam_publisher/share/webcam_publisher/package.dsv
+-- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/webcam_publisher/share/ament_index/resource_index/packages/webcam_publisher
+-- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/webcam_publisher/share/webcam_publisher/cmake/ament_cmake_export_include_directories-extras.cmake
+-- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/webcam_publisher/share/webcam_publisher/cmake/ament_cmake_export_dependencies-extras.cmake
+-- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/webcam_publisher/share/webcam_publisher/cmake/webcam_publisherConfig.cmake
+-- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/webcam_publisher/share/webcam_publisher/cmake/webcam_publisherConfig-version.cmake
+-- Symlinking: /home/purduerm/ros2-ws/auto-aiming/install/webcam_publisher/share/webcam_publisher/package.xml

@@ -1,0 +1,1 @@
+/home/purduerm/ros2-ws/auto-aiming/build/vision_msgs/rosidl_typesupport_fastrtps_cpp/vision_msgs/msg/detail/yaw_pitch__rosidl_typesupport_fastrtps_cpp.hpp

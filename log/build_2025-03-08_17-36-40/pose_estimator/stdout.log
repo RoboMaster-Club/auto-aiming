@@ -1,0 +1,7 @@
+[ 28%] Built target ValidityFilter
+[ 28%] Built target gtest
+[ 42%] Built target gtest_main
+[ 57%] Built target PoseEstimator
+[ 71%] Built target test_ValidityFilter
+[ 92%] [32mBuilding CXX object CMakeFiles/PoseEstimatorNode.dir/src/PoseEstimatorNode.cpp.o[0m
+[ 92%] Built target test_PoseEstimator

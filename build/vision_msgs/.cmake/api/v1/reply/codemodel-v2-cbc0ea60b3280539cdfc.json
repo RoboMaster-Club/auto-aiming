@@ -1,0 +1,213 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15
+					]
+				},
+				{
+					"build" : "vision_msgs__py",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/purduerm/ros2-ws/auto-aiming/build/vision_msgs/vision_msgs__py",
+					"targetIndexes" : 
+					[
+						3
+					]
+				}
+			],
+			"name" : "Release",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1
+					],
+					"name" : "vision_msgs",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-Release-3413c7446409f8ad5c39.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "vision_msgs::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-vision_msgs-Release-4c71224e5c15cfca9981.json",
+					"name" : "vision_msgs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "vision_msgs__cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-vision_msgs__cpp-Release-82f2bccd3a25df4d3802.json",
+					"name" : "vision_msgs__cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "vision_msgs__py::@6626269c8f59ee5a3372",
+					"jsonFile" : "target-vision_msgs__py-Release-f1a2dd51abfed25048b4.json",
+					"name" : "vision_msgs__py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "vision_msgs__python::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-vision_msgs__python-Release-f4c2559a8f21f4c3f9b6.json",
+					"name" : "vision_msgs__python",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "vision_msgs__rosidl_generator_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-vision_msgs__rosidl_generator_c-Release-407c1e26ff3059a29bcb.json",
+					"name" : "vision_msgs__rosidl_generator_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "vision_msgs__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-vision_msgs__rosidl_typesupport_c-Release-f9f017955b2df61871e6.json",
+					"name" : "vision_msgs__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "vision_msgs__rosidl_typesupport_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-vision_msgs__rosidl_typesupport_c__pyext-Release-c346b3d6944e671ce7bd.json",
+					"name" : "vision_msgs__rosidl_typesupport_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "vision_msgs__rosidl_typesupport_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-vision_msgs__rosidl_typesupport_cpp-Release-4c79a59f049500a5d3f5.json",
+					"name" : "vision_msgs__rosidl_typesupport_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "vision_msgs__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-vision_msgs__rosidl_typesupport_fastrtps_c-Release-d8c95eed62758babb620.json",
+					"name" : "vision_msgs__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "vision_msgs__rosidl_typesupport_fastrtps_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-vision_msgs__rosidl_typesupport_fastrtps_c__pyext-Release-67469638dd3eedbcfce8.json",
+					"name" : "vision_msgs__rosidl_typesupport_fastrtps_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "vision_msgs__rosidl_typesupport_fastrtps_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-vision_msgs__rosidl_typesupport_fastrtps_cpp-Release-5546a3f1e5f83d85eb64.json",
+					"name" : "vision_msgs__rosidl_typesupport_fastrtps_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "vision_msgs__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-vision_msgs__rosidl_typesupport_introspection_c-Release-a79fb343028e26369d28.json",
+					"name" : "vision_msgs__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "vision_msgs__rosidl_typesupport_introspection_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-vision_msgs__rosidl_typesupport_introspection_c__pyext-Release-02e1dec384eff40f6d62.json",
+					"name" : "vision_msgs__rosidl_typesupport_introspection_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "vision_msgs__rosidl_typesupport_introspection_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-vision_msgs__rosidl_typesupport_introspection_cpp-Release-e5bbac123bfb14b69970.json",
+					"name" : "vision_msgs__rosidl_typesupport_introspection_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "vision_msgs_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-vision_msgs_uninstall-Release-5b916772023dc5d02f9d.json",
+					"name" : "vision_msgs_uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/purduerm/ros2-ws/auto-aiming/build/vision_msgs",
+		"source" : "/home/purduerm/ros2-ws/auto-aiming/src/prm_vision/vision_msgs"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 0
+	}
+}

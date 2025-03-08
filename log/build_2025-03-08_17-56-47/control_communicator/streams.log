@@ -1,0 +1,44 @@
+[0.016s] Invoking command in '/home/purduerm/ros2-ws/auto-aiming/build/control_communicator': AMENT_PREFIX_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/purduerm/ros2-ws/auto-aiming/build/control_communicator -- -j12 -l12
+[0.050s] [35m[1mScanning dependencies of target ControlCommunicatorNode[0m
+[0.088s] [ 33%] [32mBuilding CXX object CMakeFiles/ControlCommunicatorNode.dir/src/ControlCommunicatorNode.cpp.o[0m
+[0.088s] [ 66%] [32mBuilding CXX object CMakeFiles/ControlCommunicatorNode.dir/src/PitchLookupModel.cpp.o[0m
+[0.302s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:12:[m[K [01;35m[Kwarning: [m[K"PI" redefined
+[0.302s]    12 | #define PI 3.141592653589793238462643383 // It was 4 AM when I wrote this.
+[0.302s]       | 
+[0.302s] In file included from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/include/ControlCommunicatorNode.hpp:30[m[K,
+[0.302s]                  from [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:1[m[K:
+[0.302s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/include/projectile_angle_convel.h:9:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+[0.303s]     9 | #define PI 3.14159
+[0.303s]       | 
+[0.351s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/PitchLookupModel.cpp:[m[K In member function ‘[01m[Kvoid PitchLookupModel::load_file()[m[K’:
+[0.351s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/PitchLookupModel.cpp:33:11:[m[K [01;35m[Kwarning: [m[Kignoring return value of ‘[01m[Kint fscanf(FILE*, const char*, ...)[m[K’, declared with attribute warn_unused_result [[01;35m[K-Wunused-result[m[K]
+[0.351s]    33 |     [01;35m[Kfscanf(fp, "%d %d\n", &z_count, &y_count)[m[K;
+[0.351s]       |     [01;35m[K~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[1.962s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:[m[K In member function ‘[01m[Kvoid ControlCommunicatorNode::auto_aim_handler(std::shared_ptr<vision_msgs::msg::PredictedArmor_<std::allocator<void> > >)[m[K’:
+[1.962s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:164:8:[m[K [01;35m[Kwarning: [m[Kvariable ‘[01m[Kdt[m[K’ set but not used [[01;35m[K-Wunused-but-set-variable[m[K]
+[1.962s]   164 |  float [01;35m[Kdt[m[K = (curr_time.seconds() - this->now().seconds()) * 1000; // in ms
+[1.962s]       |        [01;35m[K^~[m[K
+[1.962s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:168:9:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kp[m[K’ [[01;35m[K-Wunused-variable[m[K]
+[1.962s]   168 |  double [01;35m[Kp[m[K = 0, y = 0;
+[1.963s]       |         [01;35m[K^[m[K
+[1.963s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:168:16:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Ky[m[K’ [[01;35m[K-Wunused-variable[m[K]
+[1.963s]   168 |  double p = 0, [01;35m[Ky[m[K = 0;
+[1.963s]       |                [01;35m[K^[m[K
+[1.963s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:169:7:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kim[m[K’ [[01;35m[K-Wunused-variable[m[K]
+[1.963s]   169 |  bool [01;35m[Kim[m[K = 0;
+[1.963s]       |       [01;35m[K^~[m[K
+[3.976s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:207:7:[m[K [01;35m[Kwarning: [m[Kignoring return value of ‘[01m[Kssize_t write(int, const void*, size_t)[m[K’, declared with attribute warn_unused_result [[01;35m[K-Wunused-result[m[K]
+[3.976s]   207 |  [01;35m[Kwrite(this->port_fd, &package, sizeof(PackageOut))[m[K;
+[3.976s]       |  [01;35m[K~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[3.976s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:[m[K In member function ‘[01m[Kvoid ControlCommunicatorNode::nav_handler(std::shared_ptr<geometry_msgs::msg::Twist_<std::allocator<void> > >)[m[K’:
+[3.976s] [01m[K/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/src/ControlCommunicatorNode.cpp:231:7:[m[K [01;35m[Kwarning: [m[Kignoring return value of ‘[01m[Kssize_t write(int, const void*, size_t)[m[K’, declared with attribute warn_unused_result [[01;35m[K-Wunused-result[m[K]
+[3.976s]   231 |  [01;35m[Kwrite(this->port_fd, &package, sizeof(PackageOut))[m[K;
+[3.976s]       |  [01;35m[K~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[9.492s] [100%] [32m[1mLinking CXX executable ControlCommunicatorNode[0m
+[9.607s] /usr/bin/ld: CMakeFiles/ControlCommunicatorNode.dir/src/PitchLookupModel.cpp.o: in function `main':
+[9.608s] PitchLookupModel.cpp:(.text.startup+0x0): multiple definition of `main'; CMakeFiles/ControlCommunicatorNode.dir/src/ControlCommunicatorNode.cpp.o:ControlCommunicatorNode.cpp:(.text.startup+0x60): first defined here
+[9.608s] collect2: error: ld returned 1 exit status
+[9.608s] make[2]: *** [CMakeFiles/ControlCommunicatorNode.dir/build.make:191: ControlCommunicatorNode] Error 1
+[9.608s] make[1]: *** [CMakeFiles/Makefile2:78: CMakeFiles/ControlCommunicatorNode.dir/all] Error 2
+[9.609s] make: *** [Makefile:141: all] Error 2
+[9.610s] Invoked command in '/home/purduerm/ros2-ws/auto-aiming/build/control_communicator' returned '2': AMENT_PREFIX_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/purduerm/ros2-ws/auto-aiming/build/control_communicator -- -j12 -l12

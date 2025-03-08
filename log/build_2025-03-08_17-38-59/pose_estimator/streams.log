@@ -1,0 +1,13 @@
+[0.018s] Invoking command in '/home/purduerm/ros2-ws/auto-aiming/build/pose_estimator': AMENT_PREFIX_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/purduerm/ros2-ws/auto-aiming/install/vision_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/purduerm/ros2-ws/auto-aiming/build/pose_estimator -- -j12 -l12
+[0.057s] [ 14%] Built target ValidityFilter
+[0.059s] [ 28%] Built target gtest_main
+[0.063s] [ 42%] Built target gtest
+[0.078s] [ 57%] Built target PoseEstimator
+[0.079s] [ 71%] Built target test_ValidityFilter
+[0.090s] [35m[1mScanning dependencies of target PoseEstimatorNode[0m
+[0.102s] [ 85%] Built target test_PoseEstimator
+[0.121s] [ 92%] [32mBuilding CXX object CMakeFiles/PoseEstimatorNode.dir/src/PoseEstimatorNode.cpp.o[0m
+[7.464s] [100%] [32m[1mLinking CXX executable PoseEstimatorNode[0m
+[7.868s] /usr/bin/ld: warning: libopencv_imgproc.so.4.2, needed by /opt/ros/foxy/lib/libcv_bridge.so, may conflict with libopencv_imgproc.so.406
+[7.868s] /usr/bin/ld: warning: libopencv_core.so.4.2, needed by /opt/ros/foxy/lib/libcv_bridge.so, may conflict with libopencv_core.so.406
+[7.875s] [100%] Built target PoseEstimatorNode

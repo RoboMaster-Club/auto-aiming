@@ -1,0 +1,16 @@
+/home/purduerm/ros2-ws/auto-aiming/install/control_communicator/lib/control_communicator/ControlCommunicatorNode
+/home/purduerm/ros2-ws/auto-aiming/install/control_communicator/share/ament_index/resource_index/package_run_dependencies/control_communicator
+/home/purduerm/ros2-ws/auto-aiming/install/control_communicator/share/ament_index/resource_index/parent_prefix_path/control_communicator
+/home/purduerm/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/environment/ament_prefix_path.sh
+/home/purduerm/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/environment/ament_prefix_path.dsv
+/home/purduerm/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/environment/path.sh
+/home/purduerm/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/environment/path.dsv
+/home/purduerm/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/local_setup.bash
+/home/purduerm/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/local_setup.sh
+/home/purduerm/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/local_setup.zsh
+/home/purduerm/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/local_setup.dsv
+/home/purduerm/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/package.dsv
+/home/purduerm/ros2-ws/auto-aiming/install/control_communicator/share/ament_index/resource_index/packages/control_communicator
+/home/purduerm/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/cmake/control_communicatorConfig.cmake
+/home/purduerm/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/cmake/control_communicatorConfig-version.cmake
+/home/purduerm/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/package.xml
