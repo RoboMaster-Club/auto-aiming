@@ -1,13 +1,9 @@
 #include "ControlCommunicator.h"
-#include <cmath>
-#include <fcntl.h>
-#include <termios.h>
-#include <unistd.h>
-#include <cstring>
 
 bool ControlCommunicator::start_uart_connection(const char *port)
 {
     int port_fd = open(port, O_RDWR | O_NOCTTY | O_NONBLOCK);
+
     if (port_fd == -1)
     {
         return false; // Error opening the port

@@ -32,12 +32,13 @@ public:
 
 	ControlCommunicator *control_communicator = new ControlCommunicator();
 
-private:
-	void publish_static_tf(float x, float y, float z, float roll, float pitch, float yaw, const char *frame_id, const char *child_frame_id);
 	void auto_aim_handler(const std::shared_ptr<vision_msgs::msg::PredictedArmor> msg);
 	void nav_handler(const std::shared_ptr<geometry_msgs::msg::Twist> msg);
-	void heart_beat_handler();
 	void read_uart();
+
+private:
+	void publish_static_tf(float x, float y, float z, float roll, float pitch, float yaw, const char *frame_id, const char *child_frame_id);
+	void heart_beat_handler();
 
 	uint32_t auto_aim_frame_id = 0;
 	uint32_t nav_frame_id = 0;

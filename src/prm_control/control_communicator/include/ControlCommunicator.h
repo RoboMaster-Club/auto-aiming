@@ -1,6 +1,12 @@
 #ifndef CONTROL_COMMUNICATOR_HPP
 #define CONTROL_COMMUNICATOR_HPP
 
+#include <cmath>
+#include <fcntl.h>
+#include <termios.h>
+#include <unistd.h>
+#include <cstring>
+
 class ControlCommunicator
 {
 public:
