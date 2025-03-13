@@ -56,6 +56,7 @@ ament_add_gtest(test_ControlCommunicator test/test_ControlCommunicator.cpp)
 target_include_directories(test_ControlCommunicator PRIVATE include)
 target_link_libraries(test_ControlCommunicator ControlCommunicator)
 target_link_libraries(ControlCommunicatorNode Eigen3::Eigen ControlCommunicator)
+ament_target_dependencies(test_ControlCommunicator rclcpp std_msgs geometry_msgs vision_msgs tf2_ros tf2 nav_msgs)
 
 install(TARGETS
 ControlCommunicatorNode

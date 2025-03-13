@@ -5,7 +5,7 @@ class ControlCommunicator
 {
 public:
     ControlCommunicator() {}
-    ~ControlCommunicator();
+    ~ControlCommunicator() {}
 
     // Class methods
     void compute_aim(float bullet_speed, float target_x, float target_y, float target_z, float &yaw, float &pitch);

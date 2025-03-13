@@ -14,6 +14,9 @@ ControlCommunicatorNode::ControlCommunicatorNode(const char *port) : Node("contr
 	aim_stop_null_frame_count = this->declare_parameter("aim.stop_null_frame_count", 3);
 	aim_bullet_speed = this->declare_parameter("aim.bullet_speed", 16.0f);
 	this->port = port;
+	bool started = control_communicator->start_uart_connection(this->port);
+	RCLCPP_INFO(this->get_logger(), "UART Connection %s", started ? "Started" : "Failed");
+
 	this->tf_broadcaster = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
 	this->tf_static_broadcaster = std::make_shared<tf2_ros::StaticTransformBroadcaster>(this);
 
