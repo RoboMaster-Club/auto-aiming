@@ -85,6 +85,7 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 	package.autoAimPackage.fire = 1;
 	write(this->port_fd, &package, sizeof(PackageOut));
 	fsync(this->port_fd);
+
 }
 
 void ControlCommunicatorNode::nav_handler(const std::shared_ptr<geometry_msgs::msg::Twist> msg)
@@ -170,10 +171,11 @@ void ControlCommunicatorNode::read_uart()
 	// publishing color and match status
 	std_msgs::msg::String target_robot_color;
 	target_robot_color.data = this->is_red ? "red" : "blue";
-	// target_robot_color_publisher->publish(target_robot_color);
+	RCLCPP_INFO(this->get_logger(), "DEBUG: Robot color: %s|\n", target_robot_color.data.c_str());
+	target_robot_color_publisher->publish(target_robot_color);
 	std_msgs::msg::Bool match_status;
 	match_status.data = this->is_match_running;
-	// match_status_publisher->publish(match_status);
+	match_status_publisher->publish(match_status);
 
 	geometry_msgs::msg::TransformStamped pitch_tf;
 	pitch_tf.header.stamp = curr_time;
