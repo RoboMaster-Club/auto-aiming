@@ -144,6 +144,7 @@ void ControlCommunicatorNode::heart_beat_handler()
 
 void ControlCommunicatorNode::read_uart()
 {
+	RCLCPP_INFO(this->get_logger(), "READ UART in progress");
 	PackageIn package;
 	int success = read(this->port_fd, &package, sizeof(PackageIn));
 
@@ -160,17 +161,18 @@ void ControlCommunicatorNode::read_uart()
 		return;
 	}
 
+	RCLCPP_INFO(this->get_logger(), "READ UART in progress 2");
 	// Handle TF
 	this->pitch_vel = package.pitch_vel;			// rad/s
 	this->pitch = package.pitch;					// rad
 	this->yaw_vel = package.yaw_vel;				// rad/s
-	this->is_red = package.ref_flags & 2;			// second lowest  denotes if enemy is red
+	this->is_enemy_red = package.ref_flags & 2;		// second lowest bit denotes if enemy is red
 	this->is_match_running = package.ref_flags & 1; // LSB denotes if match is started
 	this->valid_read = true;
 
 	// publishing color and match status
 	std_msgs::msg::String target_robot_color;
-	target_robot_color.data = this->is_red ? "red" : "blue";
+	target_robot_color.data = this->is_enemy_red ? "red" : "blue";
 	RCLCPP_INFO(this->get_logger(), "DEBUG: Robot color: %s|\n", target_robot_color.data.c_str());
 	target_robot_color_publisher->publish(target_robot_color);
 	std_msgs::msg::Bool match_status;
