@@ -171,8 +171,8 @@ void ControlCommunicatorNode::read_uart()
 	this->valid_read = true;
 
 	// publishing color and match status
-	std_msgs::msg::String target_robot_color;
-	target_robot_color.data = this->is_enemy_red ? "red" : "blue";
+	std_msgs::msg::String target_robot_color; 
+	target_robot_color.data = this->is_red ? "blue" : "red"; // irving said that they were inverted; they check for our team color
 	RCLCPP_INFO(this->get_logger(), "DEBUG: Robot color: %s|\n", target_robot_color.data.c_str());
 	target_robot_color_publisher->publish(target_robot_color);
 	std_msgs::msg::Bool match_status;
