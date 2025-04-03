@@ -23,7 +23,7 @@ jobs:
       # Run build and tests using the run script
       - name: Run build and tests
         run: |
-          source /opt/ros/$ROS_DISTRO/setup.sh  # Source ROS 2
+          source /opt/ros/humble/setup.sh  # Source ROS 2
           chmod +x ./run  # Ensure the run script is executable
           nvcc -V  # Check the CUDA version
           ./run test  # Run your test script
