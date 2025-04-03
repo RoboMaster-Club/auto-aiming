@@ -166,7 +166,7 @@ void ControlCommunicatorNode::read_uart()
 	this->pitch_vel = package.pitch_vel;			// rad/s
 	this->pitch = package.pitch;					// rad
 	this->yaw_vel = package.yaw_vel;				// rad/s
-	this->is_enemy_red = package.ref_flags & 2;		// second lowest bit denotes if enemy is red
+	this->is_red = package.ref_flags & 2;		// second lowest bit denotes if enemy is red
 	this->is_match_running = package.ref_flags & 1; // LSB denotes if match is started
 	this->valid_read = true;
 
