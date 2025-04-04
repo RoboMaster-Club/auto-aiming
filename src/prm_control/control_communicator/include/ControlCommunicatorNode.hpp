@@ -52,7 +52,6 @@ private:
 	bool is_match_running = 0;
 	bool valid_read = false;
 
-	int port_fd;
 	const char *port;
 
 	bool is_connected;

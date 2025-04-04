@@ -43,7 +43,7 @@ ControlCommunicatorNode::ControlCommunicatorNode(const char *port) : Node("contr
 
 ControlCommunicatorNode::~ControlCommunicatorNode()
 {
-	close(this->port_fd);
+	close(control_communicator->port_fd);
 }
 
 void ControlCommunicatorNode::publish_static_tf(float x, float y, float z, float roll, float pitch, float yaw, const char *frame_id, const char *child_frame_id)
@@ -68,7 +68,7 @@ void ControlCommunicatorNode::publish_static_tf(float x, float y, float z, float
 
 void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs::msg::PredictedArmor> msg)
 {
-	if (!is_connected || this->port_fd < 0)
+	if (!is_connected || control_communicator->port_fd < 0)
 	{
 		RCLCPP_WARN(this->get_logger(), "UART Not connected, ignoring aim message.");
 		return;
@@ -83,8 +83,8 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 	package.autoAimPackage.yaw = yaw;
 	package.autoAimPackage.pitch = pitch;
 	package.autoAimPackage.fire = 1;
-	write(this->port_fd, &package, sizeof(PackageOut));
-	fsync(this->port_fd);
+	write(control_communicator->port_fd, &package, sizeof(PackageOut));
+	fsync(control_communicator->port_fd);
 	if (this->auto_aim_frame_id % 1000 == 0)
 	{
 		RCLCPP_INFO(this->get_logger(), "Auto Aim ID: %d | yaw: %f | pitch: %f", this->auto_aim_frame_id, yaw, pitch);
@@ -93,7 +93,7 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 
 void ControlCommunicatorNode::nav_handler(const std::shared_ptr<geometry_msgs::msg::Twist> msg)
 {
-	if (!is_connected || this->port_fd < 0)
+	if (!is_connected || control_communicator->port_fd < 0)
 	{
 		RCLCPP_WARN(this->get_logger(), "UART Not connected, ignoring nav message %d.", this->nav_frame_id++);
 		return;
@@ -107,15 +107,15 @@ void ControlCommunicatorNode::nav_handler(const std::shared_ptr<geometry_msgs::m
 	package.navPackage.y_vel = msg->linear.y;
 	package.navPackage.yaw_rad = msg->angular.z;
 	package.navPackage.state = 1;
-	write(this->port_fd, &package, sizeof(PackageOut));
-	fsync(this->port_fd);
+	write(control_communicator->port_fd, &package, sizeof(PackageOut));
+	fsync(control_communicator->port_fd);
 
 	RCLCPP_INFO(this->get_logger(), "x_vel = %f, y_vel = %f, yaw = %f", package.navPackage.x_vel, package.navPackage.y_vel, package.navPackage.yaw_rad);
 }
 
 void ControlCommunicatorNode::heart_beat_handler()
 {
-	if (!this->is_connected || this->port_fd < -1)
+	if (!this->is_connected || control_communicator->port_fd < -1)
 	{
 		RCLCPP_WARN(this->get_logger(), "UART Not connected, trying to reconnect.");
 		control_communicator->start_uart_connection(this->port);
@@ -131,8 +131,8 @@ void ControlCommunicatorNode::heart_beat_handler()
 	package.heartBeatPackage._b = 0xAA;
 	package.heartBeatPackage._c = 0xAA;
 	package.heartBeatPackage._d = 0xAA;
-	int success = write(this->port_fd, &package, sizeof(PackageOut));
-	fsync(this->port_fd);
+	int success = write(control_communicator->port_fd, &package, sizeof(PackageOut));
+	fsync(control_communicator->port_fd);
 	if (success == -1)
 	{
 		this->is_connected = false;
@@ -147,9 +147,8 @@ void ControlCommunicatorNode::heart_beat_handler()
 
 void ControlCommunicatorNode::read_uart()
 {
-	RCLCPP_INFO(this->get_logger(), "READ UART in progress");
 	PackageIn package;
-	int success = read(this->port_fd, &package, sizeof(PackageIn));
+	int success = read(control_communicator->port_fd, &package, sizeof(PackageIn));
 
 	rclcpp::Time curr_time = this->now();
 	if (success == -1)
@@ -164,7 +163,6 @@ void ControlCommunicatorNode::read_uart()
 		return;
 	}
 
-	RCLCPP_INFO(this->get_logger(), "READ UART in progress 2");
 	// Handle TF
 	this->pitch_vel = package.pitch_vel;			// rad/s
 	this->pitch = package.pitch;					// rad
@@ -181,6 +179,11 @@ void ControlCommunicatorNode::read_uart()
 	std_msgs::msg::Bool match_status;
 	match_status.data = this->is_match_running;
 	match_status_publisher->publish(match_status);
+
+	if (this->auto_aim_frame_id % 500 == 0)
+	{
+		RCLCPP_INFO(this->get_logger(), "READ UART: yaw_vel: %f | pitch_vel: %f | pitch: %f | is_red: %d | is_match_running: %d", this->yaw_vel, this->pitch_vel, this->pitch, this->is_red, this->is_match_running);
+	}
 
 	geometry_msgs::msg::TransformStamped pitch_tf;
 	pitch_tf.header.stamp = curr_time;

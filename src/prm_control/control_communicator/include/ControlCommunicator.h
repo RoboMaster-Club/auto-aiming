@@ -18,6 +18,7 @@ public:
     bool start_uart_connection(const char *port);
     void read_uart();
 
+    int port_fd = -1;
 private:
 };
 
