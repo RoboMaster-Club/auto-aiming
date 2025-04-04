@@ -43,6 +43,14 @@ bool ControlCommunicator::start_uart_connection(const char *port)
 
 void ControlCommunicator::compute_aim(float bullet_speed, float target_x, float target_y, float target_z, float &yaw, float &pitch)
 {
+    // if X and Y and Z are all 0, return 0
+    if (target_x == 0 && target_y == 0 && target_z == 0)
+    {
+        yaw = 0;
+        pitch = 0;
+        return;
+    }
+    
     float g = 9.8f; // Gravity
     float v = bullet_speed;
     float dx = target_x;
