@@ -121,7 +121,7 @@ void ControlCommunicatorNode::heart_beat_handler()
 		RCLCPP_WARN(this->get_logger(), "UART Not connected, trying to reconnect.");
 		control_communicator->start_uart_connection(this->port);
 	}
-	
+
 	PackageOut package;
 	this->heart_beat_frame_id++;
 	package.frame_id = 0xAA;
@@ -179,6 +179,11 @@ void ControlCommunicatorNode::read_uart()
 		RCLCPP_INFO(this->get_logger(), "Target Robot Color: %s", target_robot_color.data.c_str());
 		target_robot_color_publisher->publish(target_robot_color);
 		old_target_robot_color = target_robot_color.data;	
+	}
+
+	if (this->auto_aim_frame_id % 500 == 0 && this->auto_aim_frame_id != 0)
+	{
+		RCLCPP_INFO(this->get_logger(), "READ UART: yaw_vel: %f | pitch_vel: %f | pitch: %f | is_red: %d | is_match_running: %d", this->yaw_vel, this->pitch_vel, this->pitch, this->is_red, this->is_match_running);
 	}
 
 	std_msgs::msg::Bool match_status;
