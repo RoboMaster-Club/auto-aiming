@@ -68,7 +68,7 @@ void ControlCommunicatorNode::publish_static_tf(float x, float y, float z, float
 
 void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs::msg::PredictedArmor> msg)
 {
-	if (!is_connected || control_communicator->port_fd < 0)
+	if (!control_communicator->is_connected || control_communicator->port_fd < 0)
 	{
 		RCLCPP_WARN(this->get_logger(), "UART Not connected, ignoring aim message.");
 		return;
@@ -94,7 +94,7 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 
 void ControlCommunicatorNode::nav_handler(const std::shared_ptr<geometry_msgs::msg::Twist> msg)
 {
-	if (!is_connected || control_communicator->port_fd < 0)
+	if (!control_communicator->is_connected || control_communicator->port_fd < 0)
 	{
 		RCLCPP_WARN(this->get_logger(), "UART Not connected, ignoring nav message %d.", this->nav_frame_id++);
 		return;
@@ -116,14 +116,12 @@ void ControlCommunicatorNode::nav_handler(const std::shared_ptr<geometry_msgs::m
 
 void ControlCommunicatorNode::heart_beat_handler()
 {
-	if (!this->is_connected || control_communicator->port_fd < -1)
+	if (!control_communicator->is_connected || control_communicator->port_fd < -1)
 	{
 		RCLCPP_WARN(this->get_logger(), "UART Not connected, trying to reconnect.");
 		control_communicator->start_uart_connection(this->port);
 	}
-
-	// CHANGED FRAME ID TO 0xAA TO COMPLY WITH LEO
-
+	
 	PackageOut package;
 	this->heart_beat_frame_id++;
 	package.frame_id = 0xAA;
@@ -136,7 +134,7 @@ void ControlCommunicatorNode::heart_beat_handler()
 	fsync(control_communicator->port_fd);
 	if (success == -1)
 	{
-		this->is_connected = false;
+		control_communicator->is_connected = false;
 		RCLCPP_ERROR(this->get_logger(), "Error %i from write: %s", errno, strerror(errno));
 		control_communicator->start_uart_connection(this->port);
 	}

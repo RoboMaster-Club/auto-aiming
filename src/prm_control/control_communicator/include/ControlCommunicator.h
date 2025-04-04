@@ -19,6 +19,7 @@ public:
     void read_uart();
 
     int port_fd = -1;
+    bool is_connected = false;
 private:
 };
 
