@@ -85,10 +85,11 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 	package.autoAimPackage.fire = 1;
 	write(control_communicator->port_fd, &package, sizeof(PackageOut));
 	fsync(control_communicator->port_fd);
-	if (this->auto_aim_frame_id % 1000 == 0)
+	if (this->auto_aim_frame_id % 100 == 0)
 	{
 		RCLCPP_INFO(this->get_logger(), "Auto Aim ID: %d | yaw: %f | pitch: %f", this->auto_aim_frame_id, yaw, pitch);
 	}
+	auto_aim_frame_id++;
 }
 
 void ControlCommunicatorNode::nav_handler(const std::shared_ptr<geometry_msgs::msg::Twist> msg)
@@ -173,17 +174,18 @@ void ControlCommunicatorNode::read_uart()
 
 	// publishing color and match status
 	std_msgs::msg::String target_robot_color; 
-	target_robot_color.data = this->is_red ? "blue" : "red"; // irving said that they were inverted; they check for our team color
-	RCLCPP_INFO(this->get_logger(), "DEBUG: Robot color: %s|\n", target_robot_color.data.c_str());
-	target_robot_color_publisher->publish(target_robot_color);
+	target_robot_color.data = this->is_red ? "blue" : "red";
+
+	if (old_target_robot_color != target_robot_color.data)
+	{
+		RCLCPP_INFO(this->get_logger(), "Target Robot Color: %s", target_robot_color.data.c_str());
+		target_robot_color_publisher->publish(target_robot_color);
+		old_target_robot_color = target_robot_color.data;	
+	}
+
 	std_msgs::msg::Bool match_status;
 	match_status.data = this->is_match_running;
 	match_status_publisher->publish(match_status);
-
-	if (this->auto_aim_frame_id % 500 == 0)
-	{
-		RCLCPP_INFO(this->get_logger(), "READ UART: yaw_vel: %f | pitch_vel: %f | pitch: %f | is_red: %d | is_match_running: %d", this->yaw_vel, this->pitch_vel, this->pitch, this->is_red, this->is_match_running);
-	}
 
 	geometry_msgs::msg::TransformStamped pitch_tf;
 	pitch_tf.header.stamp = curr_time;

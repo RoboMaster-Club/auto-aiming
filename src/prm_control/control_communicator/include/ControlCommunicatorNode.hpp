@@ -51,6 +51,7 @@ private:
 	bool is_red = 0;
 	bool is_match_running = 0;
 	bool valid_read = false;
+	std::string old_target_robot_color; 
 
 	const char *port;
 
