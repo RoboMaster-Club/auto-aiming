@@ -4,6 +4,7 @@ bool ControlCommunicator::start_uart_connection(const char *port)
 {
     this->is_connected = false;
     this->port_fd = open(port, O_RDWR | O_NOCTTY | O_NONBLOCK);
+    tcflush(this->port_fd, TCIOFLUSH);
 
     if (this->port_fd == -1)
     {

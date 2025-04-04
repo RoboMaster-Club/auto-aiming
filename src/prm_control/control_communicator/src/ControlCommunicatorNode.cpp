@@ -146,6 +146,13 @@ void ControlCommunicatorNode::heart_beat_handler()
 
 void ControlCommunicatorNode::read_uart()
 {
+	// if misalign we reconnect, so do not read while this is happening
+	static bool reconnecting = false;
+	if (reconnecting)
+	{
+		return;
+	}
+
 	PackageIn package;
 	int success = read(control_communicator->port_fd, &package, sizeof(PackageIn));
 
@@ -159,6 +166,15 @@ void ControlCommunicatorNode::read_uart()
 	if (package.head != 0xAA) // Package validation
 	{
 		RCLCPP_WARN(this->get_logger(), "Packet miss aligned.");
+
+		// close port
+		reconnecting = true;
+		tcflush(control_communicator->port_fd, TCIOFLUSH);
+		close(control_communicator->port_fd);
+		control_communicator->start_uart_connection(this->port);
+		RCLCPP_WARN(this->get_logger(), "UART Not connected, trying to reconnect.");
+		reconnecting = false;
+
 		return;
 	}
 
