@@ -15,6 +15,8 @@ OpenCVArmorDetectorNode::OpenCVArmorDetectorNode(const rclcpp::NodeOptions &opti
   // Callbacks and pub/sub
   params_callback_handle_ = this->add_on_set_parameters_callback(std::bind(&OpenCVArmorDetectorNode::parameters_callback, this, std::placeholders::_1));
   keypoints_publisher = this->create_publisher<vision_msgs::msg::KeyPoints>("key_points", 10);
+  target_color_subscriber = this->create_subscription<std_msgs::msg::String>(
+      "color_set", 1, std::bind(&OpenCVArmorDetectorNode::target_color_callback, this, std::placeholders::_1));
 
   // Initialize the detector
   DetectorConfig config = {_target_color, _hue_range_limit, _saturation_lower_limit, _value_lower_limit, _max_missed_frames, _reduce_search_area};
@@ -30,6 +32,12 @@ void OpenCVArmorDetectorNode::imageTransportInitilization()
       it.subscribe("image_raw", 1,
                    std::bind(&OpenCVArmorDetectorNode::imageCallback, this,
                              std::placeholders::_1));
+}
+
+rcl_interfaces::msg::SetParametersResult OpenCVArmorDetectorNode::target_color_callback(const std_msgs::msg::String::SharedPtr color_msg)
+{
+  RCLCPP_INFO(get_logger(), "Target color changed to: %s|", color_msg->data.c_str());
+  return parameters_callback({rclcpp::Parameter("_target_red", strcmp(color_msg->data.c_str(), "red") == 0)});
 }
 
 rcl_interfaces::msg::SetParametersResult OpenCVArmorDetectorNode::parameters_callback(const std::vector<rclcpp::Parameter> &parameters)

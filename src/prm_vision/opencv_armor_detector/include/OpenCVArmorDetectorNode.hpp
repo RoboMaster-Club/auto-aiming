@@ -40,10 +40,12 @@ private:
     void imageCallback(const sensor_msgs::msg::Image::ConstSharedPtr &image_msg);
     std::shared_ptr<rclcpp::Publisher<vision_msgs::msg::KeyPoints>> keypoints_publisher = NULL;
     rcl_interfaces::msg::SetParametersResult parameters_callback(const std::vector<rclcpp::Parameter> &parameters);
+    rcl_interfaces::msg::SetParametersResult target_color_callback(const std_msgs::msg::String::SharedPtr color_msg);
     OnSetParametersCallbackHandle::SharedPtr params_callback_handle_;
 
     // Subscribers
     image_transport::Subscriber image_subscriber;
+    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr target_color_subscriber;
 };
 
 #endif // OPENCV_ARMOR_DETECTOR_NODE_HPP
