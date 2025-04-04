@@ -166,13 +166,13 @@ void ControlCommunicatorNode::read_uart()
 	this->pitch_vel = package.pitch_vel;			// rad/s
 	this->pitch = package.pitch;					// rad
 	this->yaw_vel = package.yaw_vel;				// rad/s
-	this->is_red = package.ref_flags & 2;		// second lowest bit denotes if enemy is red
+	this->is_enemy_red = package.ref_flags & 2;			// second lowest bit denotes if we are red
 	this->is_match_running = package.ref_flags & 1; // LSB denotes if match is started
 	this->valid_read = true;
 
 	// publishing color and match status
 	std_msgs::msg::String target_robot_color; 
-	target_robot_color.data = this->is_red ? "blue" : "red";
+	target_robot_color.data = this->is_enemy_red ? "red" : "blue";
 
 	if (old_target_robot_color != target_robot_color.data)
 	{
@@ -183,7 +183,7 @@ void ControlCommunicatorNode::read_uart()
 
 	if (this->auto_aim_frame_id % 500 == 0 && this->auto_aim_frame_id != 0)
 	{
-		RCLCPP_INFO(this->get_logger(), "READ UART: yaw_vel: %f | pitch_vel: %f | pitch: %f | is_red: %d | is_match_running: %d", this->yaw_vel, this->pitch_vel, this->pitch, this->is_red, this->is_match_running);
+		RCLCPP_INFO(this->get_logger(), "READ UART: yaw_vel: %f | pitch_vel: %f | pitch: %f | is_enemy_red: %d | is_match_running: %d", this->yaw_vel, this->pitch_vel, this->pitch, this->is_enemy_red, this->is_match_running);
 	}
 
 	std_msgs::msg::Bool match_status;
