@@ -4,7 +4,16 @@
 USER_NAME=$(whoami)
 SERVICE_NAME="ros2_aiming_service"
 SERVICE_FILE="/etc/systemd/system/$SERVICE_NAME.service"
-COMMANDS_TO_RUN="cd /home/$USER_NAME/ros2-ws && ./auto-aiming/run run mv2control.py"  # The specific command you want to run
+
+# Create the auto_aim_logs directory if it doesn't exist
+LOG_DIR="/home/$USER_NAME/auto_aim_logs"
+mkdir -p "$LOG_DIR"
+
+# Generate the log file name with current timestamp
+LOG_FILE="$LOG_DIR/$(date +'%Y-%m-%d_%H-%M-%S')_auto_aim_log.txt"
+
+# Command to run the service
+COMMANDS_TO_RUN="source /opt/ros/humble/setup.bash && source /home/$USER_NAME/ros2-ws/install/setup.bash && cd /home/$USER_NAME/ros2-ws && ./auto-aiming/run run mv2control.py > $LOG_FILE 2>&1"
 
 # Function to create the service
 create_service() {
@@ -18,11 +27,12 @@ After=network.target
 
 [Service]
 ExecStart=/bin/bash -c "$COMMANDS_TO_RUN"
-WorkingDirectory=/home/$USER_NAME/ros2-ws  # Use the current user's home directory
-User=$USER_NAME                          # Automatically use the current user
+WorkingDirectory=/home/$USER_NAME/ros2-ws
+User=$USER_NAME
+Group=$USER_NAME
 Restart=always
-Environment=ROS_DISTRO=humble            # Set your ROS 2 distribution (e.g., humble, foxy)
-Environment=HOME=/home/$USER_NAME        # Ensure the HOME environment variable is set
+Environment=ROS_DISTRO=humble
+Environment=HOME=/home/$USER_NAME
 
 [Install]
 WantedBy=multi-user.target
