@@ -105,14 +105,15 @@ void OpenCVArmorDetectorNode::imageCallback(
 
   // Prep the message to be published
   vision_msgs::msg::KeyPoints keypoints_msg;
+
   std::array<float, 8> points_array;
   std::copy(points.begin(), points.end(), points_array.begin());
-  float h = std::min(cv::norm(points.at(1) - points.at(0)), cv::norm(points.at(3) - points.at(2)));
-  float w = cv::norm((points.at(0) + points.at(1)) / 2 - (points.at(2) + points.at(3)) / 2);
+  float h = std::min(cv::norm(points.at(1) - points.at(3)), cv::norm(points.at(5) - points.at(7)));
+  float w = cv::norm((points.at(0) + points.at(2)) / 2 - (points.at(4) + points.at(6)) / 2);
 
   keypoints_msg.header = image_msg->header;
   keypoints_msg.points = points_array;
-  keypoints_msg.is_large_armor = (w / h) > 3.5; // 3.3 is the width ratio threshold before it is considered a large armor
+  keypoints_msg.is_large_armor = (w / h) > 3.0; // 3.0 is the width ratio threshold before it is considered a large armor
 
   // Publish the message
   keypoints_publisher->publish(keypoints_msg);
