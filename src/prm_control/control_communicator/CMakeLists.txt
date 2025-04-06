@@ -38,6 +38,7 @@ add_executable(ControlCommunicatorNode
 
 add_library(ControlCommunicator STATIC 
   src/ControlCommunicator.cpp
+  src/PitchLookupModel.cpp
 )
 
 ament_target_dependencies(ControlCommunicatorNode 

@@ -1,10 +1,12 @@
+#ifndef PROJECTILE_ANGLE_CONVEL_H
+#define PROJECTILE_ANGLE_CONVEL_H
 
 #include <iostream>
 #include <complex>
 #include <algorithm>
 #include <cmath>
 
-#define MUZZLE_VELOCITY 30.00
+#define MUZZLE_VELOCITY 25000
 #define SHOT_IMPOSSIBLE -100
 #define PI 3.14159
 #define RAD_2_DEG 180/PI
@@ -187,3 +189,4 @@ void pitch_yaw_gravity_model_movingtarget_const_v(vec3 Pos, vec3 Vel, vec3 G, do
     *pitch = *pitch * RAD_2_DEG;
     *yaw = *yaw * RAD_2_DEG;
 }
+#endif // PROJECTILE_ANGLE_CONVEL_H

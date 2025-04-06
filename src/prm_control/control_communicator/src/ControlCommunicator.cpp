@@ -1,4 +1,5 @@
 #include "ControlCommunicator.h"
+#include "projectile_angle_convel.h"
 
 bool ControlCommunicator::start_uart_connection(const char *port)
 {
@@ -57,4 +58,21 @@ void ControlCommunicator::compute_aim(float bullet_speed, float target_x, float 
         yaw = -atan(target_x / target_z) * 180 / M_PI;
         pitch = atan(target_y / dst_horiz) * 180 / M_PI;
     }
+
+    // projectile angle convel
+    vec3 pos = { target_z, target_x, -target_y };
+    vec3 vel = {0, 0, 0};
+    vec3 g = {0, 0, 9810};
+    bool impossible = false;
+    double p;
+    double y;
+    pitch_yaw_gravity_model_movingtarget_const_v(pos, vel, g, 0.0, &p, &y, &impossible);
+
+    pitch = -(float)p;
+    yaw = (float)y * -(target_x / abs(target_x));
+
+    // Lookup Table
+    // float dst = sqrt(target_x * target_x + target_y * target_y + target_z * target_z);
+    // float flt = lut->get_pitch(dst, -target_y);
+    // pitch = pitch + flt;
 }

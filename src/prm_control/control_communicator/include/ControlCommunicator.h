@@ -6,6 +6,7 @@
 #include <termios.h>
 #include <unistd.h>
 #include <cstring>
+#include "PitchLookupModel.hpp"
 
 class ControlCommunicator
 {
@@ -17,6 +18,8 @@ public:
     void compute_aim(float bullet_speed, float target_x, float target_y, float target_z, float &yaw, float &pitch);
     bool start_uart_connection(const char *port);
     void read_uart();
+
+    PitchLookupModel *lut = new PitchLookupModel();
 
     int port_fd = -1;
     bool is_connected = false;

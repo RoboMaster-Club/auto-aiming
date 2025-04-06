@@ -144,11 +144,6 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
     _last_yaw_estimate = pose_estimator->estimateYaw(_last_yaw_estimate, image_points, tvec);
     bool valid_pose_estimate = pose_estimator->isValid(tvec.at<double>(0), tvec.at<double>(1), tvec.at<double>(2), new_auto_aim_status, reset_kalman);
     
-    // TODO:: Ensure that the tvec is order x, y, z
-    // TODO:: Verify units and set parameters
-
-    // Transform camera coordinates to barrel coordinates
-
     // Set up transformation matrices
     Eigen::Matrix<double, 3, 3> r_roll;
     r_roll << 1, 0, 0,
