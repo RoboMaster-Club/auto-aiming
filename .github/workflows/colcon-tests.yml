@@ -23,6 +23,6 @@ jobs:
       # Run build and tests using the run script
       - name: Run build and tests
         run: |
-          source /opt/ros/foxy/setup.sh  # Source ROS 2 Foxy
+          source /opt/ros/humble/setup.sh  # Source ROS 2 Humble
           chmod +x ./run  # Ensure the run script is executable
           ./run test  # Run your test script
