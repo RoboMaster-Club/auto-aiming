@@ -200,11 +200,12 @@ std::vector<cv::Point2f> OpenCVArmorDetector::detectArmorsInFrame(cv::Mat &frame
                     std::vector<cv::Point2f> armor_points_2 = rectToPoint(second);
 
                     // Draw a dot on the top and bottom of each light bar using rectToPoint
+#ifdef DEBUG
                     cv::circle(frame, armor_points_1[0], 0, cv::Scalar(0, 255, 0), -1);
                     cv::circle(frame, armor_points_1[1], 0, cv::Scalar(0, 255, 0), -1);
                     cv::circle(frame, armor_points_2[0], 0, cv::Scalar(0, 255, 0), -1);
                     cv::circle(frame, armor_points_2[1], 0, cv::Scalar(0, 255, 0), -1);
-
+#endif
                     return {rectToPoint(first)[0], rectToPoint(first)[1], rectToPoint(second)[0], rectToPoint(second)[1]};
                 }
             }
