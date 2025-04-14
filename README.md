@@ -26,29 +26,29 @@ Clone this repository into your `ros2-ws` directory. We provide a `run` script t
 
 ## Overall Suite Requirements
 ### Functional Requirements:
-- [ ] **Detect an enemy armor plate in the camera's FOV.**
+- [x] **Detect an enemy armor plate in the camera's FOV.**
   - [ ] Meet the following detection rate and accuracy requirements:
     - [ ] 5 meters: 90% detection rate, 5% pixel loss
-    - [ ] 3 meters: 95% detection rate, 5% pixel loss
-    - [ ] 2 meters: 95% detection rate, 5% pixel loss
-  - [ ] Reduce search area around previously detected plates ("search area reduction").
-  - [ ] Achieve 120 Hz detection frequency.
+    - [x] 3 meters: 95% detection rate, 5% pixel loss
+    - [x] 2 meters: 95% detection rate, 5% pixel loss
+  - [x] Reduce search area around previously detected plates ("search area reduction").
+  - [x] Achieve 120 Hz detection frequency.
   - [ ] Classify the robot type based on its armor plate sticker.
-- [ ] **Compute camera-relative XYZ pose via PnP solving with 5% error margin.**
+- [x] **Compute camera-relative XYZ pose via PnP solving with 5% error margin.**
 - [ ] **Filter out false positives and noise in the detection results.**
   - [ ] Use a Kalman filter to smooth XYZ pose estimates.
-  - [ ] Apply a "validity filter" for erroneous detection/pose results (e.g., based on distance, XYZ shifts). 
-- [ ] **Compute the gimbal angles (yaw and pitch) required to accurately land projectiles on the detected armor plate.**
+  - [x] Apply a "validity filter" for erroneous detection/pose results (e.g., based on distance, XYZ shifts). 
+- [x] **Compute the gimbal angles (yaw and pitch) required to accurately land projectiles on the detected armor plate.**
   - [ ] Compute pitch using an easily-adjustable lookup table or ballistic model based on distance to target.
   - [ ] Compute yaw using a predictive model using the detected armor's XYZ pose, rotation, and velocity
-- [ ] **Send the computed gimbal angles to the STM32 control board via UART.**
+- [x] **Send the computed gimbal angles to the STM32 control board via UART.**
 
 ### Non-Functional Requirements:
-- [ ] **Performance**  
+- [x] **Performance**  
   - Ensure real-time end-to-end performance of 120 Hz.
-- [ ] **Testability**  
+- [] **Testability**  
   - Include a comprehensive suite of unit tests for all modules to verify component correctness.
-- [ ] **Maintainability**  
+- [x] **Maintainability**  
   - Maintain modularity by separating ROS2 and C++ logic into `xyzNode.cpp` and `xyz.cpp` files.  
   - Provide thorough documentation, including doxygen-style comments for functions and README files for modules.
 
