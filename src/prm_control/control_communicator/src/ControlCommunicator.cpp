@@ -73,5 +73,5 @@ void ControlCommunicator::compute_aim(float bullet_speed, float target_x, float 
 
     // Lookup Table
     float dst = sqrt(target_x * target_x + target_y * target_y + target_z * target_z);
-    pitch = lut->get_pitch(dst, -target_y);
+    pitch += lut->get_pitch(dst, -target_y);
 }
