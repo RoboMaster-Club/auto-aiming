@@ -4,7 +4,16 @@ PitchLookupModel::PitchLookupModel() {}
 
 PitchLookupModel::PitchLookupModel(std::string filename) {
     this->filename = filename;
-    this->load_file();
+    int succ = this->load_file();
+    assert(succ == 1);
+
+    // timer to read file every 2 seconds for updates
+    this->timer = std::thread([this]() {
+        while (true) {
+            std::this_thread::sleep_for(std::chrono::seconds(2));
+            this->load_file();
+        }
+    });
 }
 
 /**
@@ -92,6 +101,9 @@ void PitchLookupModel::write_file() {
  * @return Pitch in degrees
  */
 float PitchLookupModel::get_pitch(int distance, int height) {
+    assert(this->pitch_lookup_table.size() > 1);
+    assert(this->pitch_lookup_table[0].size() > 1);
+
     // Calculate the step size of the lookup table
     int step_size = (this->upper_z - this->lower_z) / 
                     (this->pitch_lookup_table.size() - 1);
@@ -109,6 +121,13 @@ float PitchLookupModel::get_pitch(int distance, int height) {
     int upper_step_y = this->lower_y + step_size * upper_step_y_idx;
 
     // Calculate the pitch of the four points with tightest bounds
+    if (lower_step_z_idx < 0 || lower_step_z_idx >= this->pitch_lookup_table.size() ||
+        upper_step_z_idx < 0 || upper_step_z_idx >= this->pitch_lookup_table.size() ||
+        lower_step_y_idx < 0 || lower_step_y_idx >= this->pitch_lookup_table[0].size() ||
+        upper_step_y_idx < 0 || upper_step_y_idx >= this->pitch_lookup_table[0].size()) {
+        return 0; // No computed pitch offset
+    }
+
     float pitch_low_low = this->pitch_lookup_table[lower_step_z_idx][lower_step_y_idx];
     float pitch_low_high = this->pitch_lookup_table[lower_step_z_idx][upper_step_y_idx];
     float pitch_high_low = this->pitch_lookup_table[upper_step_z_idx][lower_step_y_idx];
@@ -130,8 +149,6 @@ float PitchLookupModel::get_pitch(int distance, int height) {
         std::fmin(pitch_low_high, pitch_high_high), 
         std::fmax(pitch_low_high, pitch_high_high));
 
-    assert(this->pitch_lookup_table.size() > 1);
-    assert(this->pitch_lookup_table[0].size() > 1);
     assert(upper_z != lower_z);
     assert(step_size != 0);
 

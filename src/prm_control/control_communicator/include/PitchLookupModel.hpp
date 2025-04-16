@@ -7,6 +7,7 @@
 #include <cmath>
 #include <cassert>
 #include <string>
+#include <thread>
 
 class PitchLookupModel {
 public:
@@ -24,6 +25,7 @@ private:
     int upper_z = INT_MIN;
     std::string filename;
     std::vector<std::vector<float>> pitch_lookup_table;
+    std::thread timer;
 
     float map(float value, float old_min, float old_max, float new_min, float new_max);
 };

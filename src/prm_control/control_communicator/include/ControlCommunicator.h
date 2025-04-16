@@ -19,7 +19,7 @@ public:
     bool start_uart_connection(const char *port);
     void read_uart();
 
-    PitchLookupModel *lut = new PitchLookupModel("lookup_tables/pitch_lookup_table.txt");
+    PitchLookupModel *lut = new PitchLookupModel("/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/include/lookup_tables/pitch_lookup_table.txt");
 
     int port_fd = -1;
     bool is_connected = false;

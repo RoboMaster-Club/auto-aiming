@@ -87,7 +87,7 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 	fsync(control_communicator->port_fd);
 	if (this->auto_aim_frame_id % 100 == 0)
 	{
-		RCLCPP_INFO(this->get_logger(), "Auto Aim ID: %d | yaw: %f | pitch: %f", this->auto_aim_frame_id, package.autoAimPackage.yaw, package.autoAimPackage.pitch);
+		RCLCPP_INFO(this->get_logger(), "Auto Aim ID: %d | yaw: %f | pitch: %f | dst: %f" , this->auto_aim_frame_id, package.autoAimPackage.yaw, package.autoAimPackage.pitch, roundf(sqrt(msg->x * msg->x + msg->y * msg->y + msg->z * msg->z)));
 	}
 	auto_aim_frame_id++;
 }
