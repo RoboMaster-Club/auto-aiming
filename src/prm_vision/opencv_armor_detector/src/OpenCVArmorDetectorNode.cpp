@@ -15,6 +15,8 @@ OpenCVArmorDetectorNode::OpenCVArmorDetectorNode(const rclcpp::NodeOptions &opti
   // Callbacks and pub/sub
   params_callback_handle_ = this->add_on_set_parameters_callback(std::bind(&OpenCVArmorDetectorNode::parameters_callback, this, std::placeholders::_1));
   keypoints_publisher = this->create_publisher<vision_msgs::msg::KeyPoints>("key_points", 10);
+  target_color_subscriber = this->create_subscription<std_msgs::msg::String>(
+      "color_set", 1, std::bind(&OpenCVArmorDetectorNode::target_color_callback, this, std::placeholders::_1));
 
   // Initialize the detector
   DetectorConfig config = {_target_color, _hue_range_limit, _saturation_lower_limit, _value_lower_limit, _max_missed_frames, _reduce_search_area};
@@ -30,6 +32,12 @@ void OpenCVArmorDetectorNode::imageTransportInitilization()
       it.subscribe("image_raw", 1,
                    std::bind(&OpenCVArmorDetectorNode::imageCallback, this,
                              std::placeholders::_1));
+}
+
+rcl_interfaces::msg::SetParametersResult OpenCVArmorDetectorNode::target_color_callback(const std_msgs::msg::String::SharedPtr color_msg)
+{
+  RCLCPP_INFO(get_logger(), "Target color changed to: %s|", color_msg->data.c_str());
+  return parameters_callback({rclcpp::Parameter("_target_red", strcmp(color_msg->data.c_str(), "red") == 0)});
 }
 
 rcl_interfaces::msg::SetParametersResult OpenCVArmorDetectorNode::parameters_callback(const std::vector<rclcpp::Parameter> &parameters)
@@ -97,14 +105,15 @@ void OpenCVArmorDetectorNode::imageCallback(
 
   // Prep the message to be published
   vision_msgs::msg::KeyPoints keypoints_msg;
+
   std::array<float, 8> points_array;
   std::copy(points.begin(), points.end(), points_array.begin());
-  float h = std::min(cv::norm(points.at(1) - points.at(0)), cv::norm(points.at(3) - points.at(2)));
-  float w = cv::norm((points.at(0) + points.at(1)) / 2 - (points.at(2) + points.at(3)) / 2);
+  float h = std::min(cv::norm(points.at(1) - points.at(3)), cv::norm(points.at(5) - points.at(7)));
+  float w = cv::norm((points.at(0) + points.at(2)) / 2 - (points.at(4) + points.at(6)) / 2);
 
   keypoints_msg.header = image_msg->header;
   keypoints_msg.points = points_array;
-  keypoints_msg.is_large_armor = (w / h) > 3.5; // 3.3 is the width ratio threshold before it is considered a large armor
+  keypoints_msg.is_large_armor = (w / h) > 3.0; // 3.0 is the width ratio threshold before it is considered a large armor
 
   // Publish the message
   keypoints_publisher->publish(keypoints_msg);

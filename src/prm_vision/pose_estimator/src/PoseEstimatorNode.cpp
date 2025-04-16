@@ -13,8 +13,8 @@ PoseEstimatorNode::PoseEstimatorNode(const rclcpp::NodeOptions &options) : Node(
     cam_barrel_roll = this -> declare_parameter("cam_barrel_roll", 0.0);
     cam_barrel_pitch = this -> declare_parameter("cam_barrel_pitch", 0.0);
     cam_barrel_yaw = this -> declare_parameter("cam_barrel_yaw", 0.0);
-    cam_barrel_x = this -> declare_parameter("cam_barrel_x", -88.0);
-    cam_barrel_y = this -> declare_parameter("cam_barrel_y", -73.0);
+    cam_barrel_x = this -> declare_parameter("cam_barrel_x", 80.0);
+    cam_barrel_y = this -> declare_parameter("cam_barrel_y", 70.0);
     cam_barrel_z = this -> declare_parameter("cam_barrel_z", 80.0);
     pose_estimator->setAllowedMissedFramesBeforeNoFire(this->declare_parameter("_allowed_missed_frames_before_no_fire", 15));
     pose_estimator->setNumFramesToFireAfter(this->declare_parameter("_num_frames_to_fire_after", 3));
@@ -144,11 +144,6 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
     _last_yaw_estimate = pose_estimator->estimateYaw(_last_yaw_estimate, image_points, tvec);
     bool valid_pose_estimate = pose_estimator->isValid(tvec.at<double>(0), tvec.at<double>(1), tvec.at<double>(2), new_auto_aim_status, reset_kalman);
     
-    // TODO:: Ensure that the tvec is order x, y, z
-    // TODO:: Verify units and set parameters
-
-    // Transform camera coordinates to barrel coordinates
-
     // Set up transformation matrices
     Eigen::Matrix<double, 3, 3> r_roll;
     r_roll << 1, 0, 0,
@@ -167,12 +162,12 @@ void PoseEstimatorNode::keyPointsCallback(const vision_msgs::msg::KeyPoints::Sha
 
     Eigen::Matrix<double, 3, 3> r_mat = r_roll * r_pitch * r_yaw;
 
-    Eigen::Matrix<double, 4, 4> transform_mat {
-      {r_mat(0, 0), r_mat(0, 1), r_mat(0, 2), cam_barrel_x},
-      {r_mat(1, 0), r_mat(1, 1), r_mat(1, 2), cam_barrel_y},
-      {r_mat(2, 0), r_mat(2, 1), r_mat(2, 2), cam_barrel_z},
-      {0, 0, 0, 1}
-    };
+    Eigen::Matrix<double, 4, 4> transform_mat;
+    transform_mat << r_mat(0, 0), r_mat(0, 1), r_mat(0, 2), cam_barrel_x,
+                 r_mat(1, 0), r_mat(1, 1), r_mat(1, 2), cam_barrel_y,
+                 r_mat(2, 0), r_mat(2, 1), r_mat(2, 2), cam_barrel_z,
+                 0, 0, 0, 1;
+
 
     // Multiply cam -> target vector by transformation matrix to get barrel -> target vector
     Eigen::Vector4d cam_to_target = {tvec.at<double>(0), tvec.at<double>(1), tvec.at<double>(2), 1};
