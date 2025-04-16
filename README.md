@@ -39,14 +39,14 @@ Clone this repository into your `ros2-ws` directory. We provide a `run` script t
   - [ ] Use a Kalman filter to smooth XYZ pose estimates.
   - [x] Apply a "validity filter" for erroneous detection/pose results (e.g., based on distance, XYZ shifts). 
 - [x] **Compute the gimbal angles (yaw and pitch) required to accurately land projectiles on the detected armor plate.**
-  - [ ] Compute pitch using an easily-adjustable lookup table or ballistic model based on distance to target.
+  - [x] Compute pitch using an easily-adjustable lookup table or ballistic model based on distance to target.
   - [ ] Compute yaw using a predictive model using the detected armor's XYZ pose, rotation, and velocity
 - [x] **Send the computed gimbal angles to the STM32 control board via UART.**
 
 ### Non-Functional Requirements:
 - [x] **Performance**  
   - Ensure real-time end-to-end performance of 120 Hz.
-- [] **Testability**  
+- [ ] **Testability**  
   - Include a comprehensive suite of unit tests for all modules to verify component correctness.
 - [x] **Maintainability**  
   - Maintain modularity by separating ROS2 and C++ logic into `xyzNode.cpp` and `xyz.cpp` files.  
