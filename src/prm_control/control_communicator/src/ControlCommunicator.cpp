@@ -52,26 +52,17 @@ void ControlCommunicator::compute_aim(float bullet_speed, float target_x, float 
         pitch = 0;
         return;
     }
-    else
-    {
-        float dst_horiz = sqrt(target_x * target_x + target_z * target_z);
-        yaw = -atan(target_x / target_z) * 180 / M_PI;
-        pitch = atan(target_y / dst_horiz) * 180 / M_PI;
-    }
 
-    // projectile angle convel
-    vec3 pos = { target_z, target_x, -target_y };
-    vec3 vel = {0, 0, 0};
-    vec3 g = {0, 0, 9810};
+    // projectile model based on quartic solver
     bool impossible = false;
     double p;
     double y;
-    pitch_yaw_gravity_model_movingtarget_const_v(pos, vel, g, 0.0, &p, &y, &impossible);
+    pitch_yaw_gravity_model_movingtarget_const_v({ target_z, target_x, -target_y }, {0, 0, 0}, {0, 0, 9810}, 0.0, &p, &y, &impossible);
 
     pitch = -(float)p;
-    yaw = (float)y * -(target_x / abs(target_x));
+    yaw = (float)y * -(target_x / abs(target_x)); // yaw is always returned positive, so multiply by sign of target_x
 
-    // Lookup Table
+    // lookup table for empirical pitch correction
     float dst = sqrt(target_x * target_x + target_y * target_y + target_z * target_z);
     pitch += lut->get_pitch(dst, -target_y);
 }
