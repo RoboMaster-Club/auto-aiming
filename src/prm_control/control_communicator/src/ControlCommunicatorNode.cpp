@@ -87,7 +87,7 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 	fsync(control_communicator->port_fd);
 	if (this->auto_aim_frame_id % 100 == 0)
 	{
-		RCLCPP_INFO(this->get_logger(), "Auto Aim ID: %d | yaw: %f | pitch: %f", this->auto_aim_frame_id, yaw, pitch);
+		RCLCPP_INFO(this->get_logger(), "Auto Aim ID: %d | yaw: %f | pitch: %f", this->auto_aim_frame_id, package.autoAimPackage.yaw, package.autoAimPackage.pitch);
 	}
 	auto_aim_frame_id++;
 }
@@ -199,7 +199,7 @@ void ControlCommunicatorNode::read_uart()
 
 	if (this->auto_aim_frame_id % 500 == 0 && this->auto_aim_frame_id != 0)
 	{
-		RCLCPP_INFO(this->get_logger(), "READ UART: yaw_vel: %f | pitch_vel: %f | pitch: %f | is_enemy_red: %d | is_match_running: %d", this->yaw_vel, this->pitch_vel, this->pitch, this->is_enemy_red, this->is_match_running);
+		RCLCPP_INFO(this->get_logger(), "READ UART: x: %f | y: %f | x_vel: %f | y_vel: %f | yaw_vel: %f | pitch_vel: %f | pitch: %f | is_enemy_red: %d | is_match_running: %d", package.x, package.y, package.x_vel, package.y_vel, this->yaw_vel, this->pitch_vel, this->pitch, this->is_enemy_red, this->is_match_running);
 	}
 
 	std_msgs::msg::Bool match_status;

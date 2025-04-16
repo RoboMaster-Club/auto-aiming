@@ -19,7 +19,7 @@ public:
     bool start_uart_connection(const char *port);
     void read_uart();
 
-    PitchLookupModel *lut = new PitchLookupModel();
+    PitchLookupModel *lut = new PitchLookupModel("lookup_tables/pitch_lookup_table.txt");
 
     int port_fd = -1;
     bool is_connected = false;

@@ -17,10 +17,10 @@ PitchLookupModel::PitchLookupModel(std::string filename) {
  * z coordinate, y coordinate, and pitch. Length measurements are in
  * millimeters, and angle measurements are in degrees.
  */
-void PitchLookupModel::load_file() {
+int PitchLookupModel::load_file() {
     FILE* fp = fopen(filename.c_str(), "r");
     if (fp == nullptr) {
-        return;
+        return -1;
     }
 
     int y_count = 0;
@@ -39,7 +39,7 @@ void PitchLookupModel::load_file() {
             if (read_count != 3) {
                 fclose(fp);
                 fp = NULL;
-                return;
+                return -2;
             }
 
             if (z < this->lower_z) this->lower_z = z;
@@ -53,6 +53,7 @@ void PitchLookupModel::load_file() {
 
     fclose(fp);
     fp = NULL;
+    return 1;
 }
 
 /**
@@ -128,6 +129,11 @@ float PitchLookupModel::get_pitch(int distance, int height) {
         static_cast<float>(upper_step_z), 
         std::fmin(pitch_low_high, pitch_high_high), 
         std::fmax(pitch_low_high, pitch_high_high));
+
+    assert(this->pitch_lookup_table.size() > 1);
+    assert(this->pitch_lookup_table[0].size() > 1);
+    assert(upper_z != lower_z);
+    assert(step_size != 0);
 
     // Combine the calculated new bounds to calculate the new pitch
     return this->map(

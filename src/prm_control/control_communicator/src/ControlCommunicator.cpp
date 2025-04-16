@@ -72,7 +72,7 @@ void ControlCommunicator::compute_aim(float bullet_speed, float target_x, float 
     yaw = (float)y * -(target_x / abs(target_x));
 
     // Lookup Table
-    // float dst = sqrt(target_x * target_x + target_y * target_y + target_z * target_z);
+    float dst = sqrt(target_x * target_x + target_y * target_y + target_z * target_z);
     // float flt = lut->get_pitch(dst, -target_y);
     // pitch = pitch + flt;
 }

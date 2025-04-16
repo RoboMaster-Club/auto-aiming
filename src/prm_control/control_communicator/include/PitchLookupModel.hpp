@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <cassert>
 #include <string>
 
 class PitchLookupModel {
@@ -12,7 +13,7 @@ public:
     PitchLookupModel();
     explicit PitchLookupModel(std::string filename);
 
-    void load_file();
+    int load_file();
     void write_file();
     float get_pitch(int distance, int height);
 
