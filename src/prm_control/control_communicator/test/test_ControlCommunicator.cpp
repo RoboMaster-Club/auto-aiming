@@ -5,6 +5,7 @@ class ControlCommunicatorTest : public ::testing::Test
 {
 protected:
     const char *port = nullptr;
+    int port_fd = -1;
 
     void SetUp() override
     {
@@ -12,9 +13,9 @@ protected:
         const char *port1 = "/dev/ttyTHS0";
         const char *port2 = "/dev/ttyTHS1";
         const char *port3 = "/dev/ttyTHS2";
-        bool port1_exists = access(port1, F_OK) != -1;
-        bool port2_exists = access(port2, F_OK) != -1;
-        bool port3_exists = access(port3, F_OK) != -1;
+        bool port1_exists = access(port1, F_OK) != -1 && open(port1, O_RDWR | O_NOCTTY | O_NONBLOCK) != -1;
+        bool port2_exists = access(port2, F_OK) != -1 && open(port2, O_RDWR | O_NOCTTY | O_NONBLOCK) != -1;
+        bool port3_exists = access(port3, F_OK) != -1 && open(port3, O_RDWR | O_NOCTTY | O_NONBLOCK) != -1;
 
         // If either of the ports exist, use it
         if (port1_exists)

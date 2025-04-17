@@ -59,13 +59,22 @@ void ControlCommunicator::compute_aim(float bullet_speed, float target_x, float 
     double p;
     double y;
     pitch_yaw_gravity_model_movingtarget_const_v({ target_z, target_x, -target_y }, {0, 0, 0}, {0, 0, 9810}, 0.0, &p, &y, &impossible);
-
+ 
     pitch = -(float)p;
     yaw = (float)y * -(target_x / abs(target_x)); // yaw is always returned positive, so multiply by sign of target_x
 
     // lookup table for empirical pitch correction
     float dst = sqrt(target_x * target_x + target_y * target_y + target_z * target_z);
     pitch += lut->get_pitch(dst, -target_y);
+
+    // check nan and ensure between -180 and 180
+    if (std::isnan(pitch) || std::isnan(yaw) ||
+        pitch > 180 || pitch < -180 ||
+        yaw > 180 || yaw < -180)
+    {
+        pitch = 0;
+        yaw = 0;
+    }
 }
 
 bool ControlCommunicator::read_uart(int port_fd, PackageIn &package, const char *port)
