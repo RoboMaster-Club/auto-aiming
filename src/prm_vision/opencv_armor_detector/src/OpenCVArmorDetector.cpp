@@ -11,6 +11,7 @@ void OpenCVArmorDetector::setConfig(DetectorConfig config)
     _red_upper_limit_1 = cv::Scalar(_config._hue_range_limit, 255, 255);
     _red_lower_limit_2 = cv::Scalar(179 - _config._hue_range_limit, _config._saturation_lower_limit, _config._value_lower_limit);
     _red_upper_limit_2 = cv::Scalar(179, 255, 255);
+    
 
     // Set the other config variables
     _targetColor = config._target_color;
@@ -124,6 +125,11 @@ std::vector<cv::Point2f> OpenCVArmorDetector::detectArmorsInFrame(cv::Mat &frame
     {
         // Mask for blue color
         cv::inRange(hsvFrame, _blue_lower_limit, _blue_upper_limit, result);
+        cv::Mat mask_purple;
+        cv::inRange(hsv, purple_lower_, purple_upper_, mask_purple);
+                // Subtract purple from blue mask
+        result &= ~mask_purple;
+
     }
     else
     {
@@ -132,6 +138,10 @@ std::vector<cv::Point2f> OpenCVArmorDetector::detectArmorsInFrame(cv::Mat &frame
         cv::inRange(hsvFrame, _red_lower_limit_1, _red_upper_limit_1, lower_red_inrange);
         cv::inRange(hsvFrame, _red_lower_limit_2, _red_upper_limit_2, upper_red_inrange);
         cv::bitwise_or(lower_red_inrange, upper_red_inrange, result);
+        cv::Mat mask_purple;
+        cv::inRange(hsv, purple_lower_, purple_upper_, mask_purple);
+        result &= ~mask_purple;
+
     }
 
     // Find contours in the masked image
