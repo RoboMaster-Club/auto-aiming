@@ -83,11 +83,19 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 	package.autoAimPackage.yaw = yaw;
 	package.autoAimPackage.pitch = pitch;
 	package.autoAimPackage.fire = 1;
-	write(control_communicator->port_fd, &package, sizeof(PackageOut));
+
+	int bytes_written = write(control_communicator->port_fd, &package, sizeof(PackageOut));
 	fsync(control_communicator->port_fd);
+
+	if (bytes_written != sizeof(PackageOut))
+	{
+		RCLCPP_ERROR(this->get_logger(), "Failed to write complete package to UART. Bytes written: %d, Expected: %lu", bytes_written, sizeof(PackageOut));
+		return;
+	}
+
 	if (this->auto_aim_frame_id % 100 == 0)
 	{
-		RCLCPP_INFO(this->get_logger(), "Auto Aim ID: %d | yaw: %f | pitch: %f | dst: %f" , this->auto_aim_frame_id, package.autoAimPackage.yaw, package.autoAimPackage.pitch, roundf(sqrt(msg->x * msg->x + msg->y * msg->y + msg->z * msg->z)));
+		RCLCPP_INFO(this->get_logger(), "Auto Aim ID: %d | yaw: %f | pitch: %f | dst: %f", this->auto_aim_frame_id, package.autoAimPackage.yaw, package.autoAimPackage.pitch, roundf(sqrt(msg->x * msg->x + msg->y * msg->y + msg->z * msg->z)));
 	}
 	auto_aim_frame_id++;
 }
@@ -146,37 +154,15 @@ void ControlCommunicatorNode::heart_beat_handler()
 
 void ControlCommunicatorNode::read_uart()
 {
-	// if misalign we reconnect, so do not read while this is happening
-	static bool reconnecting = false;
-	if (reconnecting)
-	{
-		return;
-	}
-
 	PackageIn package;
-	int success = read(control_communicator->port_fd, &package, sizeof(PackageIn));
 
-	rclcpp::Time curr_time = this->now();
-	if (success == -1)
-	{
-		RCLCPP_INFO(this->get_logger(), "DEBUG: Nothing in buffer, err %i from read: %s", errno, strerror(errno));
-		return; // No data to read, try again later
-	}
+    if (!control_communicator->read_uart(control_communicator->port_fd, package, this->port))
+    {
+        RCLCPP_WARN(this->get_logger(), "UART read failed or misaligned.");
+        return;
+    }
 
-	if (package.head != 0xAA) // Package validation
-	{
-		RCLCPP_WARN(this->get_logger(), "Packet miss aligned.");
-
-		// close port
-		reconnecting = true;
-		tcflush(control_communicator->port_fd, TCIOFLUSH);
-		close(control_communicator->port_fd);
-		control_communicator->start_uart_connection(this->port);
-		RCLCPP_WARN(this->get_logger(), "UART Not connected, trying to reconnect.");
-		reconnecting = false;
-
-		return;
-	}
+    rclcpp::Time curr_time = this->now();
 
 	// Handle TF
 	this->pitch_vel = package.pitch_vel;			// rad/s

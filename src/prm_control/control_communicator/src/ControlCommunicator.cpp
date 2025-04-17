@@ -3,6 +3,7 @@
 
 bool ControlCommunicator::start_uart_connection(const char *port)
 {
+    this->port = port;
     this->is_connected = false;
     this->port_fd = open(port, O_RDWR | O_NOCTTY | O_NONBLOCK);
     tcflush(this->port_fd, TCIOFLUSH);
@@ -65,4 +66,36 @@ void ControlCommunicator::compute_aim(float bullet_speed, float target_x, float 
     // lookup table for empirical pitch correction
     float dst = sqrt(target_x * target_x + target_y * target_y + target_z * target_z);
     pitch += lut->get_pitch(dst, -target_y);
+}
+
+bool ControlCommunicator::read_uart(int port_fd, PackageIn &package, const char *port)
+{
+    // Node's read_uart is on a timer, so it will be called every 4ms
+    // Prevents reading if we are already in the process of reconnecting
+    static bool reconnecting = false;
+    if (reconnecting)
+    {
+        return false;
+    }
+
+    int success = read(port_fd, &package, sizeof(PackageIn));
+    if (success == -1)
+    {
+        return false; // No data to read or error
+    }
+
+    if (package.head != 0xAA)
+    {
+        reconnecting = true;
+        tcflush(port_fd, TCIOFLUSH);
+        close(port_fd);
+
+        // Reconnecting
+        this->start_uart_connection(port);
+
+        reconnecting = false;
+        return false;
+    }
+
+    return true;
 }

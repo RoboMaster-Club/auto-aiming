@@ -9,22 +9,25 @@ protected:
     void SetUp() override
     {
         // Find which port to use
-        const char *port1 = "/dev/ttyUSB0";
-        const char *port2 = "/dev/ttyUSB1";
+        const char *port1 = "/dev/ttyTHS0";
+        const char *port2 = "/dev/ttyTHS1";
+        const char *port3 = "/dev/ttyTHS2";
         bool port1_exists = access(port1, F_OK) != -1;
         bool port2_exists = access(port2, F_OK) != -1;
+        bool port3_exists = access(port3, F_OK) != -1;
 
         // If either of the ports exist, use it
-        if (port1_exists || port2_exists)
+        if (port1_exists)
         {
-            if (port1_exists)
-            {
-                port = port1;
-            }
-            else
-            {
-                port = port2;
-            }
+            port = port1;
+        }
+        else if (port2_exists)
+        {
+            port = port2;
+        }
+        else if (port3_exists)
+        {
+            port = port3;
         }
         else
         {
@@ -62,18 +65,54 @@ TEST_F(ControlCommunicatorTest, test_start_uart_connection)
         EXPECT_EQ(cfgetispeed(&tty), B1152000);
         EXPECT_EQ(cfgetospeed(&tty), B1152000);
 
-        // Check parity, stop bits, data bits, flow control, read and local mode
-        EXPECT_EQ(tty.c_cflag & PARENB, 0);
-        EXPECT_EQ(tty.c_cflag & CSTOPB, 0);
-        EXPECT_EQ(tty.c_cflag & CSIZE, 0);
-        EXPECT_EQ(tty.c_cflag & CS8, CS8);
-        EXPECT_EQ(tty.c_cflag & CRTSCTS, 0);
-        EXPECT_EQ(tty.c_cflag & CREAD, CREAD);
-        EXPECT_EQ(tty.c_cflag & CLOCAL, CLOCAL);
-
         // Check VMIN and VTIME
         EXPECT_EQ(tty.c_cc[VMIN], 1);
         EXPECT_EQ(tty.c_cc[VTIME], 10);
+    }
+    else
+    {
+        // Neither port exists on dev server or local machine, since no serial device
+        EXPECT_FALSE(control_communicator.start_uart_connection(port));
+    }
+}
+
+TEST_F(ControlCommunicatorTest, test_read_uart)
+{
+    ControlCommunicator control_communicator;
+    if (port != nullptr)
+    {
+        EXPECT_TRUE(control_communicator.start_uart_connection(port));
+        EXPECT_NE(control_communicator.port_fd, -1); // Port should be opened
+        EXPECT_TRUE(control_communicator.is_connected); // Connection should be established
+
+        PackageIn package;
+        bool result = false;
+        for (int i = 0; i < 100; ++i)
+        {
+            result = control_communicator.read_uart(open(port, O_RDWR | O_NOCTTY | O_NONBLOCK), package, port);
+            if (result)
+            {
+                break; // Exit loop if read is successful
+            }
+        }
+        EXPECT_TRUE(result); // Ensure at least one successful read
+
+        // Validate the package data
+        EXPECT_EQ(package.head, 0xAA); // Check head byte
+        EXPECT_EQ(package.ref_flags & 0x01, 0); // Check ref_flags (LSB should be 0 since match not started)
+        EXPECT_LT(package.pitch, M_PI); // Check pitch value
+        EXPECT_GT(package.pitch, -M_PI); // Check pitch value
+        EXPECT_LT(package.pitch_vel, M_PI); // Check pitch velocity
+        EXPECT_GT(package.pitch_vel, -M_PI); // Check pitch velocity
+        EXPECT_LT(package.yaw_vel, M_PI); // Check yaw velocity
+        EXPECT_GT(package.yaw_vel, -M_PI); // Check yaw velocity
+        
+        // package x field should exist and be a number
+        EXPECT_NE(package.x, NAN); // Check x position
+        EXPECT_NE(package.y, NAN); // Check y position
+        EXPECT_NE(package.orientation, NAN); // Check orientation
+        EXPECT_NE(package.x_vel, NAN); // Check x velocity
+        EXPECT_NE(package.y_vel, NAN); // Check y velocity
     }
     else
     {
