@@ -11,6 +11,8 @@ void OpenCVArmorDetector::setConfig(DetectorConfig config)
     _red_upper_limit_1 = cv::Scalar(_config._hue_range_limit, 255, 255);
     _red_lower_limit_2 = cv::Scalar(179 - _config._hue_range_limit, _config._saturation_lower_limit, _config._value_lower_limit);
     _red_upper_limit_2 = cv::Scalar(179, 255, 255);
+    purple_lower_ = cv::Scalar(130, 120, 120);  // lower bound for purple hue
+    purple_upper_ = cv::Scalar(160, 255, 255);  // upper bound for purple hue
     
 
     // Set the other config variables
@@ -163,12 +165,7 @@ std::vector<cv::Point2f> OpenCVArmorDetector::detectArmorsInFrame(cv::Mat &frame
             cv::RotatedRect rect = cv::RotatedRect(cv::Point2f(rect_bounding.x + rect_bounding.width / 2, rect_bounding.y + rect_bounding.height / 2), cv::Size2f(rect_bounding.width, rect_bounding.height), 0);
 
             // draw rotated rectangle
-            cv::Point2f vertices[4];
-            rect.points(vertices);
-            for (int i = 0; i < 4; i++)
-            {
-                cv::line(result, vertices[i], vertices[(i + 1) % 4], cv::Scalar(0, 0, 255), 4, cv::LINE_AA);
-            }
+            drawRotatedRect(&result, &rect);
 
             // Rect rotates, so we need to ensure height is always the longer side
             if (rect.angle > 45)
@@ -182,10 +179,34 @@ std::vector<cv::Point2f> OpenCVArmorDetector::detectArmorsInFrame(cv::Mat &frame
                 light_bar_candidates.push_back(rect);
             }
         }
+        else {
+            cv::RotatedRect rect = cv::minAreaRect(contour);
+            if (rect.angle > 45)
+            {
+                std::swap(rect.size.width, rect.size.height);
+                rect.angle -= 90;
+            }
+
+            if (isLightBar(rect))
+            {
+                light_bar_candidates.push_back(rect);
+            }
+        }
     }
+    /*if (rect.size.width < rect.size.height) {
+        // If width < height, the returned angle is measured from the vertical axis
+        // Add 90 degrees to align angle with the long axis (light bar orientation)
+        angle += 90.0f;
+    }
+    // Normalize angle to [0, 180)
+    if (angle < 0) angle += 180.0f;
+    if (angle >= 180.0f) angle -= 180.0f;
+    rect.angle = angle;*/
+    
 
     // Give priority to the light bar with the leftmost center
     // TODO: Have a better metric such as distance from last detected armor
+    
     std::sort(light_bar_candidates.begin(), light_bar_candidates.end(), [](cv::RotatedRect &a, cv::RotatedRect &b)
               { return a.center.x < b.center.x; });
 
@@ -351,3 +372,4 @@ std::vector<cv::Point2f> OpenCVArmorDetector::rectToPoint(cv::RotatedRect &rect)
     points.push_back(cv::Point2f(int(rect.center.x - x_offset), int(rect.center.y + y_offset)));
     return points;
 }
+
