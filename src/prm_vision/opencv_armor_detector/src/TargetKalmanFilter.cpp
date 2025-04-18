@@ -12,7 +12,7 @@ TargetKalmanFilter::TargetKalmanFilter(float q_pos, float q_vel, float r_pos, fl
     }
 
     // Configure the Kalman filter matrices
-void TargetKalmanFilter::configure(float q_pos, float q_vel, float r_pos, float initial_p = 1e3f) {
+void TargetKalmanFilter::configure() {
         kf_ = cv::KalmanFilter(4, 2, 0, CV_32F);
         // State: [x, y, vx, vy], Measurement: [x, y]
         // Transition matrix (F)
