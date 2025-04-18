@@ -373,3 +373,36 @@ std::vector<cv::Point2f> OpenCVArmorDetector::rectToPoint(cv::RotatedRect &rect)
     return points;
 }
 
+OpenCVArmorDetectorNode()
+: Node("opencv_armor_detector"),
+      color_filter_(TargetColor::BLUE)  // default to detect blue armors; can be changed via param
+    {
+        // Declare and get parameters for color target (0=RED, 1=BLUE)
+        int target_color = this->declare_parameter<int>("target_color", 1);
+        color_filter_.setTargetColor(target_color == 0 ? TargetColor::RED : TargetColor::BLUE);
+
+        // Set up image subscriber (no heavy processing in callback)
+        image_sub_ = this->create_subscription<sensor_msgs::msg::Image>(
+            "/camera/image_raw", 10,
+            std::bind(&OpenCVArmorDetectorNode::imageCallback, this, std::placeholders::_1)
+        );
+
+        // Start a dedicated thread for image processing
+        processing_thread_ = std::thread(&OpenCVArmorDetectorNode::processingLoop, this);
+
+        RCLCPP_INFO(this->get_logger(), "OpenCVArmorDetectorNode started with target_color=%s",
+                    target_color == 0 ? "RED" : "BLUE");
+    }
+
+    ~OpenCVArmorDetectorNode() {
+        // Signal thread to exit and join
+        {
+            std::lock_guard<std::mutex> lock(frame_mutex_);
+            running_ = false;
+            frame_cv_.notify_one();
+        }
+        if (processing_thread_.joinable()) {
+            processing_thread_.join();
+        }
+    }
+    
