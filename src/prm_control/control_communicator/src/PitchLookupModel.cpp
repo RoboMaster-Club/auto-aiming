@@ -4,8 +4,7 @@ PitchLookupModel::PitchLookupModel() {}
 
 PitchLookupModel::PitchLookupModel(std::string filename) {
     this->filename = filename;
-    int succ = this->load_file();
-    assert(succ == 1);
+    this->load_file();
 
     // timer to read file every 2 seconds for updates
     this->timer = std::thread([this]() {
@@ -26,10 +25,10 @@ PitchLookupModel::PitchLookupModel(std::string filename) {
  * z coordinate, y coordinate, and pitch. Length measurements are in
  * millimeters, and angle measurements are in degrees.
  */
-int PitchLookupModel::load_file() {
+void PitchLookupModel::load_file() {
     FILE* fp = fopen(filename.c_str(), "r");
     if (fp == nullptr) {
-        return -1;
+        return;
     }
 
     int y_count = 0;
@@ -48,7 +47,7 @@ int PitchLookupModel::load_file() {
             if (read_count != 3) {
                 fclose(fp);
                 fp = NULL;
-                return -2;
+                return;
             }
 
             if (z < this->lower_z) this->lower_z = z;
@@ -62,7 +61,6 @@ int PitchLookupModel::load_file() {
 
     fclose(fp);
     fp = NULL;
-    return 1;
 }
 
 /**
@@ -92,20 +90,18 @@ void PitchLookupModel::write_file() {
     fp = NULL;
 }
 
+
 /**
- * @brief Lookup the corresponding pitch with distance and height
+ * @brief Lookup the corresponding pitch with distance and height, using bilinear interpolation
  *
  * @param distance Distance away from the camera in millimeters
  * @param height   Height above the ground in millimeters
  *
  * @return Pitch in degrees
  */
-float PitchLookupModel::get_pitch(int distance, int height) {
-    assert(this->pitch_lookup_table.size() > 1);
-    assert(this->pitch_lookup_table[0].size() > 1);
-
+float PitchLookupModel::get_offset(int distance, int height) {
     // Calculate the step size of the lookup table
-    int step_size = (this->upper_z - this->lower_z) / 
+    int step_size = (this->upper_z - this->lower_z) /
                     (this->pitch_lookup_table.size() - 1);
 
     // Calculate the indices of the tightest bound containing distance and height
@@ -120,7 +116,6 @@ float PitchLookupModel::get_pitch(int distance, int height) {
     int lower_step_y = this->lower_y + step_size * lower_step_y_idx;
     int upper_step_y = this->lower_y + step_size * upper_step_y_idx;
 
-    // Calculate the pitch of the four points with tightest bounds
     if (lower_step_z_idx < 0 || lower_step_z_idx >= this->pitch_lookup_table.size() ||
         upper_step_z_idx < 0 || upper_step_z_idx >= this->pitch_lookup_table.size() ||
         lower_step_y_idx < 0 || lower_step_y_idx >= this->pitch_lookup_table[0].size() ||
@@ -128,37 +123,24 @@ float PitchLookupModel::get_pitch(int distance, int height) {
         return 0; // No computed pitch offset
     }
 
+    // Calculate the pitch of the four points with tightest bounds
     float pitch_low_low = this->pitch_lookup_table[lower_step_z_idx][lower_step_y_idx];
     float pitch_low_high = this->pitch_lookup_table[lower_step_z_idx][upper_step_y_idx];
     float pitch_high_low = this->pitch_lookup_table[upper_step_z_idx][lower_step_y_idx];
     float pitch_high_high = this->pitch_lookup_table[upper_step_z_idx][upper_step_y_idx];
 
-    // Calculate pitch of the corresponding z position by fixing y to the lower bound
-    float pitch_y_low = this->map(
-        static_cast<float>(distance), 
-        static_cast<float>(lower_step_z), 
-        static_cast<float>(upper_step_z), 
-        std::fmin(pitch_low_low, pitch_high_low), 
-        std::fmax(pitch_low_low, pitch_high_low));
+    // Calculate the pitch using bilinear interpolation
+    float pitch_low = (pitch_low_low * (upper_step_y - height) +
+                       pitch_low_high * (height - lower_step_y)) /
+                      (upper_step_y - lower_step_y);
+    float pitch_high = (pitch_high_low * (upper_step_y - height) +
+                        pitch_high_high * (height - lower_step_y)) /
+                       (upper_step_y - lower_step_y);
+    float pitch = (pitch_low * (upper_step_z - distance) +
+                   pitch_high * (distance - lower_step_z)) /
+                  (upper_step_z - lower_step_z);
 
-    // Calculate pitch of the corresponding z position by fixing y to the upper bound
-    float pitch_y_high = this->map(
-        static_cast<float>(distance), 
-        static_cast<float>(lower_step_z), 
-        static_cast<float>(upper_step_z), 
-        std::fmin(pitch_low_high, pitch_high_high), 
-        std::fmax(pitch_low_high, pitch_high_high));
-
-    assert(upper_z != lower_z);
-    assert(step_size != 0);
-
-    // Combine the calculated new bounds to calculate the new pitch
-    return this->map(
-        static_cast<float>(height), 
-        static_cast<float>(lower_step_y), 
-        static_cast<float>(upper_step_y), 
-        std::fmin(pitch_y_low, pitch_y_high), 
-        std::fmax(pitch_y_low, pitch_y_high));
+    return pitch;
 }
 
 /**
@@ -172,8 +154,8 @@ float PitchLookupModel::get_pitch(int distance, int height) {
  *
  * @return Mapped value
  */
-float PitchLookupModel::map(float value, float old_min, float old_may, 
-                            float new_min, float new_may) {
+float PitchLookupModel::map(float value, float old_min, float old_may, float new_min, float new_may) 
+{
     if (old_min > old_may || new_min > new_may) {
         return -1;
     }
@@ -184,3 +166,14 @@ float PitchLookupModel::map(float value, float old_min, float old_may,
 
     return new_min + (value - old_min) * (new_may - new_min) / (old_may - old_min);
 }
+
+void PitchLookupModel::print_to_file(std::string text) {
+    FILE* fp = fopen("/home/purduerm/Documents/output.txt", "a");
+    if (fp == nullptr) {
+        return;
+    }
+
+    fprintf(fp, "%s\n", text.c_str());
+    fclose(fp);
+}
+

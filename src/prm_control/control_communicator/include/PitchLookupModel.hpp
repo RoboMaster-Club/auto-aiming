@@ -14,9 +14,9 @@ public:
     PitchLookupModel();
     explicit PitchLookupModel(std::string filename);
 
-    int load_file();
+    void load_file();
     void write_file();
-    float get_pitch(int distance, int height);
+    float get_offset(int distance, int height);
 
 private:
     int lower_y = INT_MAX;
@@ -28,6 +28,7 @@ private:
     std::thread timer;
 
     float map(float value, float old_min, float old_max, float new_min, float new_max);
+    void print_to_file(std::string text);
 };
 
 #endif // PITCH_LOOKUP_MODEL_HPP

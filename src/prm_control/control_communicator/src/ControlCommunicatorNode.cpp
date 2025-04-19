@@ -67,7 +67,7 @@ void ControlCommunicatorNode::publish_static_tf(float x, float y, float z, float
 }
 
 void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs::msg::PredictedArmor> msg)
-{
+{	
 	if (!control_communicator->is_connected || control_communicator->port_fd < 0)
 	{
 		RCLCPP_WARN(this->get_logger(), "UART Not connected, ignoring aim message.");
@@ -87,16 +87,18 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 	int bytes_written = write(control_communicator->port_fd, &package, sizeof(PackageOut));
 	fsync(control_communicator->port_fd);
 
+	if (this->auto_aim_frame_id % 100 == 0 && this->auto_aim_frame_id != 0)
+	{
+		float dst = sqrt(pow(msg->x, 2) + pow(msg->y, 2) + pow(msg->z, 2));
+		RCLCPP_INFO(this->get_logger(), "Yaw: %.2f | Pitch: %.2f | dst: %.2f | (x, y, z): (%.2f, %.2f, %.2f)", yaw, pitch, dst, msg->x, msg->y, msg->z);
+	}
+	
 	if (bytes_written != sizeof(PackageOut))
 	{
 		RCLCPP_ERROR(this->get_logger(), "Failed to write complete package to UART. Bytes written: %d, Expected: %lu", bytes_written, sizeof(PackageOut));
 		return;
 	}
 
-	if (this->auto_aim_frame_id % 100 == 0)
-	{
-		RCLCPP_INFO(this->get_logger(), "Auto Aim ID: %d | yaw: %f | pitch: %f | dst: %f", this->auto_aim_frame_id, package.autoAimPackage.yaw, package.autoAimPackage.pitch, roundf(sqrt(msg->x * msg->x + msg->y * msg->y + msg->z * msg->z)));
-	}
 	auto_aim_frame_id++;
 }
 
@@ -183,7 +185,7 @@ void ControlCommunicatorNode::read_uart()
 		old_target_robot_color = target_robot_color.data;	
 	}
 
-	if (this->auto_aim_frame_id % 500 == 0 && this->auto_aim_frame_id != 0)
+	if (this->auto_aim_frame_id % 5000 == 0 && this->auto_aim_frame_id != 0)
 	{
 		RCLCPP_INFO(this->get_logger(), "READ UART: x: %f | y: %f | x_vel: %f | y_vel: %f | yaw_vel: %f | pitch_vel: %f | pitch: %f | is_enemy_red: %d | is_match_running: %d", package.x, package.y, package.x_vel, package.y_vel, this->yaw_vel, this->pitch_vel, this->pitch, this->is_enemy_red, this->is_match_running);
 	}

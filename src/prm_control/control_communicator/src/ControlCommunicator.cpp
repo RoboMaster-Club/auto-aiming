@@ -65,7 +65,7 @@ void ControlCommunicator::compute_aim(float bullet_speed, float target_x, float 
 
     // lookup table for empirical pitch correction
     float dst = sqrt(target_x * target_x + target_y * target_y + target_z * target_z);
-    pitch += lut->get_pitch(dst, -target_y);
+    pitch += lut->get_offset(dst, target_y);
 
     // check nan and ensure between -180 and 180
     if (std::isnan(pitch) || std::isnan(yaw) ||
