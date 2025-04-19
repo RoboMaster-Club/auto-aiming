@@ -373,7 +373,7 @@ std::vector<cv::Point2f> OpenCVArmorDetector::rectToPoint(cv::RotatedRect &rect)
     return points;
 }
 
-OpenCVArmorDetectorNode()
+/*OpenCVArmorDetectorNode()
 : Node("opencv_armor_detector"),
       color_filter_(TargetColor::BLUE)  // default to detect blue armors; can be changed via param
     {
@@ -404,5 +404,5 @@ OpenCVArmorDetectorNode()
         if (processing_thread_.joinable()) {
             processing_thread_.join();
         }
-    }
+    }*/
 
