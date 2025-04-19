@@ -128,7 +128,7 @@ std::vector<cv::Point2f> OpenCVArmorDetector::detectArmorsInFrame(cv::Mat &frame
         // Mask for blue color
         cv::inRange(hsvFrame, _blue_lower_limit, _blue_upper_limit, result);
         cv::Mat mask_purple;
-        cv::inRange(hsv, purple_lower_, purple_upper_, mask_purple);
+        cv::inRange(hsvFrame, purple_lower_, purple_upper_, mask_purple);
                 // Subtract purple from blue mask
         result &= ~mask_purple;
 
@@ -141,7 +141,7 @@ std::vector<cv::Point2f> OpenCVArmorDetector::detectArmorsInFrame(cv::Mat &frame
         cv::inRange(hsvFrame, _red_lower_limit_2, _red_upper_limit_2, upper_red_inrange);
         cv::bitwise_or(lower_red_inrange, upper_red_inrange, result);
         cv::Mat mask_purple;
-        cv::inRange(hsv, purple_lower_, purple_upper_, mask_purple);
+        cv::inRange(hsvFrame, purple_lower_, purple_upper_, mask_purple);
         result &= ~mask_purple;
 
     }
@@ -405,4 +405,4 @@ OpenCVArmorDetectorNode()
             processing_thread_.join();
         }
     }
-    
+

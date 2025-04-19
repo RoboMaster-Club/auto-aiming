@@ -97,5 +97,7 @@ private:
   cv::Scalar _red_upper_limit_1;
   cv::Scalar _red_lower_limit_2;
   cv::Scalar _red_upper_limit_2;
+  cv::Scalar purple_lower_;
+  cv::Scalar purple_upper_;
 };
 #endif //_OPENCVARMORDETECTOR_HPP
