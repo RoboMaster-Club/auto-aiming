@@ -165,7 +165,7 @@ std::vector<cv::Point2f> OpenCVArmorDetector::detectArmorsInFrame(cv::Mat &frame
             cv::RotatedRect rect = cv::RotatedRect(cv::Point2f(rect_bounding.x + rect_bounding.width / 2, rect_bounding.y + rect_bounding.height / 2), cv::Size2f(rect_bounding.width, rect_bounding.height), 0);
 
             // draw rotated rectangle
-            drawRotatedRect(&result, &rect);
+            drawRotatedRect(result, rect);
 
             // Rect rotates, so we need to ensure height is always the longer side
             if (rect.angle > 45)
