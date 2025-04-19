@@ -89,26 +89,63 @@ rcl_interfaces::msg::SetParametersResult OpenCVArmorDetectorNode::parameters_cal
 void OpenCVArmorDetectorNode::imageCallback(
     const sensor_msgs::msg::Image::ConstSharedPtr &image_msg)
 {
-  cv::Mat frame = cv_bridge::toCvShare(image_msg, "bgr8")->image;
-  cv::resize(frame, frame, cv::Size(WIDTH, HEIGHT));
+    cv::Mat full = cv_bridge::toCvShare(image_msg, "bgr8")->image;
+    cv::resize(full, full, cv::Size(WIDTH, HEIGHT));
 
-  // Call the detector's search method with both HSV ranges
-  std::vector<_Float32> points = detector->search(frame);
+    cv::Rect roi(0, 0, WIDTH, HEIGHT);
+    if (have_last_target_) {
+        int dx = last_target_roi_.width  / 5;
+        int dy = last_target_roi_.height / 5;
+        roi = (last_target_roi_ + cv::Size(2*dx, 2*dy) - cv::Point(dx, dy))
+              & cv::Rect(0, 0, WIDTH, HEIGHT);
+    }
 
-  // Prep the message to be published
-  vision_msgs::msg::KeyPoints keypoints_msg;
-  std::array<float, 8> points_array;
-  std::copy(points.begin(), points.end(), points_array.begin());
-  float h = std::min(cv::norm(points.at(1) - points.at(0)), cv::norm(points.at(3) - points.at(2)));
-  float w = cv::norm((points.at(0) + points.at(1)) / 2 - (points.at(2) + points.at(3)) / 2);
+    cv::Mat crop = full(roi).clone();
+    auto points = detector->search(crop);
 
-  keypoints_msg.header = image_msg->header;
-  keypoints_msg.points = points_array;
-  keypoints_msg.is_large_armor = (w / h) > 3.5; // 3.3 is the width ratio threshold before it is considered a large armor
+    bool found = std::any_of(points.begin(), points.end(),
+                             [](float v){ return v != 0.0f; });
+    if (!found && have_last_target_) {
+        have_last_target_ = false;
+        points = detector->search(full);
+        found = std::any_of(points.begin(), points.end(),
+                            [](float v){ return v != 0.0f; });
+    }
+    if (!found) {
+        return;
+    }
 
-  // Publish the message
-  keypoints_publisher->publish(keypoints_msg);
+    for (int i = 0; i < 4; ++i) {
+        points[2*i + 0] += float(roi.x);
+        points[2*i + 1] += float(roi.y);
+    }
+
+    int xmin = std::min({points[0], points[2], points[4], points[6]});
+    int xmax = std::max({points[0], points[2], points[4], points[6]});
+    int ymin = std::min({points[1], points[3], points[5], points[7]});
+    int ymax = std::max({points[1], points[3], points[5], points[7]});
+    last_target_roi_   = cv::Rect(xmin, ymin, xmax - xmin, ymax - ymin);
+    have_last_target_ = true;
+
+    vision_msgs::msg::KeyPoints keypoints_msg;
+    std::array<float, 8> points_array;
+    std::copy(points.begin(), points.end(), points_array.begin());
+    keypoints_msg.header         = image_msg->header;
+    keypoints_msg.points         = points_array;
+    float h = std::min(
+        cv::norm(cv::Point2f(points[1],points[1]) - cv::Point2f(points[3],points[3])),
+        cv::norm(cv::Point2f(points[5],points[5]) - cv::Point2f(points[7],points[7]))
+    );
+    float w = cv::norm(
+        (cv::Point2f(points[0],points[0]) + cv::Point2f(points[2],points[2]))*0.5f
+        - (cv::Point2f(points[4],points[4]) + cv::Point2f(points[6],points[6]))*0.5f
+    );
+    keypoints_msg.is_large_armor = (w / h) > 3.0f;
+
+    keypoints_publisher->publish(keypoints_msg);
 }
+
+
 
 
 

@@ -23,87 +23,104 @@ void OpenCVArmorDetector::setConfig(DetectorConfig config)
 
 std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
 {
-    std::vector<_Float32> detected_keypoints(8, 0);
-    static auto last_time = std::chrono::steady_clock::now(); // Static to persist across calls
-
+    // 1) On reset, cover full frame
     if (_reset_search_area)
     {
         _search_area[0] = 0;
         _search_area[1] = 0;
-        _search_area[2] = WIDTH;
-        _search_area[3] = HEIGHT;
+        _search_area[2] = frame.cols;  // WIDTH
+        _search_area[3] = frame.rows;  // HEIGHT
+        _missed_frames    = 0;
         _reset_search_area = false;
-        _missed_frames = 0;
     }
-    cv::Mat croppedFrame = frame(cv::Range(_search_area[1], _search_area[3]), cv::Range(_search_area[0], _search_area[2])).clone();
 
-    // Detect the armor in the cropped frame
+    // 2) Clamp ROI and crop once
+    int x0 = std::clamp(_search_area[0], 0, frame.cols);
+    int y0 = std::clamp(_search_area[1], 0, frame.rows);
+    int x1 = std::clamp(_search_area[2], 0, frame.cols);
+    int y1 = std::clamp(_search_area[3], 0, frame.rows);
+    cv::Rect roi(x0, y0, x1 - x0, y1 - y0);
+    if (roi.width <= 0 || roi.height <= 0)
+        return std::vector<_Float32>(8, 0);
+
+    cv::Mat croppedFrame = frame(roi).clone();
+
+    // 3) Detect armors in crop
     std::vector<cv::Point2f> points = detectArmorsInFrame(croppedFrame);
     _frame_count++;
-
-// Display the cropped frame for debugging
-#ifdef DEBUG
-    cv::resize(croppedFrame, croppedFrame, cv::Size(WIDTH / 2, HEIGHT / 2));
-
-    // Create a static window name
-    const std::string window_name = "Detection Results";
-    cv::imshow(window_name, croppedFrame);
-
-    // Update the window title
-    cv::setWindowTitle(window_name,
-                       "detected: " + std::to_string(_detected_frame) + " / " +
-                           std::to_string(_frame_count) + " (" +
-                           std::to_string(_detected_frame * 100 / _frame_count) + "%) and missed: " + std::to_string(_missed_frames) + std::string(" frames"));
-
-    cv::waitKey(30);
-#endif
-
-    // If we didn't find an armor for a few frames (ROS2 param), reset the search area 
-    if (points.size() == 0)
+  
+    // 4) Early exit if none found
+    if (points.empty())
     {
         _missed_frames++;
         if (_missed_frames >= _max_missed_frames)
         {
             _reset_search_area = true;
         }
+        return std::vector<_Float32>(8, 0);
+    }
+
+    // 5) Map points back into full‑frame coords
+    _missed_frames = 0;
+    std::vector<_Float32> detected_keypoints(8);
+    for (int i = 0; i < 4; ++i)
+    {
+        detected_keypoints[i*2 + 0] = points[i].x + float(roi.x);
+        detected_keypoints[i*2 + 1] = points[i].y + float(roi.y);
+    }
+
+    // 6) Update the search area around this detection (+50px buffer)
+    if (_reduce_search_area)
+    {
+        _reset_search_area = false;
+        int x_min = int(std::min({ detected_keypoints[0], detected_keypoints[2],
+                                   detected_keypoints[4], detected_keypoints[6] }));
+        int x_max = int(std::max({ detected_keypoints[0], detected_keypoints[2],
+                                   detected_keypoints[4], detected_keypoints[6] }));
+        int y_min = int(std::min({ detected_keypoints[1], detected_keypoints[3],
+                                   detected_keypoints[5], detected_keypoints[7] }));
+        int y_max = int(std::max({ detected_keypoints[1], detected_keypoints[3],
+                                   detected_keypoints[5], detected_keypoints[7] }));
+        const int BUF = 50;
+        _search_area[0] = std::max(x_min - BUF, 0);
+        _search_area[1] = std::max(y_min - BUF, 0);
+        _search_area[2] = std::min(x_max + BUF, frame.cols);
+        _search_area[3] = std::min(y_max + BUF, frame.rows);
     }
     else
     {
-        // We found an armor, so reset the missed frames and return the keypoints
-        _missed_frames = 0;
-        std::vector<cv::Point2f> image_points;
-        for (int i = 0; i < 4; i++)
-        {
-            detected_keypoints[i * 2] = points.at(i).x + _search_area[0];
-            detected_keypoints[i * 2 + 1] = points.at(i).y + _search_area[1];
-
-            image_points.emplace_back(cv::Point2f(points.at(i).x + _search_area[0], points.at(i).y + _search_area[1]));
-        }
-
-        if (_reduce_search_area)
-        {
-            // Change the search area to the bounding box of the armor with a 50 pixel buffer
-            _reset_search_area = false; // We got a detection, so don't reset the search area next frame
-            int x_min = (int)std::min(detected_keypoints[0], detected_keypoints[2]);
-            int x_max = (int)std::max(detected_keypoints[4], detected_keypoints[6]);
-            int y_min = (int)std::min(detected_keypoints[1], detected_keypoints[5]);
-            int y_max = (int)std::max(detected_keypoints[3], detected_keypoints[7]);
-            _search_area[0] = std::max(x_min - 50, 0);
-            _search_area[1] = std::max(y_min - 50, 0);
-            _search_area[2] = std::min(x_max + 50, WIDTH);
-            _search_area[3] = std::min(y_max + 50, HEIGHT);
-        }
-        else
-        {
-            // Reset the search area to the full frame
-            _reset_search_area = true;
-        }
-
-        _detected_frame++;
+        _reset_search_area = true;
     }
 
+    _detected_frame++;
     return detected_keypoints;
 }
+
+void OpenCVArmorDetectorNode::imageCallback(
+    const sensor_msgs::msg::Image::ConstSharedPtr &image_msg)
+{
+  cv::Mat frame = cv_bridge::toCvShare(image_msg, "bgr8")->image;
+  cv::resize(frame, frame, cv::Size(WIDTH, HEIGHT));
+
+  // Call the detector's search method with both HSV ranges
+  std::vector<_Float32> points = detector->search(frame);
+
+  // Prep the message to be published
+  vision_msgs::msg::KeyPoints keypoints_msg;
+
+  std::array<float, 8> points_array;
+  std::copy(points.begin(), points.end(), points_array.begin());
+  float h = std::min(cv::norm(points.at(1) - points.at(3)), cv::norm(points.at(5) - points.at(7)));
+  float w = cv::norm((points.at(0) + points.at(2)) / 2 - (points.at(4) + points.at(6)) / 2);
+
+  keypoints_msg.header = image_msg->header;
+  keypoints_msg.points = points_array;
+  keypoints_msg.is_large_armor = (w / h) > 3.0; // 3.0 is the width ratio threshold before it is considered a large armor
+
+  // Publish the message
+  keypoints_publisher->publish(keypoints_msg);
+}
+
 
 /**
  * @brief Detects an armor plate in the given frame.
