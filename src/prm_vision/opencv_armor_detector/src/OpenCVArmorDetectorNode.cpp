@@ -110,7 +110,7 @@ void OpenCVArmorDetectorNode::imageCallback(
   keypoints_publisher->publish(keypoints_msg);
 }
 
-mespace prm_vision
+
 
 
 int main(int argc, char *argv[])
