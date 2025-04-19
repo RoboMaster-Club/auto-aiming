@@ -28,6 +28,7 @@ public:
 private:
     OpenCVArmorDetector *detector;
     bool have_last_target_ = false;
+    cv::Rect last_target_roi_={0, 0, WIDTH, HEIGHT};
 
     // Dynamic parameters
     int _hue_range_limit;

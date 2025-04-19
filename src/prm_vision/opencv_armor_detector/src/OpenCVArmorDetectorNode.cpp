@@ -11,7 +11,7 @@ OpenCVArmorDetectorNode::OpenCVArmorDetectorNode(const rclcpp::NodeOptions &opti
   _target_color = this->declare_parameter("_target_red", true) ? RED : BLUE;
   _max_missed_frames = this->declare_parameter("_max_missed_frames", 1);
   _reduce_search_area = this->declare_parameter("_reduce_search_area", true);
-  _have_last_target_ = false;
+  have_last_target_ = false;
   // Callbacks and pub/sub
   params_callback_handle_ = this->add_on_set_parameters_callback(std::bind(&OpenCVArmorDetectorNode::parameters_callback, this, std::placeholders::_1));
   keypoints_publisher = this->create_publisher<vision_msgs::msg::KeyPoints>("key_points", 10);
