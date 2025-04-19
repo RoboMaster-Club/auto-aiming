@@ -48,7 +48,21 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
     // 3) Detect armors in crop
     std::vector<cv::Point2f> points = detectArmorsInFrame(croppedFrame);
     _frame_count++;
-  
+    #ifdef DEBUG
+    cv::resize(croppedFrame, croppedFrame, cv::Size(WIDTH / 2, HEIGHT / 2));
+
+    // Create a static window name
+    const std::string window_name = "Detection Results";
+    cv::imshow(window_name, croppedFrame);
+
+    // Update the window title
+    cv::setWindowTitle(window_name,
+                       "detected: " + std::to_string(_detected_frame) + " / " +
+                           std::to_string(_frame_count) + " (" +
+                           std::to_string(_detected_frame * 100 / _frame_count) + "%) and missed: " + std::to_string(_missed_frames) + std::string(" frames"));
+
+    cv::waitKey(30);
+    #endif
     // 4) Early exit if none found
     if (points.empty())
     {
@@ -96,30 +110,6 @@ std::vector<_Float32> OpenCVArmorDetector::search(cv::Mat &frame)
     return detected_keypoints;
 }
 
-void OpenCVArmorDetectorNode::imageCallback(
-    const sensor_msgs::msg::Image::ConstSharedPtr &image_msg)
-{
-  cv::Mat frame = cv_bridge::toCvShare(image_msg, "bgr8")->image;
-  cv::resize(frame, frame, cv::Size(WIDTH, HEIGHT));
-
-  // Call the detector's search method with both HSV ranges
-  std::vector<_Float32> points = detector->search(frame);
-
-  // Prep the message to be published
-  vision_msgs::msg::KeyPoints keypoints_msg;
-
-  std::array<float, 8> points_array;
-  std::copy(points.begin(), points.end(), points_array.begin());
-  float h = std::min(cv::norm(points.at(1) - points.at(3)), cv::norm(points.at(5) - points.at(7)));
-  float w = cv::norm((points.at(0) + points.at(2)) / 2 - (points.at(4) + points.at(6)) / 2);
-
-  keypoints_msg.header = image_msg->header;
-  keypoints_msg.points = points_array;
-  keypoints_msg.is_large_armor = (w / h) > 3.0; // 3.0 is the width ratio threshold before it is considered a large armor
-
-  // Publish the message
-  keypoints_publisher->publish(keypoints_msg);
-}
 
 
 /**
