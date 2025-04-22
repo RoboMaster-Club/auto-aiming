@@ -36,7 +36,7 @@ VideoCaptureNode::VideoCaptureNode(const rclcpp::NodeOptions &options) : Node("v
     seq = 0;
 
     // Load camera info
-    camera_name_ = this->declare_parameter("camera_name", "video_capture");
+    camera_name_ = this->declare_parameter("camera_name", "mv_camera");
     camera_info_manager = std::make_unique<camera_info_manager::CameraInfoManager>(this, camera_name_);
     auto camera_info_url = this->declare_parameter("camera_info_url", "package://webcam_publisher/config/webcam_info.yaml");
 
