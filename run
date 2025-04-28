@@ -8,7 +8,7 @@ print_green() {
 
 # Function to print messages in blue
 print_blue() {
-    echo -e "\e[34m$1\e[0m"
+    echo -e "\e[36m$1\e[0m"
 }
 
 # Function to print messages in red
@@ -17,9 +17,16 @@ print_red() {
 }
 
 # Print the blue welcome message
-print_blue "------------------------------------------"
-print_blue "Purdue RoboMaster Club: Auto Aiming Suite"
-print_blue "------------------------------------------"
+print_blue "-------------------------------------------"
+print_blue " Purdue RoboMaster Club: Auto Aiming Suite "
+print_blue "       ___________________________         "
+print_blue "       \_________________________  \       "
+print_blue "        _________________________| |       "
+print_blue "        |  ________________________/       "
+print_blue "        |  |   __    __    __    __        "
+print_blue "        \__/  <__>  <__>  <__>  <__>       "
+print_blue "                                           "
+print_blue "-------------------------------------------"
 
 # Function to clean the workspace
 clean() {
@@ -64,6 +71,14 @@ test() {
 
     # Check if a package name is provided
     local package_name=$1
+    if [[ $package_name ]]; then
+        source install/setup.sh
+        res=$(ros2 pkg list | grep -c "$package_name$")
+        if [[ $res -ne 1 ]]; then
+            print_red "Package [$package_name] not found for testing"
+            exit 1
+        fi
+    fi
 
     # Run tests
     if [[ -z "$package_name" ]]; then

@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "ControlCommunicator.h"
+#include <list>
 
 class ControlCommunicatorTest : public ::testing::Test
 {
@@ -9,31 +10,15 @@ protected:
 
     void SetUp() override
     {
-        // Find which port to use
-        const char *port1 = "/dev/ttyTHS0";
-        const char *port2 = "/dev/ttyTHS1";
-        const char *port3 = "/dev/ttyTHS2";
-        bool port1_exists = access(port1, F_OK) != -1 && open(port1, O_RDWR | O_NOCTTY | O_NONBLOCK) != -1;
-        bool port2_exists = access(port2, F_OK) != -1 && open(port2, O_RDWR | O_NOCTTY | O_NONBLOCK) != -1;
-        bool port3_exists = access(port3, F_OK) != -1 && open(port3, O_RDWR | O_NOCTTY | O_NONBLOCK) != -1;
-
-        // If either of the ports exist, use it
-        if (port1_exists)
+        // Loop through possible UART ports to fnd one we can access and open
+        const std::list<const char *> ports = {"/dev/ttyTHS0", "/dev/ttyTHS1", "/dev/ttyTHS2"};
+        for (const char *p : ports)
         {
-            port = port1;
-        }
-        else if (port2_exists)
-        {
-            port = port2;
-        }
-        else if (port3_exists)
-        {
-            port = port3;
-        }
-        else
-        {
-            // Neither port exists on dev server or local machine, since no serial device
-            port = nullptr;
+            if (access(p, F_OK) != -1 && open(p, O_RDWR | O_NOCTTY | O_NONBLOCK) != -1)
+            {
+                port = p;
+                break;
+            }
         }
     }
 
@@ -83,7 +68,7 @@ TEST_F(ControlCommunicatorTest, test_read_uart)
     if (port != nullptr)
     {
         EXPECT_TRUE(control_communicator.start_uart_connection(port));
-        EXPECT_NE(control_communicator.port_fd, -1); // Port should be opened
+        EXPECT_NE(control_communicator.port_fd, -1);    // Port should be opened
         EXPECT_TRUE(control_communicator.is_connected); // Connection should be established
 
         PackageIn package;
@@ -99,21 +84,21 @@ TEST_F(ControlCommunicatorTest, test_read_uart)
         EXPECT_TRUE(result); // Ensure at least one successful read
 
         // Validate the package data
-        EXPECT_EQ(package.head, 0xAA); // Check head byte
+        EXPECT_EQ(package.head, 0xAA);          // Check head byte
         EXPECT_EQ(package.ref_flags & 0x01, 0); // Check ref_flags (LSB should be 0 since match not started)
-        EXPECT_LT(package.pitch, M_PI); // Check pitch value
-        EXPECT_GT(package.pitch, -M_PI); // Check pitch value
-        EXPECT_LT(package.pitch_vel, M_PI); // Check pitch velocity
-        EXPECT_GT(package.pitch_vel, -M_PI); // Check pitch velocity
-        EXPECT_LT(package.yaw_vel, M_PI); // Check yaw velocity
-        EXPECT_GT(package.yaw_vel, -M_PI); // Check yaw velocity
-        
+        EXPECT_LT(package.pitch, M_PI);         // Check pitch value
+        EXPECT_GT(package.pitch, -M_PI);        // Check pitch value
+        EXPECT_LT(package.pitch_vel, M_PI);     // Check pitch velocity
+        EXPECT_GT(package.pitch_vel, -M_PI);    // Check pitch velocity
+        EXPECT_LT(package.yaw_vel, M_PI);       // Check yaw velocity
+        EXPECT_GT(package.yaw_vel, -M_PI);      // Check yaw velocity
+
         // package x field should exist and be a number
-        EXPECT_NE(package.x, NAN); // Check x position
-        EXPECT_NE(package.y, NAN); // Check y position
+        EXPECT_NE(package.x, NAN);           // Check x position
+        EXPECT_NE(package.y, NAN);           // Check y position
         EXPECT_NE(package.orientation, NAN); // Check orientation
-        EXPECT_NE(package.x_vel, NAN); // Check x velocity
-        EXPECT_NE(package.y_vel, NAN); // Check y velocity
+        EXPECT_NE(package.x_vel, NAN);       // Check x velocity
+        EXPECT_NE(package.y_vel, NAN);       // Check y velocity
     }
     else
     {
