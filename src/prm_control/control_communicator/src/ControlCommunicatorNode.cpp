@@ -68,6 +68,11 @@ void ControlCommunicatorNode::publish_static_tf(float x, float y, float z, float
 
 void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs::msg::PredictedArmor> msg)
 {	
+	// Timing to monitor for degradation in performance
+	static rclcpp::Time last_time = this->now();
+	static int degraded_perf_count = 0;
+	rclcpp::Time curr_time = this->now();
+
 	if (!control_communicator->is_connected || control_communicator->port_fd < 0)
 	{
 		RCLCPP_WARN(this->get_logger(), "UART Not connected, ignoring aim message.");
@@ -79,6 +84,7 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 	float pitch;
 	bool impossible;
 	int bytes_written = control_communicator->aim(aim_bullet_speed, msg->x, msg->y, msg->z, yaw, pitch, impossible);
+	bool AIMING = (msg->x != 0 || msg->y != 0 || msg->z != 0);
 
 	if (this->auto_aim_frame_id % 50 == 0 && this->auto_aim_frame_id != 0)
 	{
@@ -93,6 +99,25 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 	}
 
 	auto_aim_frame_id++;
+
+	// check performance for degradation in sending frequency
+	rclcpp::Duration elapsed_time = curr_time - last_time;
+	last_time = curr_time;
+	float TARGET_FREQUENCY = 90.0; // Hz
+	float TARGET_PERIOD = 1 / TARGET_FREQUENCY; // seconds
+
+	if (degraded_perf_count > 50 && AIMING)
+	{
+		RCLCPP_WARN(this->get_logger(), "DEGRADED PERFORMANCE DETECTED - AUTO-AIM SEND FREQUENCY: %f Hz", 1 / elapsed_time.seconds());
+		degraded_perf_count = 0;
+	}
+	if (elapsed_time.seconds() > TARGET_PERIOD && AIMING)
+	{
+		degraded_perf_count++;	
+	}
+	else {
+		degraded_perf_count = 0;
+	}
 }
 
 void ControlCommunicatorNode::nav_handler(const std::shared_ptr<geometry_msgs::msg::Twist> msg)
