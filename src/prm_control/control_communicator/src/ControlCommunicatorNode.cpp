@@ -74,23 +74,16 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 		return;
 	}
 
-	float yaw, pitch;
-	control_communicator->compute_aim(aim_bullet_speed, msg->x, msg->y, msg->z, yaw, pitch);
+	// Compute yaw/pitch and send over UART
+	float yaw;
+	float pitch;
+	bool impossible;
+	int bytes_written = control_communicator->aim(aim_bullet_speed, msg->x, msg->y, msg->z, yaw, pitch, impossible);
 
-	PackageOut package;
-	package.frame_id = 0xAA;
-	package.frame_type = FRAME_TYPE_AUTO_AIM;
-	package.autoAimPackage.yaw = yaw;
-	package.autoAimPackage.pitch = pitch;
-	package.autoAimPackage.fire = 1;
-
-	int bytes_written = write(control_communicator->port_fd, &package, sizeof(PackageOut));
-	fsync(control_communicator->port_fd);
-
-	if (this->auto_aim_frame_id % 100 == 0 && this->auto_aim_frame_id != 0)
+	if (this->auto_aim_frame_id % 50 == 0 && this->auto_aim_frame_id != 0)
 	{
 		float dst = sqrt(pow(msg->x, 2) + pow(msg->y, 2) + pow(msg->z, 2));
-		RCLCPP_INFO(this->get_logger(), "Yaw: %.2f | Pitch: %.2f | dst: %.2f | (x, y, z): (%.2f, %.2f, %.2f)", yaw, pitch, dst, msg->x, msg->y, msg->z);
+		RCLCPP_INFO(this->get_logger(), "Yaw: %.1f | Pitch: %.1f | dst: %.1f | (x,y,z): (%.1f, %.1f, %.1f)", yaw, pitch, dst, msg->x, msg->y, msg->z);
 	}
 	
 	if (bytes_written != sizeof(PackageOut))
