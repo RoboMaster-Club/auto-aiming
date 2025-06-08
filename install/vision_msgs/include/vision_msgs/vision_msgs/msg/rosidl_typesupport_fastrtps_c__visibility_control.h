@@ -1,0 +1,1 @@
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/build/vision_msgs/rosidl_typesupport_fastrtps_c/vision_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h

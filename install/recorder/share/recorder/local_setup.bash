@@ -1,0 +1,1 @@
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/build/recorder/ament_cmake_environment_hooks/local_setup.bash

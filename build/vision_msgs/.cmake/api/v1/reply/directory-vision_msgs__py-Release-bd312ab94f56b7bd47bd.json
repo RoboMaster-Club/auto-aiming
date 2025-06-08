@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "vision_msgs__py",
+		"source" : "/home/user-accounts/mantonov/ros2-ws/auto-aiming/build/vision_msgs/vision_msgs__py"
+	}
+}

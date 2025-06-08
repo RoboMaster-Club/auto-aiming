@@ -1,0 +1,1 @@
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/build/vision_msgs/rosidl_generator_cpp/vision_msgs/msg/detail/key_points__struct.hpp

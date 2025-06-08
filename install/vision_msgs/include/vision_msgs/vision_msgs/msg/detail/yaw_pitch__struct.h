@@ -1,0 +1,1 @@
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/build/vision_msgs/rosidl_generator_c/vision_msgs/msg/detail/yaw_pitch__struct.h

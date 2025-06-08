@@ -44,6 +44,38 @@ bool ControlCommunicator::start_uart_connection(const char *port)
     return true;
 }
 
+void ControlCommunicator::load_robot_lookup_table()
+{
+   // Gets device hostname and loads "hostname_lookup_table.txt" file. This is the standard naming for lookup tables. If
+   // hostname is not found, loads "pitch_lookup_table.txt", which should be the swerve standard lookup table at time of writing.
+   
+    char hostname[HOST_NAME_MAX];
+    gethostname(hostname, sizeof(hostname));
+    std::string hostname_str(hostname);
+
+    // TODO:: replace with actual host names
+    
+    std::string lut_path;
+
+    if (hostname_str.compare("swerve_standard") == 0)
+    {
+        lut_path = "/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/include/lookup_tables/pitch_lookup_table.txt";
+    }
+    else if (hostname_str.compare("hero") == 0)
+    {
+        lut_path = "/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/include/lookup_tables/pitch_lookup_table.txt";
+    }
+    else if (hostname_str.compare("sentry") == 0)
+    {
+        lut_path = "/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/include/lookup_tables/pitch_lookup_table.txt";
+    }
+    else
+    {
+        lut_path = "/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/include/lookup_tables/pitch_lookup_table.txt";
+    }
+    this->lut = new PitchLookupModel(lut_path);
+}
+
 void ControlCommunicator::compute_aim(float bullet_speed, float target_x, float target_y, float target_z, float &yaw, float &pitch)
 {
     // if X and Y and Z are 0

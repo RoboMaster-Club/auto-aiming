@@ -1,0 +1,1 @@
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/build/vision_msgs/ament_cmake_export_libraries/ament_cmake_export_libraries-extras.cmake

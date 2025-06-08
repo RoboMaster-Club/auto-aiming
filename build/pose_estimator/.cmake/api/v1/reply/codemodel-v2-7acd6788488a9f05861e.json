@@ -1,0 +1,166 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Release-6d9fbc976a16027df25f.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						5,
+						6,
+						7,
+						8
+					]
+				},
+				{
+					"build" : "gtest",
+					"jsonFile" : "directory-gtest-Release-a2408fe1a73b92c5e636.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "/opt/ros/humble/src/gtest_vendor",
+					"targetIndexes" : 
+					[
+						3,
+						4
+					]
+				}
+			],
+			"name" : "Release",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "pose_estimator",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						5,
+						6,
+						7,
+						8
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						1
+					],
+					"name" : "gtest",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						3,
+						4
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "PoseEstimator::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-PoseEstimator-Release-d2c8d44c8a2fd6a5dd1f.json",
+					"name" : "PoseEstimator",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "PoseEstimatorNode::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-PoseEstimatorNode-Release-1d5cba266046b4bfbe16.json",
+					"name" : "PoseEstimatorNode",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ValidityFilter::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ValidityFilter-Release-2af1847e0c8a9604deb7.json",
+					"name" : "ValidityFilter",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "gtest::@0af4add9fe94340e763e",
+					"jsonFile" : "target-gtest-Release-af6b9f7eabd5d14ed952.json",
+					"name" : "gtest",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "gtest_main::@0af4add9fe94340e763e",
+					"jsonFile" : "target-gtest_main-Release-61298c2aa54a3304e442.json",
+					"name" : "gtest_main",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "pose_estimator_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-pose_estimator_uninstall-Release-31164d81eab1db60a7be.json",
+					"name" : "pose_estimator_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_PoseEstimator::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_PoseEstimator-Release-84a5d30098b26249c86b.json",
+					"name" : "test_PoseEstimator",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_ValidityFilter::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_ValidityFilter-Release-ab44e272ed0701d07cb4.json",
+					"name" : "test_ValidityFilter",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-Release-d13af124a32f9527555c.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/user-accounts/mantonov/ros2-ws/auto-aiming/build/pose_estimator",
+		"source" : "/home/user-accounts/mantonov/ros2-ws/auto-aiming/src/prm_vision/pose_estimator"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

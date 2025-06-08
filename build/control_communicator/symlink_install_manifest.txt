@@ -1,0 +1,16 @@
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/install/control_communicator/lib/control_communicator/ControlCommunicatorNode
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/install/control_communicator/share/ament_index/resource_index/package_run_dependencies/control_communicator
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/install/control_communicator/share/ament_index/resource_index/parent_prefix_path/control_communicator
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/environment/ament_prefix_path.sh
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/environment/ament_prefix_path.dsv
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/environment/path.sh
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/environment/path.dsv
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/local_setup.bash
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/local_setup.sh
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/local_setup.zsh
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/local_setup.dsv
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/package.dsv
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/install/control_communicator/share/ament_index/resource_index/packages/control_communicator
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/cmake/control_communicatorConfig.cmake
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/cmake/control_communicatorConfig-version.cmake
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/install/control_communicator/share/control_communicator/package.xml

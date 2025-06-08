@@ -1,0 +1,1 @@
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/build/pose_estimator/ament_cmake_core/pose_estimatorConfig-version.cmake

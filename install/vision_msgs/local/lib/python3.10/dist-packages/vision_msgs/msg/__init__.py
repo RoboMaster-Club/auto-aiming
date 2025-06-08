@@ -1,0 +1,1 @@
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/build/vision_msgs/rosidl_generator_py/vision_msgs/msg/__init__.py

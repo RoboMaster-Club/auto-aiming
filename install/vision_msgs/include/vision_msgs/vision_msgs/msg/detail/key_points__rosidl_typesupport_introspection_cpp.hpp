@@ -1,0 +1,1 @@
+/home/user-accounts/mantonov/ros2-ws/auto-aiming/build/vision_msgs/rosidl_typesupport_introspection_cpp/vision_msgs/msg/detail/key_points__rosidl_typesupport_introspection_cpp.hpp

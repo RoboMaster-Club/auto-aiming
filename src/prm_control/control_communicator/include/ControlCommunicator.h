@@ -19,8 +19,9 @@ public:
     void compute_aim(float bullet_speed, float target_x, float target_y, float target_z, float &yaw, float &pitch);
     bool start_uart_connection(const char *port);
     bool read_uart(int port_fd, PackageIn &package, const char *port);
+    void load_robot_lookup_table();
 
-    PitchLookupModel *lut = new PitchLookupModel("/home/purduerm/ros2-ws/auto-aiming/src/prm_control/control_communicator/include/lookup_tables/pitch_lookup_table.txt");
+    PitchLookupModel *lut;
 
     int port_fd = -1;
     const char *port;

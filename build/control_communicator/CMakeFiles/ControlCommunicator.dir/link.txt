@@ -1,0 +1,2 @@
+/usr/bin/ar qc libControlCommunicator.a CMakeFiles/ControlCommunicator.dir/src/ControlCommunicator.cpp.o CMakeFiles/ControlCommunicator.dir/src/PitchLookupModel.cpp.o
+/usr/bin/ranlib libControlCommunicator.a

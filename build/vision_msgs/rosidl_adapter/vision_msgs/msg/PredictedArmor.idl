@@ -1,0 +1,62 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from vision_msgs/msg/PredictedArmor.msg
+// generated code does not contain a copyright notice
+
+#include "std_msgs/msg/Header.idl"
+
+module vision_msgs {
+  module msg {
+    struct PredictedArmor {
+      std_msgs::msg::Header header;
+
+      @verbatim (language="comment", text=
+        "x position")
+      @unit (value="mm")
+      double x;
+
+      @verbatim (language="comment", text=
+        "y position")
+      @unit (value="mm")
+      double y;
+
+      @verbatim (language="comment", text=
+        "z position")
+      @unit (value="mm")
+      double z;
+
+      @verbatim (language="comment", text=
+        "pitch")
+      @unit (value="deg")
+      double pitch;
+
+      @verbatim (language="comment", text=
+        "yaw")
+      @unit (value="deg")
+      double yaw;
+
+      @verbatim (language="comment", text=
+        "roll")
+      @unit (value="deg")
+      double roll;
+
+      @verbatim (language="comment", text=
+        "x velocity")
+      @unit (value="mm/s")
+      double x_vel;
+
+      @verbatim (language="comment", text=
+        "y velocity")
+      @unit (value="mm/s")
+      double y_vel;
+
+      @verbatim (language="comment", text=
+        "z velocity")
+      @unit (value="mm/s")
+      double z_vel;
+
+      @verbatim (language="comment", text=
+        "true if we have locked on to a target and will fire")
+      boolean fire;
+    };
+  };
+};
