@@ -171,7 +171,6 @@ class PoseScheduler(Node):
         if time_active and time_active > self.goal_timeout:
             self.get_logger().warn("Goal timeout reached. Cancelling and moving on.")
             self.navigator.cancel_goal()
-            return
 
        	# Check if we have reached time to queue a new goal
         # Does NOT wait for current pose to complete/cancel. Queues immediately when reaching specified time

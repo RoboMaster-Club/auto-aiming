@@ -35,6 +35,19 @@ def run_command(command, success_strings, failure_strings, kill_strings, num_che
                 elif any(failure_string in line for failure_string in failure_strings):
                     print("  [x] FAILURE string found")
 
+                    # see if it's a process has died and reset usb
+                    if "process has died" in line:
+                        print("  [x] Process has died detected. Resetting USB devices...")
+                        usb_devices = subprocess.check_output("ls /sys/bus/usb/devices/ | grep usb", shell=True, universal_newlines=True).strip().split('\n')
+                        for usb_device in usb_devices:
+                            try:
+                                subprocess.run(f"echo -n '{usb_device}' | sudo tee /sys/bus/usb/drivers/usb/unbind", shell=True, check=True)
+                                subprocess.run(f"echo -n '{usb_device}' | sudo tee /sys/bus/usb/drivers/usb/bind", shell=True, check=True)
+                                print(f"  [✔] Successfully reset USB device: {usb_device}")
+                            except subprocess.CalledProcessError as e:
+                                print(f"  [x] Failed to reset USB device: {usb_device}")
+
+
                     process.terminate()
                     for kill_string in kill_strings:
                         kill_processes(kill_string)
