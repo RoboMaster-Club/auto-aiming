@@ -106,13 +106,24 @@ class PoseScheduler(Node):
             "HOME": self._make_pose([-0.2, 0.0, 90]),
             "HALF_METER_FORWARD": self._make_pose([0.5, 0.0]),
             "HEAL": self._make_pose([0.7, -2.9, 90]),
+
+            # Klondike Poses
+            "FAR_RIGHT": self._make_pose([4.5, -8.0]),
+            "INTERSECT": self._make_pose([3.29, 0.0]),
+            "FAR": self._make_pose([10.0, 2.5]),
+            "FURTHER": self._make_pose([14.5, 3.0]),
+            "HALFWAY_RIGHT": self._make_pose([3.7, -3.5]),
         }
 
         self.pose_queue = {
-            3: "FAR_WALL",
-            10: "HOME",
-            20: "HALF_METER_FORWARD",
-            30: "FAR_WALL"
+            2: "INTERSECT",
+            10: "FAR_RIGHT",
+            20: "HALFWAY_RIGHT",
+            30: "INTERSECT",
+            40: "HOME",
+            50: "FURTHER",
+            60: "FAR",
+            70: "HOME"
         }
         self.low_health_pose = self.named_poses["HEAL"]
 

@@ -126,6 +126,14 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(os.path.join(prm_launch_dir, 'launch', 'mv2control.py'))
     )
 
+    collision_monitor_node = Node(
+    package='nav2_collision_monitor',
+    executable='collision_monitor',
+    name='collision_monitor',
+    output='screen',
+    parameters=[params_file]
+    )
+
     # Create the launch description and populate
     ld = LaunchDescription([
         # control_comm_node, # changed
@@ -152,5 +160,5 @@ def generate_launch_description():
     ld.add_action(auto_pose_pub_cmd)
 
     ld.add_action(auto_aim_pnp_launch)
-
+    
     return ld

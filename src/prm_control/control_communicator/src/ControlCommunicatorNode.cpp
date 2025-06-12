@@ -167,26 +167,6 @@ void ControlCommunicatorNode::read_uart()
 		return;
 	}
 
-	// if been 10 hearbeat, print
-	if (this->heart_beat_frame_id > 5 && this->heart_beat_frame_id % 5 == 0)
-	{
-		//print each field of package
-		//RCLCPP_INFO(this->get_logger(), "UART: \n");
-		// RCLCPP_INFO(this->get_logger(), "head: %x", package.head);
-		// RCLCPP_INFO(this->get_logger(), "pitch: %f", package.pitch);
-		// RCLCPP_INFO(this->get_logger(), "pitch_vel: %f", package.pitch_vel);
-		// RCLCPP_INFO(this->get_logger(), "yaw_vel: %f", package.yaw_vel);
-		// RCLCPP_INFO(this->get_logger(), "x: %f", package.x);
-		// RCLCPP_INFO(this->get_logger(), "y: %f", package.y);
-		// RCLCPP_INFO(this->get_logger(), "orientation: %f", package.orientation);
-		// RCLCPP_INFO(this->get_logger(), "x_vel: %f", package.x_vel);
-		//RCLCPP_INFO(this->get_logger(), "hp: %d", package.hp);
-		//RCLCPP_INFO(this->get_logger(), "start: %d", package.match_start);
-		//RCLCPP_INFO(this->get_logger(), "enemy color: %d", package.enemy_color);
-		//RCLCPP_INFO(this->get_logger(), "supp: %d", package.supplier_zone_detected);
-		//RCLCPP_INFO(this->get_logger(), "buff: %d", package.center_buff_zone_detected);
-	}
-
 	if (package.head != 0xAA) // Package validation
 	{
 		RCLCPP_WARN(this->get_logger(), "Packet miss aligned.");
@@ -246,6 +226,13 @@ void ControlCommunicatorNode::read_uart()
 
 	tf_broadcaster->sendTransform(pitch_tf);
 
+	// if abs of Odom is > 99999, must be a bad read
+	if (abs(package.x) > 99999 || abs(package.y) > 99999 || abs(package.orientation) > 99999)
+	{
+		RCLCPP_WARN(this->get_logger(), "Bad Odom Read: (x, y, orientation): (%f, %f, %f)", package.x, package.y, package.orientation);
+		return;
+	}
+
 	// Handle Odom
 	geometry_msgs::msg::TransformStamped odom_tf;
 	nav_msgs::msg::Odometry odom;
@@ -276,14 +263,6 @@ void ControlCommunicatorNode::read_uart()
 	odom.pose.pose.orientation.y = odom_q.y();
 	odom.pose.pose.orientation.z = odom_q.z();
 	odom.pose.pose.orientation.w = odom_q.w();
-		// RCLCPP_INFO(this->get_logger(), "head: %x", package.head);
-		// RCLCPP_INFO(this->get_logger(), "pitch: %f", package.pitch);
-		// RCLCPP_INFO(this->get_logger(), "pitch_vel: %f", package.pitch_vel);
-		// RCLCPP_INFO(this->get_logger(), "yaw_vel: %f", package.yaw_vel);
-		// RCLCPP_INFO(this->get_logger(), "x: %f", package.x);
-		// RCLCPP_INFO(this->get_logger(), "y: %f", package.y);
-		// RCLCPP_INFO(this->get_logger(), "orientation: %f", package.orientation);
-		// RCLCPP_INFO(this->get_logger(), "x_vel: %f", package.x_vel);
 
 	odom.pose.covariance[0] = 0.01;
 	odom.pose.covariance[7] = 0.01;
