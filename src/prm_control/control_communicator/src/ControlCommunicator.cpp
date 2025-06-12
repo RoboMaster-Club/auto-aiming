@@ -103,7 +103,7 @@ bool ControlCommunicator::read_uart(int port_fd, PackageIn &package, const char 
         return false; // No data to read or error
     }
 
-    if (package.head != 0xAA)
+    if (package.head != 0xAA || (abs(package.x) > 99999 || abs(package.y) > 99999 || abs(package.orientation) > 99999))
     {
         reconnecting = true;
         tcflush(port_fd, TCIOFLUSH);

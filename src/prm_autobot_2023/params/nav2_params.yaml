@@ -120,20 +120,21 @@ controller_server:
       debug_trajectory_details: True
       min_vel_x: -0.10
       min_vel_y: 0.0
+      min_vel_theta: -2.5
       max_vel_x: 4.5
       max_vel_y: 0.0
-      max_vel_theta: 3.14
+      max_vel_theta: 2.5
       min_speed_xy: 0.2
       max_speed_xy: 4.5
-      min_speed_theta: -3.14
+      min_speed_theta: 0.1
       # Add high threshold velocity for turtlebot 3 issue.
       # https://github.com/ROBOTIS-GIT/turtlebot3_simulations/issues/75
       acc_lim_x: 6.5
       acc_lim_y: 1.0
-      acc_lim_theta: 8.5
+      acc_lim_theta: 3.0
       decel_lim_x: -8.5
       decel_lim_y: -1.0
-      decel_lim_theta: -8.5
+      decel_lim_theta: -3.5
       vx_samples: 20
       vy_samples: 5
       vtheta_samples: 20
@@ -146,7 +147,7 @@ controller_server:
       short_circuit_trajectory_evaluation: True
       stateful: True
       critics: ["RotateToGoal", "Oscillation", "BaseObstacle", "GoalAlign", "PathAlign", "PathDist", "GoalDist"]
-      BaseObstacle.scale: 5.0
+      BaseObstacle.scale: 25.0
       PathAlign.scale: 32.0
       PathAlign.forward_point_distance: 0.1
       GoalAlign.scale: 24.0
@@ -179,8 +180,8 @@ local_costmap:
       plugins: ["voxel_layer", "inflation_layer"]
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
-        cost_scaling_factor: 3.0
-        inflation_radius: 0.6
+        cost_scaling_factor: 2.0
+        inflation_radius: 0.8
       voxel_layer:
         plugin: "nav2_costmap_2d::VoxelLayer"
         enabled: True

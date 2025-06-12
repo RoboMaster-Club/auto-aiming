@@ -17,6 +17,7 @@ NAV_STATUS = {
     'IDLING': 'IDLING'
 }
 
+
 class Navigator(Node):
     def __init__(self):
         super().__init__('navigator')
@@ -81,6 +82,7 @@ class Navigator(Node):
             self.goal_handle = None
             self.result_future = None
             self.goal_sent_time = None
+            time.sleep(1)
 
     def time_since_goal_sent(self):
         if self.goal_sent_time:
@@ -90,15 +92,24 @@ class Navigator(Node):
     def publish_nav_status(self, status):
         self.nav_status_pub.publish(String(data=status))
 
+####################################
+### Pose Scheduler State Machine ###
+####################################
 
-class PoseScheduler(Node):
+class PoseSchedulerStateMachine(Node):
+    GOAL_TIMEOUT = 20  # seconds
+
     def __init__(self, navigator: Navigator):
-        super().__init__('pose_scheduler')
+        super().__init__('pose_scheduler_sm')
         self.navigator = navigator
+
         self.match_started = False
         self.start_time = None
         self.low_health = False
-        self.goal_timeout = 20  # seconds
+
+        self.state = 'IDLE'
+        self.current_pose_name = None
+        self.current_pose_start_time = None
 
         self.named_poses = {
             "CENTER": self._make_pose([2.9, 1.0]),
@@ -107,7 +118,6 @@ class PoseScheduler(Node):
             "HALF_METER_FORWARD": self._make_pose([0.5, 0.0]),
             "HEAL": self._make_pose([0.7, -2.9, 90]),
 
-            # Klondike Poses
             "FAR_RIGHT": self._make_pose([4.5, -8.0]),
             "INTERSECT": self._make_pose([3.29, 0.0]),
             "FAR": self._make_pose([10.0, 2.5]),
@@ -125,10 +135,14 @@ class PoseScheduler(Node):
             60: "FAR",
             70: "HOME"
         }
-        self.low_health_pose = self.named_poses["HEAL"]
 
+        self.override_pose_name = "HEAL"
+
+        # Subscribers
         self.create_subscription(Bool, 'match_start', self._match_cb, 10)
         self.create_subscription(Int16, 'health', self._health_cb, 10)
+
+        # Timer
         self.create_timer(0.5, self._tick)
 
     def _make_pose(self, lst):
@@ -137,16 +151,18 @@ class PoseScheduler(Node):
         pose.pose.position.x = lst[0]
         pose.pose.position.y = lst[1]
         if len(lst) >= 3:
-            yaw = lst[2]
+            yaw = lst[2] * math.pi / 180  # Convert degrees to radians
             pose.pose.orientation.z = math.sin(yaw / 2)
             pose.pose.orientation.w = math.cos(yaw / 2)
+        else:
+            pose.pose.orientation.w = 1.0  # No rotation
         return pose
 
     def _match_cb(self, msg):
         if msg.data and not self.match_started:
-            self.start_time = time.time()
+            self.get_logger().info("Match started")
             self.match_started = True
-            self.get_logger().info('Match started')
+            self.start_time = time.time()
 
     def _health_cb(self, msg):
         self.low_health = msg.data < 300
@@ -157,59 +173,122 @@ class PoseScheduler(Node):
             self.navigator.publish_nav_status(NAV_STATUS['NOT_STARTED'])
             return
 
-        if self.low_health:
-            self.navigator.send_goal(self.low_health_pose)
-            return
-
-       # THREE POSSIBLE RESULTS FOR A POSE:
-       # 1. Pose succeeds
-       # 2. Next pose in queue reaches time to run, current pose gets canceled and next gets sent
-       # 3. Pose exceeds timeout without another being queued, cancel and wait for next pose
-
-        # Cancel stale goals
-        time_active = self.navigator.time_since_goal_sent()
-        if time_active and time_active > self.goal_timeout:
-            self.get_logger().warn("Goal timeout reached. Cancelling and moving on.")
-            self.navigator.cancel_goal()
-
-       	# Check if we have reached time to queue a new goal
-        # Does NOT wait for current pose to complete/cancel. Queues immediately when reaching specified time
-        elapsed = time.time() - self.start_time
-        for t, pose_name in sorted(self.pose_queue.items()):
-            if elapsed >= t:
-                if pose_name in self.named_poses:
-                    self.navigator.cancel_goal()
-                    self.get_logger().info(f' [*] Queueing next pose: time={t}, name={pose_name}')
-                    self.navigator.send_goal(self.named_poses[pose_name])
-                    del self.pose_queue[t]
-                    break
-                else:
-                    self.get_logger().warn(f"Pose '{pose_name}' not found in named poses")
-
-        if len(self.pose_queue) == 0:
-            self.get_logger().info(" [*] All poses have been sent")
-
-        self.get_logger().info(f'Current nav time: {elapsed} sec')
-
         if self.navigator.is_navigating():
             self.navigator.publish_nav_status(NAV_STATUS['NAVIGATING'])
-            return
         else:
             self.navigator.publish_nav_status(NAV_STATUS['IDLING'])
+
+        if self.state == 'IDLE':
+            if self.match_started:
+                self.get_logger().info("Transitioning to NAVIGATING state")
+                self.state = 'NAVIGATING'
+                self.current_pose_start_time = None  # Reset
+                self._send_next_pose()
+
+        elif self.state == 'NAVIGATING':
+            if self.low_health:
+                self.get_logger().info("Low health detected! Switching to OVERRIDE state")
+                self.navigator.cancel_goal()
+                self.state = 'OVERRIDE'
+                self._send_override_pose()
+                return
+
+            # Check for goal timeout
+            if self._goal_timed_out():
+                self.get_logger().warn("Goal timed out, cancelling and sending next")
+                self.navigator.cancel_goal()
+                self._send_next_pose()
+                return
+
+            # Check if it's time to send next pose
+            if self._should_send_next_pose():
+                self.get_logger().info("Time to send next scheduled pose")
+                self.navigator.cancel_goal()
+                self._send_next_pose()
+                return
+
+            # If navigation finished and no more poses, transition to DONE
+            if not self.navigator.is_navigating() and not self.pose_queue:
+                self.get_logger().info("All poses sent and navigation complete")
+                self.state = 'DONE'
+                return
+
+        elif self.state == 'OVERRIDE':
+            if not self.low_health:
+                self.get_logger().info("Health recovered, returning to NAVIGATING")
+                self.navigator.cancel_goal()
+                self.state = 'NAVIGATING'
+                self._send_next_pose()
+                return
+
+        elif self.state == 'DONE':
+            self.navigator.publish_nav_status(NAV_STATUS['IDLING'])
+            # Could add restart logic here if desired
+
+        else:
+            self.get_logger().warn(f"Unknown state: {self.state}")
+
+    def _goal_timed_out(self):
+        if self.current_pose_start_time is None:
+            return False
+        return (time.time() - self.current_pose_start_time) > self.GOAL_TIMEOUT
+
+    def _should_send_next_pose(self):
+        if not self.pose_queue:
+            return False
+        elapsed = time.time() - self.start_time
+        next_time = min(self.pose_queue.keys())
+        return elapsed >= next_time
+
+    def _send_next_pose(self):
+        if not self.pose_queue:
+            self.get_logger().info("Pose queue empty, no next pose to send")
             return
+
+        elapsed = time.time() - self.start_time
+        # Find the next pose to send based on elapsed time
+        next_times = sorted(t for t in self.pose_queue if t <= elapsed)
+        if not next_times:
+            return  # Not yet time for next pose
+
+        next_time = next_times[0]
+        pose_name = self.pose_queue.pop(next_time)
+
+        if pose_name not in self.named_poses:
+            self.get_logger().warn(f"Pose '{pose_name}' not found in named poses")
+            return
+
+        self.current_pose_name = pose_name
+        pose = self.named_poses[pose_name]
+        sent = self.navigator.send_goal(pose)
+        if sent:
+            self.get_logger().info(f"Sent pose '{pose_name}' scheduled at t={next_time}s")
+            self.current_pose_start_time = time.time()
+        else:
+            self.get_logger().warn(f"Failed to send pose '{pose_name}'")
+
+    def _send_override_pose(self):
+        pose = self.named_poses[self.override_pose_name]
+        sent = self.navigator.send_goal(pose)
+        if sent:
+            self.get_logger().info(f"Sent OVERRIDE pose '{self.override_pose_name}'")
+            self.current_pose_start_time = time.time()
+        else:
+            self.get_logger().warn(f"Failed to send OVERRIDE pose '{self.override_pose_name}'")
 
 
 def main(args=None):
     rclpy.init(args=args)
 
     navigator = Navigator()
-    # navigator.set_initial_pose(PoseWithCovarianceStamped())
     navigator.wait_for_initial_pose()
 
-    scheduler = PoseScheduler(navigator)
+    scheduler = PoseSchedulerStateMachine(navigator)
+
     executor = MultiThreadedExecutor()
     executor.add_node(navigator)
     executor.add_node(scheduler)
+
     executor.spin()
 
     rclpy.shutdown()
