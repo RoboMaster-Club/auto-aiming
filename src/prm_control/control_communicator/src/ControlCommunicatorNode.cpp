@@ -36,6 +36,7 @@ ControlCommunicatorNode::ControlCommunicatorNode(const char *port) : Node("contr
 	this->odometry_publisher = this->create_publisher<nav_msgs::msg::Odometry>("odom", 1);
 	this->target_robot_color_publisher = this->create_publisher<std_msgs::msg::String>("color_set", rclcpp::QoS(rclcpp::KeepLast(1)).reliable());
 	this->match_status_publisher = this->create_publisher<std_msgs::msg::Bool>("match_start", rclcpp::QoS(rclcpp::KeepLast(1)).reliable());
+	this->health_publisher = this->create_publisher <std_msgs::msg::Int16>("health", 1);
 	this->uart_read_timer = this->create_wall_timer(4ms, std::bind(&ControlCommunicatorNode::read_uart, this));
 
 	RCLCPP_INFO(this->get_logger(), "Control Communicator Node Started.");
@@ -87,9 +88,9 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 	int bytes_written = write(control_communicator->port_fd, &package, sizeof(PackageOut));
 	fsync(control_communicator->port_fd);
 
-	if (this->auto_aim_frame_id % 100 == 0 && this->auto_aim_frame_id != 0)
+	float dst = sqrt(pow(msg->x, 2) + pow(msg->y, 2) + pow(msg->z, 2));
+	if (this->auto_aim_frame_id % 100 == 0 && this->auto_aim_frame_id != 0 && dst > 0)
 	{
-		float dst = sqrt(pow(msg->x, 2) + pow(msg->y, 2) + pow(msg->z, 2));
 		RCLCPP_INFO(this->get_logger(), "Yaw: %.2f | Pitch: %.2f | dst: %.2f | (x, y, z): (%.2f, %.2f, %.2f)", yaw, pitch, dst, msg->x, msg->y, msg->z);
 	}
 	
@@ -117,7 +118,7 @@ void ControlCommunicatorNode::nav_handler(const std::shared_ptr<geometry_msgs::m
 	package.navPackage.x_vel = msg->linear.x;
 	package.navPackage.y_vel = msg->linear.y;
 	package.navPackage.yaw_rad = msg->angular.z;
-	package.navPackage.state = 1;
+	package.navPackage.state = 2;
 	write(control_communicator->port_fd, &package, sizeof(PackageOut));
 	fsync(control_communicator->port_fd);
 
@@ -157,42 +158,76 @@ void ControlCommunicatorNode::heart_beat_handler()
 void ControlCommunicatorNode::read_uart()
 {
 	PackageIn package;
+	int success = read(control_communicator->port_fd, &package, sizeof(PackageIn));
 
-    if (!control_communicator->read_uart(control_communicator->port_fd, package, this->port))
-    {
-        RCLCPP_WARN(this->get_logger(), "UART read failed or misaligned.");
-        return;
-    }
+	rclcpp::Time curr_time = this->now();
+	if (success == -1)
+	{
+		RCLCPP_ERROR(this->get_logger(), "Error %i from read: %s", errno, strerror(errno));
+		return;
+	}
 
-    rclcpp::Time curr_time = this->now();
+	// if been 10 hearbeat, print
+	if (this->heart_beat_frame_id > 5 && this->heart_beat_frame_id % 5 == 0)
+	{
+		//print each field of package
+		//RCLCPP_INFO(this->get_logger(), "UART: \n");
+		// RCLCPP_INFO(this->get_logger(), "head: %x", package.head);
+		// RCLCPP_INFO(this->get_logger(), "pitch: %f", package.pitch);
+		// RCLCPP_INFO(this->get_logger(), "pitch_vel: %f", package.pitch_vel);
+		// RCLCPP_INFO(this->get_logger(), "yaw_vel: %f", package.yaw_vel);
+		// RCLCPP_INFO(this->get_logger(), "x: %f", package.x);
+		// RCLCPP_INFO(this->get_logger(), "y: %f", package.y);
+		// RCLCPP_INFO(this->get_logger(), "orientation: %f", package.orientation);
+		// RCLCPP_INFO(this->get_logger(), "x_vel: %f", package.x_vel);
+		//RCLCPP_INFO(this->get_logger(), "hp: %d", package.hp);
+		//RCLCPP_INFO(this->get_logger(), "start: %d", package.match_start);
+		//RCLCPP_INFO(this->get_logger(), "enemy color: %d", package.enemy_color);
+		//RCLCPP_INFO(this->get_logger(), "supp: %d", package.supplier_zone_detected);
+		//RCLCPP_INFO(this->get_logger(), "buff: %d", package.center_buff_zone_detected);
+	}
+
+	if (package.head != 0xAA) // Package validation
+	{
+		RCLCPP_WARN(this->get_logger(), "Packet miss aligned.");
+		if (this->read_alignment())
+		{
+			RCLCPP_INFO(this->get_logger(), "Read alignment success.");
+		}
+		else
+		{
+			RCLCPP_WARN(this->get_logger(), "Read alignment failed.");
+		}
+		return;
+	}
 
 	// Handle TF
-	this->pitch_vel = package.pitch_vel;			// rad/s
+	this->pitch_vel = package.pitch_vel; 			// rad/s
 	this->pitch = package.pitch;					// rad
-	this->yaw_vel = package.yaw_vel;				// rad/s
-	this->is_enemy_red = package.ref_flags & 2;			// second lowest bit denotes if we are red
-	this->is_match_running = package.ref_flags & 1; // LSB denotes if match is started
+	this->yaw_vel = package.yaw_vel;	   			// rad/s
+	this->is_red = package.enemy_color;				// 1 for enemy is red
+	this->is_match_running = package.match_start; 	// LSB denotes if match is started
 	this->valid_read = true;
 
-	// publishing color and match status
-	std_msgs::msg::String target_robot_color; 
-	target_robot_color.data = this->is_enemy_red ? "red" : "blue";
 
-	if (old_target_robot_color != target_robot_color.data)
-	{
-		RCLCPP_INFO(this->get_logger(), "Target Robot Color: %s", target_robot_color.data.c_str());
-		target_robot_color_publisher->publish(target_robot_color);
-		old_target_robot_color = target_robot_color.data;	
-	}
-
-	if (this->auto_aim_frame_id % 5000 == 0 && this->auto_aim_frame_id != 0)
-	{
-		RCLCPP_INFO(this->get_logger(), "READ UART: x: %f | y: %f | x_vel: %f | y_vel: %f | yaw_vel: %f | pitch_vel: %f | pitch: %f | is_enemy_red: %d | is_match_running: %d", package.x, package.y, package.x_vel, package.y_vel, this->yaw_vel, this->pitch_vel, this->pitch, this->is_enemy_red, this->is_match_running);
-	}
+	// publishing color and match status and health
+	std_msgs::msg::String target_robot_color;
+    target_robot_color.data = this->is_red ? "red" : "blue";
 
 	std_msgs::msg::Bool match_status;
 	match_status.data = this->is_match_running;
+	std_msgs::msg::Int16 health;
+	health.data = package.hp;
+
+	// publishers
+	health_publisher->publish(health);
 	match_status_publisher->publish(match_status);
+
+	if (this->old_target_robot_color != target_robot_color.data)
+	{
+		this->old_target_robot_color = target_robot_color.data;
+		RCLCPP_INFO(this->get_logger(), "Target Robot Color: %s", target_robot_color.data.c_str());
+	}
 
 	geometry_msgs::msg::TransformStamped pitch_tf;
 	pitch_tf.header.stamp = curr_time;
@@ -241,6 +276,14 @@ void ControlCommunicatorNode::read_uart()
 	odom.pose.pose.orientation.y = odom_q.y();
 	odom.pose.pose.orientation.z = odom_q.z();
 	odom.pose.pose.orientation.w = odom_q.w();
+		// RCLCPP_INFO(this->get_logger(), "head: %x", package.head);
+		// RCLCPP_INFO(this->get_logger(), "pitch: %f", package.pitch);
+		// RCLCPP_INFO(this->get_logger(), "pitch_vel: %f", package.pitch_vel);
+		// RCLCPP_INFO(this->get_logger(), "yaw_vel: %f", package.yaw_vel);
+		// RCLCPP_INFO(this->get_logger(), "x: %f", package.x);
+		// RCLCPP_INFO(this->get_logger(), "y: %f", package.y);
+		// RCLCPP_INFO(this->get_logger(), "orientation: %f", package.orientation);
+		// RCLCPP_INFO(this->get_logger(), "x_vel: %f", package.x_vel);
 
 	odom.pose.covariance[0] = 0.01;
 	odom.pose.covariance[7] = 0.01;
@@ -269,6 +312,25 @@ void ControlCommunicatorNode::read_uart()
 
 	return;
 }
+
+bool ControlCommunicatorNode::read_alignment()
+{
+	RCLCPP_INFO(this->get_logger(), "Attemp to alignment.");
+	uint8_t i = 0;
+	uint8_t buffer[35]; // we only read sizeof(packagein) - 1
+	do
+	{
+		int success = read(control_communicator->port_fd, &(buffer[0]), sizeof(buffer[0]));
+		if (success)
+		{
+			i++;
+		}
+	} while (buffer[0] != 0xAA || i > sizeof(PackageIn) * 2);
+	read(control_communicator->port_fd, &buffer, sizeof(PackageIn) - 1);
+
+	return i <= sizeof(PackageIn) * 2;
+}
+
 
 int main(int argc, char **argv)
 {

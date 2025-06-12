@@ -3,45 +3,55 @@
 
 bool ControlCommunicator::start_uart_connection(const char *port)
 {
-    this->port = port;
-    this->is_connected = false;
-    this->port_fd = open(port, O_RDWR | O_NOCTTY | O_NONBLOCK);
-    tcflush(this->port_fd, TCIOFLUSH);
+	this->is_connected = false;
+	this->port_fd = open(port, O_RDWR);
 
-    if (this->port_fd == -1)
-    {
-        return false; // Error opening the port
-    }
+	// Check for errors
+	if (this->port_fd < 0)
+	{
+		return false;
+	}
 
-    struct termios tty;
-    if (tcgetattr(this->port_fd, &tty) != 0)
-    {
-        close(this->port_fd);
-        return false;
-    }
+	struct termios tty;
 
-    int baud_rate = B1152000;
-    cfsetispeed(&tty, baud_rate);
-    cfsetospeed(&tty, baud_rate);
-    tty.c_cflag &= ~PARENB; // No parity
-    tty.c_cflag &= ~CSTOPB; // 1 stop bit
-    tty.c_cflag &= ~CSIZE;
-    tty.c_cflag |= CS8;            // 8 data bits
-    tty.c_cflag &= ~CRTSCTS;       // No flow control
-    tty.c_cflag |= CREAD | CLOCAL; // Enable read and local mode
+	// Set UART TTY to 8n1
+	tty.c_cflag &= ~PARENB;
+	tty.c_cflag &= ~CSTOPB;
+	tty.c_cflag &= ~CSIZE;
+	tty.c_cflag |= CS8;
 
-    cfmakeraw(&tty);      // Raw mode
-    tty.c_cc[VMIN] = 1;   // Minimum 1 character
-    tty.c_cc[VTIME] = 10; // Timeout in deciseconds (1 second)
+	tty.c_cflag &= ~CRTSCTS;	   // No RTS/CTS flow control
+	tty.c_cflag |= CREAD | CLOCAL; // Turn on READ & ignore ctrl lines
+	tty.c_lflag &= ~ICANON;		   // Disable canonical mode
 
-    if (tcsetattr(this->port_fd, TCSANOW, &tty) != 0)
-    {
-        close(this->port_fd);
-        return false;
-    }
+	// Disable echo, erasure and newline echo
+	tty.c_lflag &= ~ECHO;
+	tty.c_lflag &= ~ECHOE;
+	tty.c_lflag &= ~ECHONL;
 
-    is_connected = true;
-    return true;
+	// Disable interpretation of INTR, QUIT and SUSP
+	tty.c_lflag &= ~ISIG;
+
+	// Disable special handling, interpretation, S/W flow control, \n conv.
+	tty.c_iflag &= ~(IXON | IXOFF | IXANY);
+	tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL);
+	tty.c_oflag &= ~OPOST;
+	tty.c_oflag &= ~ONLCR;
+
+	tty.c_cc[VTIME] = 10;				// Wait for up to 1s (10 deciseconds)
+	tty.c_cc[VMIN] = sizeof(PackageIn); // Block for sizeof(PackageOut) bits
+
+	// Set the baud rate
+	cfsetispeed(&tty, B1152000);
+
+	// Save tty settings, also checking for error
+	if (tcsetattr(this->port_fd, TCSANOW, &tty) != 0)
+	{
+		return false;
+	}
+	this->is_connected = true;
+
+	return true;
 }
 
 void ControlCommunicator::compute_aim(float bullet_speed, float target_x, float target_y, float target_z, float &yaw, float &pitch)

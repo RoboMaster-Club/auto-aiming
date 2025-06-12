@@ -12,7 +12,7 @@ typedef struct  _AutoAimPackage
 {
 	float yaw;	 // yaw (deg)
 	float pitch; // pitch (deg)
-	uint8_t fire;   // 0 = no fire, 1 = fire
+	bool fire;   // 0 = no fire, 1 = fire
 } AutoAimPackage;
 
 typedef struct  _NavPackage
@@ -46,19 +46,23 @@ typedef struct  _PackageOut
 
 typedef struct __attribute__((__packed__)) _PackageIn
 {
+	// size: 1 + 4 + 4 + 4 + 4 + 4 + 4 + 4 + 4 + 2 + 1 + 1 + 1 + 1
+	// = 39 bytes including header
 	uint8_t head;
-	uint8_t ref_flags;
-	float pitch;	 // rad
-	float pitch_vel; // rad/s
-	float yaw_vel;	 // rad/s (ccw: +, cw: -)
-
-	float x;		   // m
-	float y;		   // m
-	float orientation; // rad (ccw: +, cw: -)
-
-	float x_vel; // m/s
-	float y_vel; // m/s
-	// uint8_t is_blue;   //  0 = red, 1 = blue
+	float pitch; 							// rad
+	float pitch_vel; 						// rad/s
+	float yaw_vel;	 						// rad/s (ccw: +, cw: -)
+	float x;		 						// m
+	float y;		 						// m
+	float orientation; 						// rad (ccw: +, cw: -)
+	float x_vel;	   						// m/s
+	float y_vel;	   						// m/s
+	uint16_t hp;
+	uint8_t match_start : 1;				// bit field
+	uint8_t enemy_color : 1;				// bit field
+	uint8_t supplier_zone_detected : 1;		// bit field
+	uint8_t center_buff_zone_detected : 1;	// bit field
+	// // uint8_t is_blue;   //  0 = red, 1 = blue
 } __attribute__((packed)) PackageIn;
 
 #endif // _MESSAGES_H
