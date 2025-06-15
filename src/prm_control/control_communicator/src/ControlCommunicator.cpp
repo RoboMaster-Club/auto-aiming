@@ -3,58 +3,64 @@
 
 bool ControlCommunicator::start_uart_connection(const char *port)
 {
-	this->is_connected = false;
-	this->port_fd = open(port, O_RDWR);
+    this->port = port;
+    this->is_connected = false;
+    this->port_fd = open(port, O_RDWR | O_NOCTTY | O_NONBLOCK);
+    tcflush(this->port_fd, TCIOFLUSH);
 
-	// Check for errors
-	if (this->port_fd < 0)
-	{
-		return false;
-	}
+    if (this->port_fd == -1)
+    {
+        return false; // Error opening the port
+    }
 
-	struct termios tty;
+    struct termios tty;
+    if (tcgetattr(this->port_fd, &tty) != 0)
+    {
+        close(this->port_fd);
+        return false;
+    }
 
-	// Set UART TTY to 8n1
-	tty.c_cflag &= ~PARENB;
-	tty.c_cflag &= ~CSTOPB;
-	tty.c_cflag &= ~CSIZE;
-	tty.c_cflag |= CS8;
+    int baud_rate = B1152000;
+    cfsetispeed(&tty, baud_rate);
+    cfsetospeed(&tty, baud_rate);
+    tty.c_cflag &= ~PARENB; // No parity
+    tty.c_cflag &= ~CSTOPB; // 1 stop bit
+    tty.c_cflag &= ~CSIZE;
+    tty.c_cflag |= CS8;            // 8 data bits
+    tty.c_cflag &= ~CRTSCTS;       // No flow control
+    tty.c_cflag |= CREAD | CLOCAL; // Enable read and local mode
 
-	tty.c_cflag &= ~CRTSCTS;	   // No RTS/CTS flow control
-	tty.c_cflag |= CREAD | CLOCAL; // Turn on READ & ignore ctrl lines
-	tty.c_lflag &= ~ICANON;		   // Disable canonical mode
+    cfmakeraw(&tty);      // Raw mode
+    tty.c_cc[VMIN] = 1;   // Minimum 1 character
+    tty.c_cc[VTIME] = 10; // Timeout in deciseconds (1 second)
 
-	// Disable echo, erasure and newline echo
-	tty.c_lflag &= ~ECHO;
-	tty.c_lflag &= ~ECHOE;
-	tty.c_lflag &= ~ECHONL;
+    if (tcsetattr(this->port_fd, TCSANOW, &tty) != 0)
+    {
+        close(this->port_fd);
+        return false;
+    }
 
-	// Disable interpretation of INTR, QUIT and SUSP
-	tty.c_lflag &= ~ISIG;
-
-	// Disable special handling, interpretation, S/W flow control, \n conv.
-	tty.c_iflag &= ~(IXON | IXOFF | IXANY);
-	tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL);
-	tty.c_oflag &= ~OPOST;
-	tty.c_oflag &= ~ONLCR;
-
-	tty.c_cc[VTIME] = 10;				// Wait for up to 1s (10 deciseconds)
-	tty.c_cc[VMIN] = sizeof(PackageIn); // Block for sizeof(PackageOut) bits
-
-	// Set the baud rate
-	cfsetispeed(&tty, B1152000);
-
-	// Save tty settings, also checking for error
-	if (tcsetattr(this->port_fd, TCSANOW, &tty) != 0)
-	{
-		return false;
-	}
-	this->is_connected = true;
-
-	return true;
+    is_connected = true;
+    return true;
 }
 
-void ControlCommunicator::compute_aim(float bullet_speed, float target_x, float target_y, float target_z, float &yaw, float &pitch)
+int ControlCommunicator::aim(float aim_bullet_speed, float x, float y, float z, float &yaw, float &pitch, bool &impossible)
+{
+	this->compute_aim(aim_bullet_speed, x, y, z, yaw, pitch, impossible);
+
+	PackageOut package;
+	package.frame_id = 0xAA;
+	package.frame_type = FRAME_TYPE_AUTO_AIM;
+	package.autoAimPackage.yaw = yaw;
+	package.autoAimPackage.pitch = pitch;
+	package.autoAimPackage.fire = 1;
+
+	int bytes_written = write(this->port_fd, &package, sizeof(PackageOut));
+	fsync(this->port_fd);
+    return bytes_written;
+}
+
+void ControlCommunicator::compute_aim(float bullet_speed, float target_x, float target_y, float target_z, float &yaw, float &pitch, bool &impossible)
 {
     // if X and Y and Z are 0
     if (target_x == 0 && target_y == 0 && target_z == 0)
@@ -65,7 +71,6 @@ void ControlCommunicator::compute_aim(float bullet_speed, float target_x, float 
     }
 
     // projectile model based on quartic solver
-    bool impossible = false;
     double p;
     double y;
     pitch_yaw_gravity_model_movingtarget_const_v({ target_z, target_x, -target_y }, {0, 0, 0}, {0, 0, 9810}, 0.0, &p, &y, &impossible);
@@ -103,7 +108,7 @@ bool ControlCommunicator::read_uart(int port_fd, PackageIn &package, const char 
         return false; // No data to read or error
     }
 
-    if (package.head != 0xAA || (abs(package.x) > 99999 || abs(package.y) > 99999 || abs(package.orientation) > 99999))
+    if (package.head != 0xAA)
     {
         reconnecting = true;
         tcflush(port_fd, TCIOFLUSH);

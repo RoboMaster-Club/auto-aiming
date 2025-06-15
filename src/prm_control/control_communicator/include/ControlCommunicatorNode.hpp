@@ -11,7 +11,6 @@
 
 #include "std_msgs/msg/string.hpp"
 #include "std_msgs/msg/bool.hpp"
-#include "std_msgs/msg/int16.hpp"
 #include "tf2_ros/transform_broadcaster.h"
 #include "tf2_ros/static_transform_broadcaster.h"
 #include "tf2/transform_datatypes.h"
@@ -40,7 +39,6 @@ public:
 private:
 	void publish_static_tf(float x, float y, float z, float roll, float pitch, float yaw, const char *frame_id, const char *child_frame_id);
 	void heart_beat_handler();
-	bool read_alignment();
 
 	uint32_t auto_aim_frame_id = 0;
 	uint32_t nav_frame_id = 0;
@@ -51,7 +49,6 @@ private:
 	float pitch_vel = 0; // rad/s
 	float pitch = 0;	 // rad (+up, -down)?
 	bool is_enemy_red = 0;
-	bool is_red = 0;
 	bool is_match_running = 0;
 	bool valid_read = false;
 	std::string old_target_robot_color; 
@@ -68,7 +65,6 @@ private:
 	rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr odometry_publisher;
 	rclcpp::Publisher<std_msgs::msg::String>::SharedPtr target_robot_color_publisher;
 	rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr match_status_publisher;
-	std::shared_ptr<rclcpp::Publisher<std_msgs::msg::Int16>> health_publisher;
 	rclcpp::TimerBase::SharedPtr uart_read_timer;
 
 	std::unique_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster;

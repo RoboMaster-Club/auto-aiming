@@ -36,7 +36,6 @@ ControlCommunicatorNode::ControlCommunicatorNode(const char *port) : Node("contr
 	this->odometry_publisher = this->create_publisher<nav_msgs::msg::Odometry>("odom", 1);
 	this->target_robot_color_publisher = this->create_publisher<std_msgs::msg::String>("color_set", rclcpp::QoS(rclcpp::KeepLast(1)).reliable());
 	this->match_status_publisher = this->create_publisher<std_msgs::msg::Bool>("match_start", rclcpp::QoS(rclcpp::KeepLast(1)).reliable());
-	this->health_publisher = this->create_publisher <std_msgs::msg::Int16>("health", 1);
 	this->uart_read_timer = this->create_wall_timer(4ms, std::bind(&ControlCommunicatorNode::read_uart, this));
 
 	RCLCPP_INFO(this->get_logger(), "Control Communicator Node Started.");
@@ -69,29 +68,28 @@ void ControlCommunicatorNode::publish_static_tf(float x, float y, float z, float
 
 void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs::msg::PredictedArmor> msg)
 {	
+	// Timing to monitor for degradation in performance
+	static rclcpp::Time last_time = this->now();
+	static int degraded_perf_count = 0;
+	rclcpp::Time curr_time = this->now();
+
 	if (!control_communicator->is_connected || control_communicator->port_fd < 0)
 	{
 		RCLCPP_WARN(this->get_logger(), "UART Not connected, ignoring aim message.");
 		return;
 	}
 
-	float yaw, pitch;
-	control_communicator->compute_aim(aim_bullet_speed, msg->x, msg->y, msg->z, yaw, pitch);
+	// Compute yaw/pitch and send over UART
+	float yaw;
+	float pitch;
+	bool impossible;
+	int bytes_written = control_communicator->aim(aim_bullet_speed, msg->x, msg->y, msg->z, yaw, pitch, impossible);
+	bool AIMING = (msg->x != 0 || msg->y != 0 || msg->z != 0);
 
-	PackageOut package;
-	package.frame_id = 0xAA;
-	package.frame_type = FRAME_TYPE_AUTO_AIM;
-	package.autoAimPackage.yaw = yaw;
-	package.autoAimPackage.pitch = pitch;
-	package.autoAimPackage.fire = 1;
-
-	int bytes_written = write(control_communicator->port_fd, &package, sizeof(PackageOut));
-	fsync(control_communicator->port_fd);
-
-	float dst = sqrt(pow(msg->x, 2) + pow(msg->y, 2) + pow(msg->z, 2));
-	if (this->auto_aim_frame_id % 100 == 0 && this->auto_aim_frame_id != 0 && dst > 0)
+	if (this->auto_aim_frame_id % 100 == 0 && this->auto_aim_frame_id != 0)
 	{
-		RCLCPP_INFO(this->get_logger(), "Yaw: %.2f | Pitch: %.2f | dst: %.2f | (x, y, z): (%.2f, %.2f, %.2f)", yaw, pitch, dst, msg->x, msg->y, msg->z);
+		float dst = sqrt(pow(msg->x, 2) + pow(msg->y, 2) + pow(msg->z, 2));
+		RCLCPP_INFO(this->get_logger(), "Yaw: %.1f | Pitch: %.1f | dst: %.1f | (x,y,z): (%.1f, %.1f, %.1f)", yaw, pitch, dst, msg->x, msg->y, msg->z);
 	}
 	
 	if (bytes_written != sizeof(PackageOut))
@@ -101,6 +99,29 @@ void ControlCommunicatorNode::auto_aim_handler(const std::shared_ptr<vision_msgs
 	}
 
 	auto_aim_frame_id++;
+
+	// check performance for degradation in sending frequency
+	rclcpp::Duration elapsed_time = curr_time - last_time;
+	last_time = curr_time;
+	float TARGET_FREQUENCY = 90.0; // Hz
+	float TARGET_PERIOD = 1 / TARGET_FREQUENCY; // seconds
+
+	if (degraded_perf_count > 50 && AIMING)
+	{
+		RCLCPP_WARN(this->get_logger(), "DEGRADED PERFORMANCE DETECTED - AUTO-AIM SEND FREQUENCY: [%0.1f Hz]", 1 / elapsed_time.seconds());
+		degraded_perf_count = 0;
+	}
+	else if (this->auto_aim_frame_id % 1000 == 0)
+	{
+		RCLCPP_INFO(this->get_logger(), "Auto-Aim send frequency: [%0.1f Hz]", 1 / elapsed_time.seconds());
+	}
+	if (elapsed_time.seconds() > TARGET_PERIOD && AIMING)
+	{
+		degraded_perf_count++;	
+	}
+	else {
+		degraded_perf_count = 0;
+	}
 }
 
 void ControlCommunicatorNode::nav_handler(const std::shared_ptr<geometry_msgs::msg::Twist> msg)
@@ -118,7 +139,7 @@ void ControlCommunicatorNode::nav_handler(const std::shared_ptr<geometry_msgs::m
 	package.navPackage.x_vel = msg->linear.x;
 	package.navPackage.y_vel = msg->linear.y;
 	package.navPackage.yaw_rad = msg->angular.z;
-	package.navPackage.state = 2;
+	package.navPackage.state = 1;
 	write(control_communicator->port_fd, &package, sizeof(PackageOut));
 	fsync(control_communicator->port_fd);
 
@@ -158,56 +179,42 @@ void ControlCommunicatorNode::heart_beat_handler()
 void ControlCommunicatorNode::read_uart()
 {
 	PackageIn package;
-	int success = read(control_communicator->port_fd, &package, sizeof(PackageIn));
 
-	rclcpp::Time curr_time = this->now();
-	if (success == -1)
-	{
-		RCLCPP_ERROR(this->get_logger(), "Error %i from read: %s", errno, strerror(errno));
-		return;
-	}
+    if (!control_communicator->read_uart(control_communicator->port_fd, package, this->port))
+    {
+        RCLCPP_WARN(this->get_logger(), "UART read failed or misaligned.");
+        return;
+    }
 
-	if (package.head != 0xAA) // Package validation
-	{
-		RCLCPP_WARN(this->get_logger(), "Packet miss aligned.");
-		if (this->read_alignment())
-		{
-			RCLCPP_INFO(this->get_logger(), "Read alignment success.");
-		}
-		else
-		{
-			RCLCPP_WARN(this->get_logger(), "Read alignment failed.");
-		}
-		return;
-	}
+    rclcpp::Time curr_time = this->now();
 
 	// Handle TF
-	this->pitch_vel = package.pitch_vel; 			// rad/s
+	this->pitch_vel = package.pitch_vel;			// rad/s
 	this->pitch = package.pitch;					// rad
-	this->yaw_vel = package.yaw_vel;	   			// rad/s
-	this->is_red = package.enemy_color;				// 1 for enemy is red
-	this->is_match_running = package.match_start; 	// LSB denotes if match is started
+	this->yaw_vel = package.yaw_vel;				// rad/s
+	this->is_enemy_red = package.ref_flags & 2;			// second lowest bit denotes if we are red
+	this->is_match_running = package.ref_flags & 1; // LSB denotes if match is started
 	this->valid_read = true;
 
+	// publishing color and match status
+	std_msgs::msg::String target_robot_color; 
+	target_robot_color.data = this->is_enemy_red ? "red" : "blue";
 
-	// publishing color and match status and health
-	std_msgs::msg::String target_robot_color;
-    target_robot_color.data = this->is_red ? "red" : "blue";
+	if (old_target_robot_color != target_robot_color.data)
+	{
+		RCLCPP_INFO(this->get_logger(), "Target Robot Color: %s", target_robot_color.data.c_str());
+		target_robot_color_publisher->publish(target_robot_color);
+		old_target_robot_color = target_robot_color.data;	
+	}
+
+	if (this->auto_aim_frame_id % 5000 == 0 && this->auto_aim_frame_id != 0)
+	{
+		RCLCPP_INFO(this->get_logger(), "READ UART: x: %f | y: %f | x_vel: %f | y_vel: %f | yaw_vel: %f | pitch_vel: %f | pitch: %f | is_enemy_red: %d | is_match_running: %d", package.x, package.y, package.x_vel, package.y_vel, this->yaw_vel, this->pitch_vel, this->pitch, this->is_enemy_red, this->is_match_running);
+	}
 
 	std_msgs::msg::Bool match_status;
 	match_status.data = this->is_match_running;
-	std_msgs::msg::Int16 health;
-	health.data = package.hp;
-
-	// publishers
-	health_publisher->publish(health);
 	match_status_publisher->publish(match_status);
-
-	if (this->old_target_robot_color != target_robot_color.data)
-	{
-		this->old_target_robot_color = target_robot_color.data;
-		RCLCPP_INFO(this->get_logger(), "Target Robot Color: %s", target_robot_color.data.c_str());
-	}
 
 	geometry_msgs::msg::TransformStamped pitch_tf;
 	pitch_tf.header.stamp = curr_time;
@@ -225,13 +232,6 @@ void ControlCommunicatorNode::read_uart()
 	pitch_tf.transform.rotation.w = pitch_q.w();
 
 	tf_broadcaster->sendTransform(pitch_tf);
-
-	// if abs of Odom is > 99999, must be a bad read
-	if (abs(package.x) > 99999 || abs(package.y) > 99999 || abs(package.orientation) > 99999)
-	{
-		RCLCPP_WARN(this->get_logger(), "Bad Odom Read: (x, y, orientation): (%f, %f, %f)", package.x, package.y, package.orientation);
-		return;
-	}
 
 	// Handle Odom
 	geometry_msgs::msg::TransformStamped odom_tf;
@@ -291,25 +291,6 @@ void ControlCommunicatorNode::read_uart()
 
 	return;
 }
-
-bool ControlCommunicatorNode::read_alignment()
-{
-	RCLCPP_INFO(this->get_logger(), "Attemp to alignment.");
-	uint8_t i = 0;
-	uint8_t buffer[35]; // we only read sizeof(packagein) - 1
-	do
-	{
-		int success = read(control_communicator->port_fd, &(buffer[0]), sizeof(buffer[0]));
-		if (success)
-		{
-			i++;
-		}
-	} while (buffer[0] != 0xAA || i > sizeof(PackageIn) * 2);
-	read(control_communicator->port_fd, &buffer, sizeof(PackageIn) - 1);
-
-	return i <= sizeof(PackageIn) * 2;
-}
-
 
 int main(int argc, char **argv)
 {
